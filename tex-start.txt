@@ -1,0 +1,69 @@
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][H]{\origfigure[#1]}{\endorigfigure}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LE,RO]{\leftmark}  % Left on even pages, right on odd pages
+\fancyfoot{}  % Clears the footer
+\fancyfoot[C]{\thepage}  % Page number centered in the footer
+
+\title{}
+\hypersetup{
+ pdfauthor={santo},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 29.4 (Org mode 9.6.15)}, 
+ pdflang={English}}
+\begin{document}
+\begin{titlepage}
+  \centering
+  {\Huge An Introduction to Machine Learning \\}
+  \vspace*{50.0pt}
+  by Giovanni Santini \\
+  \vspace{1.5pt}
+  First Edition
+\end{titlepage}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\tableofcontents
+
+\newpage
+
+\section*{Introduction}
+
+This book contains useful notes for students studying for an
+introductionary course to Machine Learning, or to anyone interested in
+the subject. The structure of the book results from my notes during
+the "Introduction to Machine Learning" course held by Elisa Ricci at
+the University of Trento in the academic year 2024-2025. During the
+course, I found myself more interested in the math than what the
+course taught, so I dedicated some of my time to understand the math
+better and to fill some of the gaps in my education. My final notes
+resulted in the book you are reading.
+
+Permission is granded to redistribute this content freely. The latest
+and greatest version of this document can be found in the main branch
+of the github repo
+(\href{https://github.com/San7o/Introduction-to-machine-learning.git}{https://github.com/San7o/Introduction-to-machine-learning.git}).
+
+\newpage
+
+

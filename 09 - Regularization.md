@@ -1,0 +1,55 @@
+
+# Regularization
+
+A recap on model based machine learning:
+
+1. Pick a model
+$$0=b+\sum_{j=1}^mw_if_i$$
+2. Pick a criteria to optimize
+$$\sum_{i=1}^n\mathbb{1}[y_i(wx_i+b)\le 0]$$
+3. Develop a learning algorithm
+$$argmin_{w, b}\sum_{i=1}^n\mathbb{1}[y_i(wx_i+b)\le 0]$$
+- repeat: pick a dimension and move a small amount towards the opposite of the derivative
+
+## Regularizer
+
+A _regularizer_ is an additional criterion to the loss function to make sure that we do not _overfit_
+$$argmin_{w, b}\sum_{i=1}^nloss(yy')+\lambda regularizer(w, b)$$
+
+- we want to bias the model so that it prefers certain types of weights over others
+- note that is I sum two convex functions, the result is also convex. We want a convex regularizer. If the function is convex, there is usually an easy solution.
+
+
+Generally, we do not want huge weights: if weights are large, a small change in a feature can result in a large change in the prediction
+
+So, how do we encourage small weights or penalize large weights?
+
+## Common regularizers
+
+Sum of the weights
+$$r(w, b)=\sum |w_j|$$
+Sum of the squared weights
+$$r(w, b)=\sqrt{\sum |w_j|^2}$$
+
+- this penalizes large values more compared to sum of weights
+
+In general, we can call this formula _p-norm_ or $L_p (L_1, L_2, ....)$:
+$$r(w, b)=\sqrt[p]{\sum |w_j|^p}=||w||^p$$
+
+## Using Gradient Descent
+
+Example using 2-norm:
+$$argmin_{w, b}\sum_{i=1}^n exp(-y_i(wx_i+b))+\frac{\lambda}{2}||w||^2$$
+$$\frac{d}{dw_j}equation = -\sum_{i=1}^n y_ix_{ij}exp(-y_i(wx_i+b))+\lambda w_i$$
+We can multiply all of this by a constant to control the learning rate.
+
+Note that gradient descent is not the only minimization method.
+
+## Logistic Regression
+
+Log loss or binary cross-entropy loss
+$$L(w) = -\sum_{i=1}^n [y_i\log(\hat{y_i})+(1-y_i)\log(1-\hat{y_i})]$$
+where
+$$\hat{y_i} = \sigma (x_i^Tw)$$
+and $$\sigma (z)=\frac{1}{1+e^{-z}}$$
+

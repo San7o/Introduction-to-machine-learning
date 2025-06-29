@@ -1,0 +1,134 @@
+
+# Neural Networks
+
+Previously we have discussed perceptrons as a non-linear parameterized function with restricted output range. It predicts the output by learning the weights while considering a bias, more specifically it associates one weight per input and multiplies them together.
+
+$$a=h(\sum_i w_ix_i+b)$$
+
+Perceptrons are great and easy to understand, however they assume the input data is linearly separable. Indeed, in 1969 Minsky and Papert showed that an exclusive OR (XOR) cannot be solved with a perceptron. This limitation seemd to halt the development of the field, and commenced what is now known as the "AI Winter". Only in 1986 progress was made with a solution that would change the world: _multi-layer perceptrons_.
+
+In essence, multi-layer perceptrons are a set of densly connected perceptrons (aka neurons) organized in layers. Input goes from the first layer to the next until the last one where the output is collected, if each neuron is connected to all the neurons in the previous layer then we refer to the network as a _fully connected network_. This design was inspired by neuroscience by how the brain manages to understand complex input through billions and billions of connections between neurons.
+
+Let's now further formalize a multi-layer perceptron, aka a _neural network_. Each neuron belongs to a layer $l\in \{ 0, ..., L \}$ where $0$ is the _input_ layer and $L$ is the _output_ layer. All the layers in between are called _hidden layers_. The symbol $z^{(l)}_i$ indicates the output of the $i$-th neuron in the layer $l$. A single neuron on layer $l$ takes the results $z_{i}^{(l-1)}$ from the $i$ nodes of the  $(l-1)$ layer and sums them, multiplying them by the weights $w_{ij}^{(l)}$, and adds a bias $b_l$. We call this value $a_i^{(l)}$:
+
+$$a_{i}^{(l)}(x, w)=\sum_j w_{ij}z_j^{(l-1)}(x, w)+b_l$$
+
+The node then passes this result to a non-linear activation function $h(x)$, we call this number $z_{i}^{(l)}$:
+
+$$z_i^{(l)}(x, w)=h(a_i^{(l)}(x, w))$$
+
+There are many non-linear activation function, a popular one is called _Rectified Linear Units_ aka ReLU and It looks like this:
+
+$$ReLU(x)=max(0, x)$$
+
+The output layer is usually multiplied by a $\sigma$ function that transforms the outputs to a probability or smooth the value, such as the _sigmoid_ function:
+
+$$\sigma(x)= \frac{1}{1+exp(-x)}$$
+or the _softmax_ function:
+
+$$\sigma (z)_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}}$$
+
+For example, a multi layer perceptron with one input, one hidden and one output layer takes the form:
+
+$$y_k(x, w)=\sigma (\sum_{j=2}^M w_{kj}^{(2)}h(\sum_{i=1}^D w_{ji}^{(1)}x_i + b_1) + b_{2}$$
+
+The process of evaluating the previous formula can be interpreted as _forward propagation_ of information through the network, for this reason we also call this types of networks a _feed forward_ network.
+
+We know how to find the output from the inputs, we will now discuss how to train the network. We cannot train the multi player perceptron like we have seen for a single perceptron because we do not know the desired target output for the hidden layers. We will see how this is solved through a technique called _backpropagation_.
+
+## Training with backpropagation
+
+Given training samples $T=\{ (x_1, y_1), (x_2, y_2), ..., (x_n, y_n) \}$, we want to adjust all the weights of the network $\Theta$ such that an error (also called loss) function $E(\cdot)$ is minimized.
+
+$$min_{\Theta} \sum _i E^{(L)}(y_i, f(x_i;\Theta))$$
+
+Where $y_i$ is the expected output of the $i$-th neuron. There are many choices for an error function, such as square loss:
+
+$$E(x, w)^{(L)}=\frac{1}{2}\sum_i (y_i-z_i^{(L)}(x, w))^2$$
+
+or cross entropy:
+
+$$E(x, w)^{(L)} = -\sum_i y_i \log(z_i^{(L)}(x, w))$$
+
+For training will again use gradient descent, however we need a way to propagate the error in order to compute the gradient of the hidden layers. To do so we use an algorithm called backpropagation, which is composed of the following steps:
+
+1. _Feedforward propagation_: Accept input $x_i$, then pass through the intermediate stages and obtain the output.
+2. Use the computed output to compute a _scalar cost_ depending on the loss function.
+
+In order to update the weights based on the error, we want to find the partial derivative of the error with respect to a weight $w_{ij}$, and we write $\frac{\partial E(x, w)^{(l)}}{\partial w_{ij}}$. We can apply the chain rule $D(f(g(x)))=f'(g(x))g'(x)$ which can be rewritten as $\frac{\partial f}{\partial g}=\frac{\partial f}{\partial g}\frac{\partial g}{\partial x}$ to the error function:
+
+$$\frac{\partial E^{(L)}}{\partial w_{ij}}=\frac{\partial E^{(l)}}{\partial z_i^{(l)}}\frac{\partial z_i^{(l)}}{\partial a_i^{(l)}}\frac{\partial a_i^{(l)}}{\partial w_{ij}}$$
+
+Let's analyze all three of the factors:
+
+$$\frac{\partial E^{(L)}}{\partial z_i^{(l)}}=\frac{\partial}{\partial z_i^{(l)}}\frac{1}{2}\sum_i (y_i-z_i^{(l)}(x, w))^2=-(y_i-z_i^{(l)})$$
+$$\frac{\partial z_i^{(l)}}{\partial a_i^{(l)}}=\frac{\partial h}{\partial a_i^{(l)}}$$
+$$\frac{\partial a_i^{(l)}}{\partial w_{ij}}=\frac{\partial}{\partial w_{ij}}\sum_j w_{ij}z_j^{(l-1)}(x, w)=z_j^{(l-1)}$$
+
+So overall, for the first layer you can use:
+
+$$\frac{\partial E^{(L)}}{\partial w_{ij}}=-\frac{\partial h}{\partial a_i^{(l)}}(y_i-z_i^{(l)})z_j^{(l-1)}$$
+
+Where the derivate of the activation function depends on the function. $(y_i-z_i^{(l)})$ is often referred to as $\delta_i^{(l)}$.
+
+For the hidden layers you do not know the expected output $y_i$ directly, so you use the formula:
+
+$$\frac{\partial E^{(l)}}{\partial w_{ij}}=-\frac{\partial h}{\partial a_i^{(l)}}(\sum_j\delta^{(l+1)}_iw_{ij}^{(l+1)}) z_j^{(l-1)}$$
+
+We can finally perform gradient descent like we discussed in Its own chapter.
+
+## Example
+
+We will relax the notation now. Consider a two-layer network (that does not count the input layer). Given:
+
+$$h(a)\equiv tanh(a)$$
+$$tanh(a)=\frac{e^a-e^{-a}}{e^a+e^{-a}}$$
+$$h'(a)=1-h(a)^2$$
+$$E^{(L)} = \frac{1}{2}\sum_{i} (y_i - z_i^{(L)})^2$$
+
+where $z_i^{(L)}$ is the activation of output unit $i$, and $y_i$ is the corresponding target, for a particular input pattern $x_n$.
+
+For each pattern in the training set in turn, we first perform forward propagation using:
+
+$$a_i^{(0)} = \sum_{i=1}^D w_{li}^{(0)}x_i$$
+$$z_i^{(0)} = tanh(a_i^{(0)})$$
+$$a_j^{(1)} = \sum_{j=1}^M w_{ij}z_i^{(0)}$$
+
+Next we compute the $\delta$'s for each output unit using:
+
+$$\delta _i^{(1)} = y_i - z_i^{(1)}$$
+
+Then we backpropagate there to obtain $\delta$s for the hidden units using:
+
+$$\delta_j^{(0)} = (1-(z_j^{(1)})^2)(\sum_{k=1}^K w_{kj}\delta_k^{(1)})z_k^{(0)}$$
+
+Finally, the derivatives with respect to the first-layer and second-layer weights are given by:
+
+$$\frac{\partial E_i^{(1)}}{\partial w_{ji}}=\delta_i^{(1)}z_j^{(0)},\ \frac{\partial E_j^{(0)}}{\partial w_{kj}}=\delta _k^{(0)}x_j$$
+
+To summarize, with a simpler notation:
+
+1. Apply an input vector $x_n$ to the network and forward propagate through the network using $a_j=\sum_iw_{ji}z_i$ and $z_j=h(a_j)$ to find the activations of all the hidden and output units
+2. Evaluate the $\delta_k$ for all the output units using $\delta_k=y_k-z_k$
+3. Backpropagate the $\delta$'s using $\delta_j=h'(a_j)\sum_k w_{kj}\delta_k$ to obtain $\delta_j$ for each hidden unit in the network
+4. Use $\frac{\partial E_n}{\partial w_{ji}}=\delta_jz_i$ to evaluate the required derivatives
+
+## Convolutional Neural Networks
+
+In computer vision, we have a lot of important spacial information we want to model, however this happens to be really difficult for neural network as were described previously. The problem raises from the fact that it is difficult to pass an image as input to a neural network. One possibility would be to set an input node for each pixel, however this has many problems primarily because the input layer would be huge (a 500 by 500 image will have 250000 inputs) and all the spacial information would be lost, like being able to encode what is nearby a pixel. For these reasons, a special solution was needed.
+
+By the same time backpropagation was discovered, _convolutional neural networks_ were proposed as a solution to the problem inspired by the mammalian visual cortex. This type of neural networks use convolution in place of general matrix multiplication in at least one of their layers. A convolution is a general purpose filter operation for image where a kernel matrix is applied to an image and the central pixel is determined by adding the weighted values of all its neighbors together, producing a _feature map_.
+
+$$S(i, j) = (I*K)(i, j) = \sum_{m=-i}^i\sum_{n=-j}^jI(m, n)K(i-m,j-n)$$
+
+These convolutions matrices are learned by the convolutional neural network, this is how the It can understand spacial features such as edges or certain arrangements of pixels on Its own. Suppose we are training a CNN to classify human faces, the network may learn the features of the eyes and their position with respect to the nose and the mouth, It may catch the shape of the ears or the color of the skin, and so on. 
+
+Convolutional neural networks are feedforward neural networks composed of a set of filters that cover a spacially small portion of the input data and that are convoluted over It. The network may have many convolutions over the same input, and convolutions over convolutions. For classification, It is common to have multiple convolutions chained together while reducing the spacial size of the representation and increasing Its depth with a process known as _spacial polling_, until the size is $1$. Then, all the data is fed to a traditional neural network for classification.
+
+## Other neural networks
+
+Many other types of neural networks were developed over time for domain specific problems, some of the notable ones are:
+
+- _Recurrent network_: nodes on the same layer influence each other, used in video frame prediction.
+- _Autoencoders_: unsupervised approach for learning a lower-dimensional feature representation from unlabeled training data. Additionally, we can train a decoder to do the opposite. We will talk more about this in the following chapter.
+

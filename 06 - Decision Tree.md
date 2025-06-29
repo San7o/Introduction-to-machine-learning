@@ -1,0 +1,153 @@
+
+# Decision Trees
+
+Decision trees are simple, intuitive and powerful supervised learning algorithms used for both classification and regression. They make predictions by recursively splitting on different attributes according to a _tree structure_. For continuous attributes splitting is based on less than or greater than some threshold. During testing time, the program will walk the tree from the root, based on the split condition at each intersection, until It reaches the leaf nodes.
+
+Given a training dataset, we need to learn:
+
+- which attribute to choose for splitting
+- what value of that attribute to use for splitting
+
+## Classification and Regression
+
+Training examples that fall into the region $R_m$
+$$\{ (x^{m_1}, t^{m_1}),...,(x^{m_k}, t^{m_k}) \}$$
+
+_Classification_ tree:
+
+- discrete output $y \in \{1, ..., C\}$
+- after traversing the tree, the final leaf value $y^m$ is typically set to the most common value in $\{t^{m_1}, ..., t^{m_k}\}$ which is the set of labels in the region, i.e.
+$$y^m = argmax_{t\in \{ 1, ..., C \}} \sum_{m_i}\mathbb{1}_{t} (t^{m_i}) $$
+	Where $\mathbb{1} (x)$ is the indicator function defined as:
+$$\mathbb{1}_A: X\rightarrow \{ 0, 1 \}$$
+$$\mathbb{1}_A(x) \equiv
+\begin{cases}
+1,\ x\in A \\
+0,\ x \notin A
+\end{cases}$$
+_Regression_ tree:
+
+- continuous output: $y\in \mathbb{R}$
+- the leaf value $y^m$ typical set to the mean value in $\{t^{m_1},...,t^{m_k}\}$
+
+## Train a decision tree
+
+We want to find a simple tree that explains data well. A good enough approach would be to use a greedy heuristic: start with an empty decision tree and complete the training set by recursively "splitting" the best attributes.
+
+We will now discuss three ways to decide which split is the best.
+
+### Accuracy Gain
+
+A _gain_ is defined based on change in some criteria before and after a split. Let us define _accuracy gain_. 
+
+- suppose we have a region $R$. Denote the misclassification error of that region as $L(R)$ which is the fraction of incorrect classification
+- we split $R$ into two regions $R_1$ and $R_2$ based on some attribute
+- the error after the split is:
+$$\frac{|R_1|}{|R|}L(R_1) + \frac{|R_2|}{|R|}L(R_2)$$
+	where $|R|$ is the number of samples in $R$.
+- we define the accuracy gain as:
+$$AG = L(R) - \frac{|R_1| L(R_1) + |R_2|L(R_2)}{|R|}$$
+
+A big value of $AG$ means that the split is good. If the error $L(R)$ after the split is as good as before, $AG$ is $0$, and if the split introduced more error then $AG$ is negative.
+
+We defined a function to measure how good a split is, let's look at another possibility inspired by information theory.
+
+### Basic of information theory and entropy
+
+Which coin result is more uncertain between those two?
+
+- 0001000000000000010001
+- 0101100101010011101010101
+
+Entropy is a measure of expected "surprise". How uncertain are we of the value of a draw from this distribution?
+$$H(X) = -\mathbb{E}_{X\sim p}[\log_2 p(X)] = -\sum_{x\in X} p(x)\log_2p(x)$$
+
+- the greater the entropy, the less certain we are. The more certain we are, the less entropy
+	- remember that entropy is the measure of disorder
+
+Meaning: we are taking the probability of the "surprise" of an event $E$ with the formula $\log(\frac{1}{p(E)})$ which can be rewritten as $-\log(p(E))$. This formula means that the more likely the event, the closes it's surprise will be 0. The opposite is true: the less probable the event, the greater the value of the log function. Since we are taking the expected value, the more unexpected is the probability of the event, the higher the entropy. The formula with the sum is derived by directly applying the definition of expected value $\mathbb{E}[x]=\sum_{i=1}x_i p_i$
+
+On high entropy, the variable has a more uniform-like distribution, meaning that It is more difficult to predict an event (so It surprises us). On low entropy, the distribution has peaks and valleys were some events are frequent and some are not (so some values are more probable than others and do not surprise us).
+
+Entropy can be a better option than accuracy gain to measure certainty.
+
+### Information Gain
+
+Information Gain measures the expected reduction in entropy. It is defined as
+
+- Entropy of region $R$ or parent node before the split: $H(R)$
+- entropy of region $R_1$ and $R_2$ or leaf nodes after the split: $H(R_1)$ and $H(R2)$
+- Information gain is defined as
+$$IG = H(R) - \frac{|R_1|H(R_1) + |R_2|H(R_2)}{|R|}$$
+
+The feature and the corresponding value with the highest information gain will be selected for splitting.
+
+### Gini index
+
+Gini Index is another widely used metric for choosing a good split in decision trees.
+The Gini index measures the "impurity" (or non-homoneneity) at a given modes as
+$$GINI(R)=1-\sum_j [p(j|R)]^2$$
+where $p(j|R)$ is the class frequency of class j in region R
+
+- intuitively, it aims to measure the probability of misclassifying a randomly chosen element
+- greater the value of the Gini index, the greater the changes of having misclassificaiton
+- thus, we will look for greater gini values
+
+## Overfitting
+
+- decision trees have a structure that is determined by the data
+- as a result they are flexible and can easily fit the training set, with high risk of overfitting
+- what we can do is cut branches of the tree and replaceing it by a leath node (_pruning_)
+
+## Limitations
+
+- you have exponentially less data al lower levels
+- a large tree can overfit the data
+- decision trees do not necessarly reach the global minima
+- mistakes at top-level propagate down tree
+
+Decision trees can also be used for regression on real-valued outputs by choosing the squared error rather than maximizing the information gain.
+
+## Comparison to KNN
+
+Advantages and Decision Trees over KNN
+
+- good with descrete attributes
+- easily deals with missing vales
+- robust to scale of inputs
+- good when there are lots of attributes, but only a few are important
+- fast at test time
+- more interpretable
+
+If some features are more important than others, you may want to choose a decision tree.
+
+Strengths:
+
+- fast and simple to implement
+- can convert to rules
+- allows for batch training
+
+Disadvantages:
+
+- univariate feature split
+- requires fixed-length feature vectors
+- non-incremental (batch method)
+
+## Improvement to decision trees: Random Forests
+
+_Bootstrapping_ is a resampling technique that involves repeatedly drawing samples from the dataset with replacement (the same element can be selected multiple times)
+
+- this creates multiple datasets that introduce variability, reducing overfitting in models
+
+_Bagging_ (or Bootstrap Aggregation) involves training multiple decision trees on different bootstrapped samples and averaging their outputs (for regression) or majority voting (for classification)
+
+- In addition to bootstrapping, Random Forests introduce feature randomness, this descreases the correlation between each DT and increases its predictive accuracy on average. In other words, avoid very strong predictive features that lead to similar split in trees
+
+Algorithm:
+
+1. Draw multiple bootstrapped datasets from the original data
+2. Train a DT on each dataset using a random subset of $sqrt(d)$ features at each split
+3. Aggregate predictions:
+	1. classification: majority vote
+	2. regression: average predictions
+
