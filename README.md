@@ -1,7 +1,7 @@
 # Introduction to Machine Learning
 
 This book contains useful notes for students studying for an
-introductionary course to Machine Learning, or to anyone interested in
+introductory course to Machine Learning, or to anyone interested in
 the subject. The structure of the book results from my notes during
 the "Introduction to Machine Learning" course held by Elisa Ricci at
 the University of Trento in the academic year 2024-2025. During the
@@ -12,7 +12,8 @@ resulted in the book you are reading.
 
 Permission is granded to redistribute this content freely. 
 
-Download the [PDF version](./Intro-to-Machine-Learning.pdf) or view the [HTML version](https://giovanni-diary.netlify.app/programming/notes/ml/intro-to-machine-learning.html).
+Download the [PDF version](./Intro-to-Machine-Learning.pdf) or view the [HTML version](https://giovanni-diary.netlify.app/programming/notes/ml/intro-to-machine-learning.html). Note that the `.md` files are not rendered
+correctly in GitHub.
 
 ## Chapters
 
