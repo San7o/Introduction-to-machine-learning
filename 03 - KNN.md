@@ -3,7 +3,7 @@
 
 In this chapter we will discuss our first supervised learning algorithm: _K-nearest neighbors_, aka _K-NN_. Remember that supervised learning means that the algorithm is given data in an $n$-dimensional space with labels, we will now focus on the classification problem where the algorithm should predict the label of new unseen data.
 
-If we make the only assumption that data with similar labels are somehow "cose" together in the space, a simple solution to this problem could be to look at the nearest known data and their label. We will discuss the concept distance later. Moreover, we can average over $k$ nearest neighbors to get a more representative result.
+If we make the only assumption that data with similar labels are somehow "close" together in the space, a simple solution to this problem could be to look at the nearest known data and their label. We will discuss the concept distance later. Moreover, we can average over $k$ nearest neighbors to get a more representative result.
 
 More precisely, to _classify_ an example $d$:
 

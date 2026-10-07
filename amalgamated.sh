@@ -3,7 +3,8 @@
 OUT="ML-amalgamated.md"
 TEX_OUT="Intro-to-Machine-Learning.tex"
 
-cat 02\ -\ Basics.md > $OUT
+cat 01\ -\ Math.md > $OUT
+cat 02\ -\ Basics.md >> $OUT
 cat 03\ -\ KNN.md >> $OUT
 cat 04\ -\ Linear\ Models.md >> $OUT
 cat 05\ -\ Beyond\ Binary\ Classification.md >> $OUT

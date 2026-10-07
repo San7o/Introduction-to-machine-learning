@@ -49,20 +49,29 @@
 
 \section*{Introduction}
 
-This book contains useful notes for students studying for an
-introductory course to Machine Learning, or to anyone interested in
-the subject. The structure of the book results from my notes during
-the "Introduction to Machine Learning" course held by Elisa Ricci at
-the University of Trento in the academic year 2024-2025. During the
-course, I found myself more interested in the math than what the
-course taught, so I dedicated some of my time to understand the math
-better and to fill some of the gaps in my education. My final notes
-resulted in the book you are reading.
+This book contains useful knowledge for students studying for a course in
+Machine Learning, or for anyone interested in this magical subject. The
+structure of the book is the result of my notes during the "Introduction to
+Machine Learning" course held by Elisa Ricci at the University of Trento in the
+academic year 2024-2025, and cross referencing them with the book "Pattern
+Recognition and Machine Learning" by Christopher Bishop. A later revision is in
+the work while following the Machine Learning course at the university of
+Camerino held by Michele Loreti in the year 2026-2027. During the course I found
+myself more interested in the math than necessary, so I dedicated some of my
+time into developing a better understanding of the theory and to fill some of
+the gaps in my knowledge. The book you are reading is the result of this work.
 
-Permission is granded to redistribute this content freely. The latest
-and greatest version of this document can be found in the main branch
-of the github repo
-(\href{https://github.com/San7o/Introduction-to-machine-learning.git}{https://github.com/San7o/Introduction-to-machine-learning.git}).
+Permission is granded to redistribute this content freely. The author authorizes
+everyone to freely download, share, modify, contribute and publish this book
+through any medium, shape or form: access to knowledge \textbf{MUST} be free and
+accessible to whoever seeks to understand. The latest and greatest version of
+this document can be found in the main branch of the github repo
+\href{https://github.com/San7o/Introduction-to-machine-learning}{https://github.com/San7o/Introduction-to-machine-learning}.
+
+By reading this book, you will gain an understanding of this wizardry that
+machine learning is, and get to know a few spells and party tricks to impress
+venture capitalists and imaginary friends (or your AI girlfriend now). Buckle up
+and enjoy the ride!
 
 \newpage
 

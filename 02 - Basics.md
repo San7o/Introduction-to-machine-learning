@@ -1,25 +1,50 @@
 
 # Machine Learning Basics
 
-Machine Learning is the study of computer algorithms that improve
-automatically through experience. How they achieve this is the discussion of this book. In this chapter we will see a broad overview of the types of machine learning that we will study, as well as making some distinctions and defining some terminology. In future chapters we will discuss the algorithms more in detail.
+Machine Learning is the study of computer algorithms that improve automatically
+through experience. The goal of this book is to make you understand how they
+achieve such mystical behaviour. We will start or journey with a broad overview
+of the types of machine learning, as well as defining some terminology and key
+concepts. Don't worry, we will discuss these algorithms more in detail in the
+future.
 
-In machine learning we want the computer to automatically detect patterns and predict future data from other data. To do so, we perform a series of steps which we call a _pipeline_:
+## The Learning pipeline
 
-- _Data acquisition_: We want to collect the relevant data for the
-  problems at hand.
-- _Preprocessing_: cleaning and preparing for analysis (missing values,
-  formatting...). Techniques include normalization, feature scaling,
-  handling categorical variables.
-- _Dimensionality reduction_: selection methods can be applied to
-  reduce the number of features while preserving the most important
-  information.
-- _Model learning_: a model is trained on the preprocessed data.
-- _Model testing_: the model is evaluated using a test set.
+As we have said, in machine learning we want the computer to automatically
+detect patterns and predict future data from other data. To do so, we perform a
+series of steps which we call a _pipeline_. Some common steps are necessary in
+most branches of machine learning and are relevant to our understanding, so they
+are worth knowing. These are:
+
+- _data acquisition_: collect the relevant data for the problems at hand.
+- _preprocessing_: cleaning the data and preparing for analysis (normalizing the
+  dataset, formatting it...). Techniques include _normalization_, _feature
+  scaling_, _handling categorical variables_.
+- _dimensionality reduction_: some methods can be applied to reduce the number
+  of features while preserving the most important information (magic! but you
+  will learn these tricks later).
+- _model learning_: train the mode lon the preprocessed data.
+- _model testing_: evaluated the model using a test set.
 
 ## Types of learning
 
-Below are described the types of learning which will be discussed in this book:
+We define a learning problem in the most general way as a function from _input_
+space $X$ to _target_ space $Y$ (and you thought math was hard):
+
+$$f: X \rightarrow Y$$
+
+The input space $X$ is usually referred to with different names depending on
+which phase of the pipeline we are: _training data_, _validation data_ and _test
+data_.
+
+A _model_ is a parametric family of functions $y(x;w)$, one for each choice of
+parameters $w$. Choosing a model means choosing a _hypothesis space_:
+
+$$H = \{ y(\cdot \ ; w): w \in \mathbb{R}^M \}$$
+
+We discriminated between types of problems depending on the input and output
+domains of the learn function, which determine the type of learning. Below are
+described some of these which will be discussed in this book:
 
 ### Supervised Learning
 
@@ -72,6 +97,20 @@ The idea of reinforcement learning is that an _agent_ learns from the _environme
   data point or small batches of data.
 	- Allows the model to adapt to changes in the data distribution over time.
 	- Suitable for scenarios where data arrives sequentially and needs to be processed in real-time or where computational resources are limited. Examples include data streams, large-scale dataset and privacy-preserving applications.
+
+## Loss function
+
+Let $l(f, z)$ be a pointwise loss (a sum of point-losses) and $f(x_m ; w)$. The
+error is computed from a function in an hypothesis space and a training set.
+
+$$E(f, p) = \mathbb{E}_{z\sim pdata} [l(f, z)]$$
+
+$$E(f, D) = \frac{1}{n}\sum_{i=1}^{n}l(f, t_i)$$
+
+We want to minimize such error thought _optimisation_, such as through gradient
+descent.
+
+The loss function must be continuous and differentiable.
 
 
 ## Features
@@ -139,13 +178,6 @@ $$f* \in arg\ min\ E(f,p), f \in Ftask$$
 	(model hypotheses) so we define a model hypothesis space $Hip \in Ftask$ and seek a solution within that space.
 $$f_{Hip}*(D) \in arg\ min_{f \in Hip_M} E(f, D)$$
 	With $D=\{z_1, ..., z_n\}$ being the training data.
-
-## Error function
-
-Let $l(f, z)$ be a pointwise loss (a sum of point-losses). The error is computed from a function in an hypothesis space and a training set.
-$$E(f, p) = \mathbb{E}_{z\sim pdata} [l(f, z)]$$
-$$E(f, D) = \frac{1}{n}\sum_{i=1}^{n}l(f, z_i)$$
-We want to minimize such error.
 
 ## Underfitting and Overfitting
 
