@@ -1,11 +1,197 @@
 
-# Math background
+# A Math background
 
 We cannot begin our discussion without first having a decent background in
 calculus, linear algebra, probability and statistics, among other things — sorry.
 Fortunately, I have prepared some notes for you to study or revise the most
 fundamental concepts that you should know about. Feel free to skip this chapter
 if you already grasp these topics (nerd!).
+
+## Fundamentals
+
+Just to warm up a bit.
+
+### Set theory
+
+Let's start from the very foundation (the most popular one) of math: set theory.
+A _set_ is a primitive notion, that is: it can only described in terms of its
+properties. We can define a set with three approaches:
+
+- by listing its elements (extensional): $A = \{2, 4, 6, 8\}$
+- by stating a defining property (intensional): $A = \{x : P(x)\}$
+- by enumeration: a rule generating elements one by one, e.g. $A=\{1, 2, 3,
+  ...\}$
+
+Some basic terminology now. We call the _empty set_ $\emptyset$ as the set such
+that for any $x$, $x \notin \emptyset$. A _singleton_ is a set with a single
+value. A _subset_ is defined in terms of $\in$:
+
+$$A \subseteq B \iff  x, (x \in A \Rightarrow x \in B) $$
+
+Some notable sets that you will find often:
+
+- _Natural numbers_ $\mathbb{N}$: defined inductively (Peano)
+
+- _Integers_ $\mathbb{Z}$
+
+- _Rational numbers_ $\mathbb{Q}$
+
+- _Real numbers_ (informal description): all numbers expressible as a (possibly
+  infinite, non-repeating) decimal expansion; $\mathbb{R}$ also contains the
+  irrationals which cannot be written as $p/q$
+
+Note that:
+
+$$\mathbb{N} \subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{C}$$
+
+There are several operations on sets. The membership operator $\in$ as in $x \in
+A$ means "x is an element of A", while $x \notin A$ is its negation. We can
+define basic pointwise operations in terms of membership:
+
+- union: $A \cup B = \{ x: x\in A \lor x\in B \}$
+- intersection: $A \cap B = \{ x: x\in A \land x\in B \}$
+- difference: $A \slash B = \{ x: x\in A \land x\notin B \}$
+- complement: $A^C = \{x\in A: x\notin A \}$
+- cartesian prodict: $A \times B = \{(a, b): a\in A \land b\in B\}$
+
+### Relations
+
+TODO: definition of relation
+
+A relation $R$ on $A$ is an equivalence relation if it satisfies, for all $a, b,
+c\in A$ the following conditions:
+
+- _reflective_: $a\ R\ a$
+- _symmetric_: $a\ R\ b \Rightarrow b\ R\ a$
+- _transitive_: $a\ R\ b \land b\ R\ c \Rightarrow a\ R\ c$
+
+The _equivalence classes_ of a R partition A: TODO
+
+$$[x] = \{TODO\}$$
+
+A relation $R$ on $A$ is a _partial order_ if it satisfies, for all $a, b, c\in
+A$:
+
+- reflective: $a\ R\ a$
+- antisymmetric: $a\ R\ b \land b\ R\ a \Rightarrow a = b$
+- transitive: $a\ R\ b \land b\ R\ c \Rightarrow a\ R\ c$
+
+A set $A$ equipped with a partial order is a _partially ordered set_ (poset),
+usually written $(A, \le )$.
+
+_Total_ (linear) order is a partial order where every pair is comparable.
+
+$$\forall a, b\in A,\ a\ R\ b \lor \ b\ R\ a$$
+
+### Functions
+
+A _function_ $f$ from $A$ to $B$, written $f: A\rightarrow B$, is a relation
+$f\subseteq A\times B$ such that:
+
+$$\forall a\in A, \exists !\ b\in B\ such\ that\ (a, b)\in f$$
+
+Where $A$ is the _domain_, $B$ is the _codomain_. The _image_ (or range) is
+$f(A) = \{f(a): a\in A\} \subseteq B$. In other words, a function is a
+particular relation mapping an element in a domain to another element in a
+codomain: every $a\in A$ must have the same $b\in B$.
+
+Now the three famous characterization of functions which I always forget:
+
+- A function $f$ is called _injective_ if $\forall a_1, a_2 \in A, f(a_1) =
+  f(a_2) \Rightarrow a_1 = a_2$
+- A function is _surjective_ if $\forall b \in B, \exists a\in A$ such that
+  $f(a)=b$.
+- If $f$ is both injective and _surjective_, the relation is a bijection and has
+  a well-defined _inverse_ $f^{-1}$.
+
+### Cardinality
+
+The sets $A, B$ have the same _cardinality_, written $|A| = |B|$, if there
+exists a bijection $f: A\rightarrow B$. $A$ is _finite_ with $|A| = n$ if there
+is a bijection $f:\{1, ..., n\}\rightarrow A$; $|\emptyset|=0$. $A$ is
+_infinite_ if it is not finite.
+
+A set $A$ is _countable_ if it is finite, or if there exists a bijection $f:
+\mathbb{N} \rightarrow A$ (in which case $A$ is countably infinite).
+
+A set is _uncountable_ if it is infinite and not countable: no bijection with
+$\mathbb{N}$ exists. Because of Cantor's diagonal argument, $|\mathbb{N}| \neq
+|\mathbb{R}|$.
+
+Looking at our beloved sets:
+
+- $\mathbb{N}$ is countable: this can be trivially demonstrated (the identity
+  map), hence $|\mathbb{N}| = |\mathbb{N}|$
+- $\mathbb{Z}$ is countable: list +1, -1, +2, -1... with the bijection $f(x) =
+  x$ if x is even or $-x$ if it is odd. Hence $|\mathbb{N}| = |\mathbb{Q}|$.
+- $\mathbb{Q}$ is countable: proof using a space filling curve. $|\mathbb{N}| =
+  |\mathbb{Q}|$.
+- $\mathbb{R}$ is not countable: because of Cantor's diagonalization,
+  $|\mathbb{N}| \neq |\mathbb{R}|$.
+
+### Distance functions
+
+A _distance function_ (or _metric_) on a set $X$ is a function:
+
+$$d: X \times X \rightarrow \mathbb{R}$$
+
+such that, for all $x, y, z\in X$ the following conditions hold:
+
+1. Identity of indiscernibles: $d(x, y) = 0 \iff x = y$
+2. Symmetry: $d(x, y) = d(y, x)$
+3. Triangle inequality: $d(x, z) \le d(x, y) + d(y, z)$
+4. Non-negativity: this is not a separate axiom, it follows form the three
+   above: $0 = d(x, x) \le d(x, y) + d(y, x) = 2 d(x, y)$, so $d(x, y \ge 0)$
+   always.
+
+A set $X$ together with a metric $d$ is called a _metric space_, written $(X,
+d)$.
+
+We can define $d$ in many ways:
+
+- Euclidean: $d(x, y) = (\sum_i (x_i - y_i)^2)^{1/2}$, "$L2$"
+- Manhattan: $d(x, y) = \sum_i |x_i - y_i|$, "$L1$"
+- Chebyshev: $d(x, y) = max_i |x_i - y_i|$, "$L_{\infty}$"
+- Minkowsky: $d(x, y) = (\sum_i |x_i - y_i|^p)^{1/p}$
+- Discrete: $d(x, y)  = 0$ if $x=y$, else 1
+- Hamming: number of positions where two equal-length strings differ
+- Haccard / Tanimoto: $d(A, B)=1-\frac{|A \cup B|}{A \cap B}$
+
+Note the the $LX$ notation is used as a special case of $p$ in the Minkowsky
+distance function.
+
+### Continuous functions
+
+Now that we have formalized distance, we can properly define a continuous
+function.
+
+Let $(X, d_x)$ and $(Y, d_y)$ be metric spaces. A function $f: X \rightarrow Y$
+is _continuous_ at $x_o$ if the following holds:
+
+$$\forall \epsilon > 0, \exists \delta > 0\ such\ that\ d_x(x, x_o) < \delta
+\Rightarrow d_y(f(x), f(x_0)) < \epsilon$$
+
+Gradient-based optimisation requires the loss function to be countinuous,
+ideally differentiable, in the parameters $w$.
+
+## Polynomial Curve Fitting
+
+Given a function $f$, the derivative $f'(x)$ tells us the slope of $f$ at $x$,
+that is, the direction of steepest increase. For a multivariate function $f(w)$,
+the gradient $\nabla f(w)$ is the vector of partial derivatives. At a minimum,
+$\nabla f(w^*)=0$. The gradient descent approach: $w_{t+1} = w_t - \delta \nabla
+f(w_t)$, where $\delta$ is the learning rate.
+
+Given data points $\{(x_n, t_n)\}_{n=1}^N$, fit a polynomial of order $M$:
+
+$$y(x, w) = w_0 + w_1 x + w_2 x^2 + ... + w_M x^M = \sum_{j=0}^M w_j x^j$$
+
+Error function (sum of squares):
+
+$$E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2$$
+
+We choose $w$ to minimise $E(w)$ setting $\nabla E(w) = 0$ gives a closed-form
+(linear) solution.
 
 ## Eigenvalues and Eigenvectors
 
@@ -15,14 +201,14 @@ are an important theoretical and practical topic as they are used for some
 tricks in unsupervised learning, and are often used as the preferred axis for
 rotations or other transformations.
 
-Let $T: V\rightarrow V$ be an endomorphism (maps from a space to itself) of a
-vector space $V$. A vector $v_0 \ne 0$ of $V$ is an eigenvector of $T$ with
-respect to the _eigenvalue_ $\lambda$ if:
+Let $T: V\rightarrow V$ be an endomorphism (a function that maps a space onto
+itself) of a vector space $V$. A vector $v_0 \ne 0$ of $V$ is an eigenvector of
+$T$ with respect to the _eigenvalue_ $\lambda$ if:
 
 $$T(v_0)=\lambda v_0$$
 
-The set of _eigenvalues_ is called the _spectrum_ of $T$. If $\lambda \in
-\ spectrum(T)$ then the set $V_{\lambda}$ is called _eigenspace_ and is defined as
+The set of _eigenvalues_ is called the _spectrum_ of $T$. If $\lambda \in \
+spectrum(T)$ then the set $V_{\lambda}$ is called _eigenspace_ and is defined as
 follows:
 
 $$V_{\lambda} = \{ v\in T\ |\ T(v)=\lambda v \}$$
@@ -32,7 +218,7 @@ Notice that from the definition of eigenvalue follows:
 $$Tv_0 - \lambda v_0 = 0$$
 $$(T - \lambda I)v_0 = 0$$
 
-Therefore $T-\lambda I0$ is singular (non invertible), meaning that its
+Therefore $T-\lambda I$ is singular (non invertible), meaning that its
 determinant is 0:
 
 $$det(T-\lambda I)=0$$
@@ -50,7 +236,7 @@ Optimization" by Stephen Boyd and Lieven Vandenberghe as my reference.
 
 ### Optimization problems
 
-A mathematical optimization problem, or just optimization problem, has
+A mathematical optimization problem, or just _optimization problem_, has
 the form:
 
 $$minimize\ f_0(x)$$

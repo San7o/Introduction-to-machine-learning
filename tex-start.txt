@@ -64,8 +64,11 @@ the gaps in my knowledge. The book you are reading is the result of this work.
 Permission is granded to redistribute this content freely. The author authorizes
 everyone to freely download, share, modify, contribute and publish this book
 through any medium, shape or form: access to knowledge \textbf{MUST} be free and
-accessible to whoever seeks to understand. The latest and greatest version of
-this document can be found in the main branch of the github repo
+accessible to whoever seeks to understand. The contents of this book are not
+mine, although they were all manually written and collected by me, I am just a
+mere guide to help you understand the subject of machine learning and the ideas
+behind it. The latest and greatest version of this document can be found in the
+main branch of the github repo
 \href{https://github.com/San7o/Introduction-to-machine-learning}{https://github.com/San7o/Introduction-to-machine-learning}.
 
 By reading this book, you will gain an understanding of this wizardry that

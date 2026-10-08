@@ -19,6 +19,7 @@ cat 12\ -\ Intro\ to\ NN.md >> $OUT
 cat 13\ -\ Deep\ Generative\ Models.md >> $OUT
 cat 14\ -\ Diffusion\ models.md >> $OUT
 cat 15\ -\ Reinforcement\ Learning.md >> $OUT
+cat raw-notes.md >> $OUT
 
 pandoc $OUT -t latex -o $TEX_OUT.tmp
 cat tex-start.txt > $TEX_OUT
