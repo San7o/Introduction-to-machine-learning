@@ -1,5 +1,5 @@
 
-# A Math background
+# A Mathematical background
 
 We cannot begin our discussion without first having a decent background in
 calculus, linear algebra, probability and statistics, among other things — sorry.
@@ -7,7 +7,7 @@ Fortunately, I have prepared some notes for you to study or revise the most
 fundamental concepts that you should know about. Feel free to skip this chapter
 if you already grasp these topics (nerd!).
 
-## Fundamentals
+## The Fundamentals
 
 Just to warm up a bit.
 
@@ -56,7 +56,14 @@ define basic pointwise operations in terms of membership:
 
 ### Relations
 
-TODO: definition of relation
+Let $A$ and $B$ be sets. A _binary relation_ $R$ from $A$ ro $B$ is any subset
+of the Cartesian product $A \times B$:
+
+$$R \subseteq A \times B$$
+
+- if $(a, b)\in R$, we say that $a$ is related to $b$ by $R$, often written as
+  $aRb$
+- if $(a, b)\notin R$, they are not related
 
 A relation $R$ on $A$ is an equivalence relation if it satisfies, for all $a, b,
 c\in A$ the following conditions:
@@ -65,9 +72,9 @@ c\in A$ the following conditions:
 - _symmetric_: $a\ R\ b \Rightarrow b\ R\ a$
 - _transitive_: $a\ R\ b \land b\ R\ c \Rightarrow a\ R\ c$
 
-The _equivalence classes_ of a R partition A: TODO
+The _equivalence classes_ of a R partition A is defined as:
 
-$$[x] = \{TODO\}$$
+$$A / R = \{[x]: x\in A\}$$
 
 A relation $R$ on $A$ is a _partial order_ if it satisfies, for all $a, b, c\in
 A$:
@@ -173,25 +180,6 @@ $$\forall \epsilon > 0, \exists \delta > 0\ such\ that\ d_x(x, x_o) < \delta
 
 Gradient-based optimisation requires the loss function to be countinuous,
 ideally differentiable, in the parameters $w$.
-
-## Polynomial Curve Fitting
-
-Given a function $f$, the derivative $f'(x)$ tells us the slope of $f$ at $x$,
-that is, the direction of steepest increase. For a multivariate function $f(w)$,
-the gradient $\nabla f(w)$ is the vector of partial derivatives. At a minimum,
-$\nabla f(w^*)=0$. The gradient descent approach: $w_{t+1} = w_t - \delta \nabla
-f(w_t)$, where $\delta$ is the learning rate.
-
-Given data points $\{(x_n, t_n)\}_{n=1}^N$, fit a polynomial of order $M$:
-
-$$y(x, w) = w_0 + w_1 x + w_2 x^2 + ... + w_M x^M = \sum_{j=0}^M w_j x^j$$
-
-Error function (sum of squares):
-
-$$E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2$$
-
-We choose $w$ to minimise $E(w)$ setting $\nabla E(w) = 0$ gives a closed-form
-(linear) solution.
 
 ## Eigenvalues and Eigenvectors
 
@@ -378,7 +366,28 @@ them to 0. In equality constrained problems you can use more sophisticated
 versions of the Newton step or using barriers.  In general, you can use the
 interior-point method.
 
-## Probability
+## Polynomial Curve Fitting
+
+Given a function $f$, the derivative $f'(x)$ tells us the slope of $f$ at $x$,
+that is, the direction of steepest increase. For a multivariate function $f(w)$,
+the gradient $\nabla f(w)$ is the vector of partial derivatives. At a minimum,
+$\nabla f(w^*)=0$.
+
+Given data points $\{(x_n, t_n)\}_{n=1}^N$, fit a polynomial of order $M$:
+
+$$y(x, w) = w_0 + w_1 x + w_2 x^2 + ... + w_M x^M = \sum_{j=0}^M w_j x^j$$
+
+Error function (sum of squares):
+
+$$E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2$$
+
+To minimize this error function we can use the gradient descent approach, where:
+
+$$w_{t+1} = w_t - \delta \nabla f(w_t)$
+
+$\delta$ is the learning rate. Iterating this finds $w$ that minimise $E(w)$.
+
+## Probability Theory
 
 In this section I will summarize the core ideas of probability theory.
 
@@ -389,8 +398,9 @@ think of a probability as the frequency of a certain event occurring. If a coin
 has 0.5 probability of landing heads, then we expect the coin to land heads
 about half of the time. The other interpretation views probability as a quantity
 of uncertainty or ignorance about something, this is more related to information
-rather than repeated trials. In the coin example, here we mean that the coin is
-equally likely to land heads or tails on the next toss.
+rather than repeated trials and is more general. In the coin example, it can be
+interpreted so that the coin is equally likely to land heads or tails on the
+next toss. This interpretation is usually referred to as the Bayesian view.
 
 We define the following terms:
 
@@ -410,17 +420,34 @@ A function $P$ is a probability function if:
 
 $$P(A\cup B) = P(A) + P(B) - P(A\cap B)$$
 
-### Bayes Theorem:
+### The two rules of probability
 
-Bayes theorem is a foundamental theorem that correlates the probabilty
-of variables given another variable. First, we define $P(A|H)$ as the
-probability of A given H, and we can calculate this as:
+There are two very important rules in probability:
+
+- the sum rule:
+
+$$p(X) = \sum_Y p(X, Y)$$
+
+- product rule:
+
+$$p(X,Y) = p(Y|X)p(X)$$
+
+They are not hard to demonstrate, if you are curious an explaination is provided
+in chapter 1.2 of Bishop's Pattern-Recognition-and-Machine-Learning book (2006).
+
+### Bayes Theorem
+
+From our favourite gambler, Bayes theorem is a fundamental theorem that
+correlates the probability of variables given another variable. First, we define
+$P(A|H)$ as the probability of A given H, and we can calculate this as:
 
   $$P(A|H)=\frac{P(A\cap H)}{P(H)},\ P(H)>0$$
 
 The Bayes theorem states:
-  
+
   $$P(A_i|B)=\frac{P(B|A_i)P(A_i)}{\sum_j P(B|A_j)P(A_j)}=\frac{P(B|A_i)P(A_i)}{P(B)}$$
+
+In the Bayesian interpretation of probability, we could state this theorem as: a posterior observation is directly proportional to the likelihood times the prior observation.
 
 ### Stochastic Independence
 
@@ -437,9 +464,14 @@ moreover:
 $$P_{X|Y}(x|y) = P_X(x)$$
 $$P_{Y|X}(y|x) = P_Y(y)$$
 
-### Distribution Function
+### Density and Distribution Function
 
-A function $F$ is a probability distribution function if:
+A probability function $f(x)$ is called _density_ if:
+
+- $\int_{-\infty}^{\infty} p(x)dx = 1$.
+- $p(x) \ge 0$
+
+A function $F$ is a _probability distribution function_ if:
 
 - $F$ never decreases
 - $F$ is right-continuous
@@ -447,10 +479,12 @@ A function $F$ is a probability distribution function if:
 - $\lim_{x\to - \infty} f(x)=0$
 - $\lim_{x\to\infty}f(x)=1$
 
-  Then $P((a, b])=^{(discrete)}F(b)-F(a^-) =^{(continuous)} \int_a^b f(x)dx$
+We have two formulations for the distribution function based on whether it is
+related to a discrete or continuous space:
 
-Where $f(x)$ is called density when if $F\in C^1$ in the continuous
-formulation.
+$$P((a, b])=^{(discrete)}F(b)-F(a^-) =^{(continuous)} \int_a^b f(x)dx$$
+
+Where $f(x)$ is a density function.
 
 ### Random Variable
 

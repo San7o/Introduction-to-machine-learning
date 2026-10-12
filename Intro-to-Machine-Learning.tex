@@ -79,7 +79,7 @@ and enjoy the ride!
 \newpage
 
 
-\section{A Math background}\label{a-math-background}
+\section{A Mathematical background}\label{a-mathematical-background}
 
 We cannot begin our discussion without first having a decent background
 in calculus, linear algebra, probability and statistics, among other
@@ -88,7 +88,7 @@ study or revise the most fundamental concepts that you should know
 about. Feel free to skip this chapter if you already grasp these topics
 (nerd!).
 
-\subsection{Fundamentals}\label{fundamentals}
+\subsection{The Fundamentals}\label{the-fundamentals}
 
 Just to warm up a bit.
 
@@ -159,7 +159,19 @@ membership:
 
 \subsubsection{Relations}\label{relations}
 
-TODO: definition of relation
+Let \(A\) and \(B\) be sets. A \emph{binary relation} \(R\) from \(A\)
+ro \(B\) is any subset of the Cartesian product \(A \times B\):
+
+\[R \subseteq A \times B\]
+
+\begin{itemize}
+\tightlist
+\item
+  if \((a, b)\in R\), we say that \(a\) is related to \(b\) by \(R\),
+  often written as \(aRb\)
+\item
+  if \((a, b)\notin R\), they are not related
+\end{itemize}
 
 A relation \(R\) on \(A\) is an equivalence relation if it satisfies,
 for all \(a, b,
@@ -175,9 +187,9 @@ c\in A\) the following conditions:
   \emph{transitive}: \(a\ R\ b \land b\ R\ c \Rightarrow a\ R\ c\)
 \end{itemize}
 
-The \emph{equivalence classes} of a R partition A: TODO
+The \emph{equivalence classes} of a R partition A is defined as:
 
-\[[x] = \{TODO\}\]
+\[A / R = \{[x]: x\in A\}\]
 
 A relation \(R\) on \(A\) is a \emph{partial order} if it satisfies, for
 all \(a, b, c\in
@@ -334,27 +346,6 @@ holds:
 
 Gradient-based optimisation requires the loss function to be
 countinuous, ideally differentiable, in the parameters \(w\).
-
-\subsection{Polynomial Curve Fitting}\label{polynomial-curve-fitting}
-
-Given a function \(f\), the derivative \(f'(x)\) tells us the slope of
-\(f\) at \(x\), that is, the direction of steepest increase. For a
-multivariate function \(f(w)\), the gradient \(\nabla f(w)\) is the
-vector of partial derivatives. At a minimum, \(\nabla f(w^*)=0\). The
-gradient descent approach: \(w_{t+1} = w_t - \delta \nabla
-f(w_t)\), where \(\delta\) is the learning rate.
-
-Given data points \(\{(x_n, t_n)\}_{n=1}^N\), fit a polynomial of order
-\(M\):
-
-\[y(x, w) = w_0 + w_1 x + w_2 x^2 + ... + w_M x^M = \sum_{j=0}^M w_j x^j\]
-
-Error function (sum of squares):
-
-\[E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2\]
-
-We choose \(w\) to minimise \(E(w)\) setting \(\nabla E(w) = 0\) gives a
-closed-form (linear) solution.
 
 \subsection{Eigenvalues and
 Eigenvectors}\label{eigenvalues-and-eigenvectors}
@@ -558,7 +549,31 @@ constrained problems you can use more sophisticated versions of the
 Newton step or using barriers. In general, you can use the
 interior-point method.
 
-\subsection{Probability}\label{probability}
+\subsection{Polynomial Curve Fitting}\label{polynomial-curve-fitting}
+
+Given a function \(f\), the derivative \(f'(x)\) tells us the slope of
+\(f\) at \(x\), that is, the direction of steepest increase. For a
+multivariate function \(f(w)\), the gradient \(\nabla f(w)\) is the
+vector of partial derivatives. At a minimum, \(\nabla f(w^*)=0\).
+
+Given data points \(\{(x_n, t_n)\}_{n=1}^N\), fit a polynomial of order
+\(M\):
+
+\[y(x, w) = w_0 + w_1 x + w_2 x^2 + ... + w_M x^M = \sum_{j=0}^M w_j x^j\]
+
+Error function (sum of squares):
+
+\[E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2\]
+
+To minimize this error function we can use the gradient descent
+approach, where:
+
+\$\(w_{t+1} = w_t - \delta \nabla f(w_t)\)
+
+\(\delta\) is the learning rate. Iterating this finds \(w\) that
+minimise \(E(w)\).
+
+\subsection{Probability Theory}\label{probability-theory}
 
 In this section I will summarize the core ideas of probability theory.
 
@@ -570,8 +585,10 @@ occurring. If a coin has 0.5 probability of landing heads, then we
 expect the coin to land heads about half of the time. The other
 interpretation views probability as a quantity of uncertainty or
 ignorance about something, this is more related to information rather
-than repeated trials. In the coin example, here we mean that the coin is
-equally likely to land heads or tails on the next toss.
+than repeated trials and is more general. In the coin example, it can be
+interpreted so that the coin is equally likely to land heads or tails on
+the next toss. This interpretation is usually referred to as the
+Bayesian view.
 
 We define the following terms:
 
@@ -604,17 +621,47 @@ A function \(P\) is a probability function if:
 
 \[P(A\cup B) = P(A) + P(B) - P(A\cap B)\]
 
-\subsubsection{Bayes Theorem:}\label{bayes-theorem}
+\subsubsection{The two rules of
+probability}\label{the-two-rules-of-probability}
 
-Bayes theorem is a foundamental theorem that correlates the probabilty
-of variables given another variable. First, we define \(P(A|H)\) as the
-probability of A given H, and we can calculate this as:
+There are two very important rules in probability:
+
+\begin{itemize}
+\tightlist
+\item
+  the sum rule:
+\end{itemize}
+
+\[p(X) = \sum_Y p(X, Y)\]
+
+\begin{itemize}
+\tightlist
+\item
+  product rule:
+\end{itemize}
+
+\[p(X,Y) = p(Y|X)p(X)\]
+
+They are not hard to demonstrate, if you are curious an explaination is
+provided in chapter 1.2 of Bishop's
+Pattern-Recognition-and-Machine-Learning book (2006).
+
+\subsubsection{Bayes Theorem}\label{bayes-theorem}
+
+From our favourite gambler, Bayes theorem is a fundamental theorem that
+correlates the probability of variables given another variable. First,
+we define \(P(A|H)\) as the probability of A given H, and we can
+calculate this as:
 
 \[P(A|H)=\frac{P(A\cap H)}{P(H)},\ P(H)>0\]
 
 The Bayes theorem states:
 
 \[P(A_i|B)=\frac{P(B|A_i)P(A_i)}{\sum_j P(B|A_j)P(A_j)}=\frac{P(B|A_i)P(A_i)}{P(B)}\]
+
+In the Bayesian interpretation of probability, we could state this
+theorem as: a posterior observation is directly proportional to the
+likelihood times the prior observation.
 
 \subsubsection{Stochastic Independence}\label{stochastic-independence}
 
@@ -630,11 +677,23 @@ moreover:
 
 \[P_{X|Y}(x|y) = P_X(x)\] \[P_{Y|X}(y|x) = P_Y(y)\]
 
-\subsubsection{Distribution Function}\label{distribution-function}
+\subsubsection{Density and Distribution
+Function}\label{density-and-distribution-function}
 
-A function \(F\) is a probability distribution function if:
+A probability function \(f(x)\) is called \emph{density} if:
 
 \begin{itemize}
+\tightlist
+\item
+  \(\int_{-\infty}^{\infty} p(x)dx = 1\).
+\item
+  \(p(x) \ge 0\)
+\end{itemize}
+
+A function \(F\) is a \emph{probability distribution function} if:
+
+\begin{itemize}
+\tightlist
 \item
   \(F\) never decreases
 \item
@@ -645,13 +704,14 @@ A function \(F\) is a probability distribution function if:
   \(\lim_{x\to - \infty} f(x)=0\)
 \item
   \(\lim_{x\to\infty}f(x)=1\)
-
-  Then
-  \(P((a, b])=^{(discrete)}F(b)-F(a^-) =^{(continuous)} \int_a^b f(x)dx\)
 \end{itemize}
 
-Where \(f(x)\) is called density when if \(F\in C^1\) in the continuous
-formulation.
+We have two formulations for the distribution function based on whether
+it is related to a discrete or continuous space:
+
+\[P((a, b])=^{(discrete)}F(b)-F(a^-) =^{(continuous)} \int_a^b f(x)dx\]
+
+Where \(f(x)\) is a density function.
 
 \subsubsection{Random Variable}\label{random-variable}
 
@@ -787,7 +847,8 @@ Let \(Y\) be a random variable, \(\mu = \mathbb{E}(y)\),
 
 \[P(|Y-\mu| \ge \epsilon)\le \frac{\sigma^2}{\epsilon^2}\]
 
-\section{Machine Learning Basics}\label{machine-learning-basics}
+\section{Machine Learning
+Introduction}\label{machine-learning-introduction}
 
 Machine Learning is the study of computer algorithms that improve
 automatically through experience. The goal of this book is to make you
@@ -795,6 +856,11 @@ understand how they achieve such mystical behaviour. We will start or
 journey with a broad overview of the types of machine learning, as well
 as defining some terminology and key concepts. Don't worry, we will
 discuss these algorithms more in detail in the future.
+
+This chapter introduces a lot of concepts and ideas that you will find
+and use often when reasoning about machine learning problems. They may
+not be obvious at first and brief, but you will reinforce your memory
+and understanding as you encounter them in the rest of the book.
 
 \subsection{The Learning pipeline}\label{the-learning-pipeline}
 
@@ -815,16 +881,17 @@ are relevant to our understanding, so they are worth knowing. These are:
   \emph{normalization}, \emph{feature scaling}, \emph{handling
   categorical variables}.
 \item
-  \emph{dimensionality reduction}: some methods can be applied to reduce
-  the number of features while preserving the most important information
-  (magic! but you will learn these tricks later).
+  \emph{dimensionality reduction} (feature extraction): some methods can
+  be applied to reduce the number of features while preserving the most
+  important information (magic! but you will learn these tricks later).
+  This phase could be categorized as preprocessing.
 \item
   \emph{model learning}: train the mode lon the preprocessed data.
 \item
   \emph{model testing}: evaluated the model using a test set.
 \end{itemize}
 
-\subsection{Types of learning}\label{types-of-learning}
+\subsection{Types of problem}\label{types-of-problem}
 
 We define a learning problem in the most general way as a function from
 \emph{input} space \(X\) to \emph{target} space \(Y\) (and you thought
@@ -833,52 +900,57 @@ math was hard):
 \[f: X \rightarrow Y\]
 
 The input space \(X\) is usually referred to with different names
-depending on which phase of the pipeline we are: \emph{training data},
-\emph{validation data} and \emph{test data}.
-
-A \emph{model} is a parametric family of functions \(y(x;w)\), one for
-each choice of parameters \(w\). Choosing a model means choosing a
-\emph{hypothesis space}:
-
-\[H = \{ y(\cdot \ ; w): w \in \mathbb{R}^M \}\]
-
-We discriminated between types of problems depending on the input and
-output domains of the learn function, which determine the type of
-learning. Below are described some of these which will be discussed in
-this book:
-
-\subsubsection{Supervised Learning}\label{supervised-learning}
-
-Given labeled examples, create the model to predict the label, and test
-if the predicted label is correct.
+depending on which phase of the pipeline we are:
 
 \begin{itemize}
 \tightlist
 \item
-  \emph{Classification}: there is a finite set of labels to predict.
+  training dataset: used to fit model parameters
+\item
+  validation dataset: used to choose hyperparameters (e.g.~polynomial
+  degree, regulation strength \(\lambda\))
+\item
+  test dataset: used \emph{once}, at the very end, to report final
+  performance
+\end{itemize}
+
+To make efficiend use of small datasets, you can use a technique called
+k-Fold Cross-Validation. Essentially you split data into \(k\) groups
+(folds), train on \(k-1\) folds, then validate on the remaining fold;
+repeat \(k\) times and average. This is very common in chemistry, where
+labelled data is often expensive to obtain.
+
+A \emph{model} is a parametric family of functions \(y(x;w)\), one for
+each choice of parameters \(w\). A model belongs to an \emph{hypothesis
+space} (more on this later):
+
+\[H = \{ y(\cdot \ ; w): w \in \mathbb{R}^M \}\]
+
+\subsection{Types of learning}\label{types-of-learning}
+
+\subsubsection{Supervised Learning}\label{supervised-learning}
+
+Given labeled examples, create the model to predict the label, and test
+if the predicted label is correct. Classic problems are:
+
+\begin{itemize}
+\item
+  \emph{classification}: there is a finite set of labels to predict.
   Given a training set \(T = \{(x_1,y_1),...,(x_m,y_m)\}\) of size m,
   learn a function to predict \(y\) given \(x\):
-  \[f: \mathbb{R}^d \rightarrow \{1, 2, ..., k\}\] \(x\) is generally
-  multidimensional (multiple features). Applications include:
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Face recognition
-  \item
-    Character recognition
-  \item
-    Spam detection (classical problem)
-  \item
-    Medical diagnosis
-  \item
-    Biometrics
-  \end{itemize}
+  \[f: \mathbb{R}^d \rightarrow \{1, 2, ..., k\}\]
+
+  \(x\) is generally multidimensional (multiple features).
+
+  Applications include: face recognition, character recognition, spam
+  detection (classical problem), medical diagnosis, biometrics
 \item
-  \emph{Regression}: the label is real value:
+  \emph{regression}: the label is real value:
+
   \[f: \mathbb{R}^d \rightarrow \mathbb{R}\]
 \item
-  \emph{Ranking}: label indicates an order.
+  \emph{ranking}: label indicate an order.
 \end{itemize}
 
 \subsubsection{Unsupervised Learning}\label{unsupervised-learning}
@@ -886,30 +958,22 @@ if the predicted label is correct.
 The input is given with no labels. The main problems include:
 
 \begin{itemize}
-\tightlist
 \item
-  \emph{Clustering}: Given an input \(T = \{x_1, ..., x_m\}\), output
+  \emph{clustering}: Given an input \(T = \{x_1, ..., x_m\}\), output
   the hidden structure behind the \(x\)'s, which represents the
-  clusters. Possible applications are:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    social network analysis
-  \item
-    genomics
-  \item
-    image segmentation
-  \item
-    anomaly detection
-  \end{itemize}
+  clusters. Possible applications are: social network analysis,
+  genomics, image segmentation, anomaly detection
 \item
-  \emph{Dimensionality Reduction}: reduce the number of features under
+  \emph{dimensionality reduction}: reduce the number of features under
   consideration by mapping data into another low dimensional space.
+
   \[ f: \mathbb{R}^d \rightarrow \mathbb{R}^m, m << d \]
 \item
-  \emph{Density estimation}: find a probability distribution that fits
+  \emph{density estimation}: find a probability distribution that fits
   the data.
+\item
+  \emph{visualization}: project the data from a high-dimensional space
+  down to two or three dimensions
 \end{itemize}
 
 \subsubsection{\texorpdfstring{\textbf{Reinforcement
@@ -926,7 +990,6 @@ reward collected.
 variations}\label{other-learning-variations}
 
 \begin{itemize}
-\tightlist
 \item
   \emph{semi-supervised}: some data have have labels, and some don't.
 \item
@@ -961,20 +1024,31 @@ variations}\label{other-learning-variations}
   \end{itemize}
 \end{itemize}
 
-\subsection{Loss function}\label{loss-function}
+\subsection{Loss and Error function}\label{loss-and-error-function}
 
-Let \(l(f, z)\) be a pointwise loss (a sum of point-losses) and
-\(f(x_m ; w)\). The error is computed from a function in an hypothesis
-space and a training set.
+Let \(l(f, z)\) be a pointwise loss (the loss on a particular point) and
+\(f(x_m ;
+w)\) be the learn function. The error \(E\) or total loss is computed
+from a loss function in an hypothesis space and a training set. Note
+that the loss function must be continuous and differentiable. An example
+of error is the following:
 
 \[E(f, p) = \mathbb{E}_{z\sim pdata} [l(f, z)]\]
 
 \[E(f, D) = \frac{1}{n}\sum_{i=1}^{n}l(f, t_i)\]
 
-We want to minimize such error thought \emph{optimisation}, such as
-through gradient descent.
+Another example of an error function is a \emph{rooted mean square
+error} (RMSE):
 
-The loss function must be continuous and differentiable.
+\[RMSE = \sqrt{\frac{1}{N}\sum_{n=1}^N l(f, t_n)^2}\]
+
+You can also calculate the fraction of variance \(R^2\), where 0 is
+perfect:
+
+\[R^2 = 1 - \frac{\sum_n (y_n - \hat{y}_n)^2}{\sum_n (y_n - \bar{y}_n)^2}\]
+
+We want to minimize such error by applying \emph{optimisation}
+techniques, such as through gradient descent.
 
 \subsection{Features}\label{features}
 
@@ -983,15 +1057,11 @@ generally represented as \emph{vectors}.
 
 \subsection{Generalization}\label{generalization}
 
-Machine learning is about generalization of data.
-
 Generalization in machine learning refers to the ability of a trained
 model to perform well on new, unseen data that was not used during the
-training process.
-
-This can be done only if there is a correlation between inputs and
-ouputs. More technically, we are going to use the \emph{probabilistic
-model} of learning.
+training process. This can be done only if there is a correlation
+between inputs and ouputs. More technically, we are going to use the
+\emph{probabilistic model} of learning.
 
 \begin{itemize}
 \tightlist
@@ -1107,6 +1177,7 @@ Common techniques to improve generalization include:
   reduce model capacity.
 \item
   change the objective with a regularization term:
+
   \[E_{reg}(f, D_n) = E(f, D_n)+\lambda \Omega (f)\]
 
   \begin{itemize}
@@ -3884,53 +3955,9 @@ Therefore the steps to perform in order to optimize are:
 
 Intuitively, we want to go up the gradient to increase the total reward.
 
-\section{RAW}\label{raw}
+\section{Notes}\label{notes}
 
 Notes that need to be included in the rest of the book.
 
-\subsection{Evaluation and
-Verification}\label{evaluation-and-verification}
-
-The input to a model can be characterized into three different names
-based on its context:
-
-\begin{itemize}
-\item
-  training set: used to fit model parameters \(w\)
-\item
-  validation set: used to choose hyperparameters (e.g.~polynomial
-  degree, regulation strength \(\lambda\))
-\item
-  test set: used \emph{once}, at the very end, to report final
-  performance
-\end{itemize}
-
-k-Fold Cross-Validation: split data into \(k\) folds; train on \(k-1\)
-folds, validate on the remaining fold; repeat \(k\) times and average.
-Make efficient use of small datasets, common in chemistry, where
-labelled data is often expensive to obtain.
-
-Rooted mean square error and fraction of variance \(R^2\), where 0 is
-perfect:
-
-\[RMSE = \sqrt{\frac{1}{N}\sum_{n=1}^N (y_n - \hat{y}_n)^2}\]
-
-\[R^2 = 1 - \frac{\sum_n (y_n - \hat{y}_n)^2}{\sum_n (y_n - \bar{y}_n)^2}\]
-
-\subsubsection{Polynomial Curve
-Fitting}\label{polynomial-curve-fitting-1}
-
-Given data points \(\{(x_n, t_n)\}_{n=1}^N\), fit a polynomial of order
-\(M\):
-
-\[y(x, w) = w_0 + w_1 x + w_2 x^2 + ... + w_M x^M = \sum_{j=0}^M w_j x^j\]
-
-Error function (sum of squares):
-
-\[E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2\]
-
-We choose \(w\) to minimise \(E(w)\) setting \(\nabla E(w) = 0\) gives a
-closed-form (linear) solution.
-
-The hyperparameter here is \(N\).
+None
 \end{document}
