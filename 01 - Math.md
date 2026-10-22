@@ -13,9 +13,9 @@ Just to warm up a bit.
 
 ### Set theory
 
-Let's start from the very foundation (the most popular one) of math: set theory.
-A _set_ is a primitive notion, that is: it can only described in terms of its
-properties. We can define a set with three approaches:
+Let's start from the very foundation of math (the standard one according to the
+ZFC framework): set theory. A _set_ is a primitive notion, that is: it can only
+described in terms of its properties. We can define a set with three approaches:
 
 - by listing its elements (extensional): $A = \{2, 4, 6, 8\}$
 - by stating a defining property (intensional): $A = \{x : P(x)\}$
@@ -36,13 +36,14 @@ Some notable sets that you will find often:
 
 - _Rational numbers_ $\mathbb{Q}$
 
-- _Real numbers_ (informal description): all numbers expressible as a (possibly
-  infinite, non-repeating) decimal expansion; $\mathbb{R}$ also contains the
-  irrationals which cannot be written as $p/q$
+- _Real numbers_ $\mathbb{R}$ (informal description): all numbers expressible as
+  a (possibly infinite, non-repeating) decimal expansion; $\mathbb{R}$ also
+  contains the irrationals which cannot be written as $p/q$
 
 Note that:
 
-$$\mathbb{N} \subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{C}$$
+$$\mathbb{N} \subseteq \mathbb{Z} \subseteq \mathbb{Q} \subseteq \mathbb{R}
+\subseteq{C}$$
 
 There are several operations on sets. The membership operator $\in$ as in $x \in
 A$ means "x is an element of A", while $x \notin A$ is its negation. We can
