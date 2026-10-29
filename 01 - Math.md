@@ -182,6 +182,106 @@ $$\forall \epsilon > 0, \exists \delta > 0\ such\ that\ d_x(x, x_o) < \delta
 Gradient-based optimisation requires the loss function to be countinuous,
 ideally differentiable, in the parameters $w$.
 
+### Basic Combinatorics
+
+Combinatorics is the branch of mathematics concerned with counting
+the number of possible outcomes of a finite process. In probability,
+counting techniques are particularly useful when outcomes are equally
+likely.
+
+#### Fundamental Counting Principle
+
+If a procedure consists of $k$ successive steps, and step $i$ can
+be performed in $n_i$ ways, then the total number of possible
+outcomes is
+
+$$N = \prod_{i=1}^{k} n_i$$
+
+In particular, if $n$ distinct objects are arranged in a sequence, there are
+$n!$ possible arrangements, where
+
+$$n! = n(n-1)\cdots 2\cdot 1, \\ \qquad 0! = 1$$
+
+#### Permutations
+
+A permutation is an ordered arrangement of objects. The order in which the
+objects appear matters.
+
+Considering the permutations of $n$ distinct objects, the number of ways to
+arrange all $n$ objects is
+
+$$P_n = n!$$
+
+Considering now the permutations of $n$ distinct objects taken $r$ at a time. If
+we select and arrange $r$ objects from $n$ distinct objects, without repetition,
+the number of possible arrangements is
+
+$$
+    P(n,r) = \frac{n!}{(n-r)!}, \\
+    \qquad 0 \leq r \leq n.
+$$
+
+The first position has $n$ choices, the second has $n-1$, and so on, giving
+
+$$P(n,r) = n(n-1)\cdots(n-r+1)$$
+
+#### Combinations
+
+A combination is a selection of objects in which order does not matter. We are
+interested only in which objects are selected, not in how they are arranged.
+
+The number of ways to select $r$ objects from $n$ distinct objects, without
+repetition, is the binomial coefficient
+
+$$
+    \binom{n}{r} = \frac{n!}{r!(n-r)!}, \\
+    \qquad 0 \leq r \leq n.
+$$
+
+To derive this formula, first arrange the $r$ selected objects:
+there are $P(n,r)$ arrangements. Since each selection corresponds
+to exactly $r!$ arrangements, we divide by $r!$:
+
+$$
+    \binom{n}{r} \\
+    = \frac{P(n,r)}{r!} \\
+    = \frac{n!}{r!(n-r)!}.
+$$
+
+Useful identities include:
+
+$$
+    \binom{n}{0} = \binom{n}{n} = 1,
+    \qquad
+    \binom{n}{r} = \binom{n}{n-r},
+$$
+
+and Pascal's identity:
+
+$$
+    \binom{n}{r}
+    = \binom{n-1}{r-1} + \binom{n-1}{r}.
+$$
+
+#### Selections with Repetition
+
+The counting formula depends on whether repetition is allowed and
+whether order matters.
+
+If each of $r$ positions can be filled by any of $n$ objects,
+with repetition allowed, then
+
+$$n^r$$
+
+The number of ways to select $r$ objects from $n$ types, where
+each type may be selected multiple times, is
+
+$$\binom{n+r-1}{r}$$
+
+for $n \geq 1$ and $r \geq 0$.
+
+This is the classical _stars and bars_ result.
+
 ## Linear Algebra
 
 Some important notions about linear algebra.
@@ -796,8 +896,8 @@ This indicates the "spread" of values. Moreover:
 $$\mathbb{V}ar[x]=\mathbb{E}(\mathbb{V}ar[x|y]) + \mathbb{V}ar(\mathbb{E}[x|y])$$
 
 
-The _standard deviation_ is $\sigma = \sqrt{var(X)}$, and has the same units as
-$X$.
+The _standard deviation_ is $\sigma = \sqrt{\mathbb{V}ar[X]}$, and has the same
+units as $X$.
 
 ### Covariance
 
@@ -845,7 +945,7 @@ $$Bern(x | \mu ) = \mu^x (1 - \mu)^{1-x}$$
 
 $$\mathbb{E}[Bern(x|\mu )] = \mu$$
 
-$$var[Bern(x|\mu )] = \mu (1-\mu)$$
+$$\mathbb{v}ar[Bern(x|\mu )] = \mu (1-\mu)$$
 
 Let $D=\{x_1, ..., x_N\}$ be a set of independent observed values of $x$ drawn
 from $p(x|\mu )$. The likelihood of $D$ is:
