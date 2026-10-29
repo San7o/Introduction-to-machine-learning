@@ -454,7 +454,91 @@ This is the classical \emph{stars and bars} result.
 
 \subsection{Linear Algebra}\label{linear-algebra}
 
-Some important notions about linear algebra.
+Linear algebra is the study of vectors and certain rules to manipulate
+vectors.
+
+\subsubsection{Groups}\label{groups}
+
+Consider a set \(\mathcal{G}\) and an operation
+\(\otimes : \mathcal{G} \times
+\mathcal{G} \to \mathcal{G}\) defined on \(\mathcal{G}\). Then
+\(G := (\mathcal{G},
+\otimes)\) is called a group if the following hold:
+
+\begin{itemize}
+\tightlist
+\item
+  Closure of \(\mathcal{G}\) under \(\otimes\):
+\end{itemize}
+
+\[\forall x,y \in \mathcal{G} : x \otimes y \in \mathcal{G}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Associativity:
+\end{itemize}
+
+\[\forall x,y,z \in \mathcal{G} : (x \otimes y) \otimes z = x \otimes (y \otimes z)\]
+
+\begin{itemize}
+\tightlist
+\item
+  Neutral element:
+\end{itemize}
+
+\[\exists e \in \mathcal{G}\ \forall x \in \mathcal{G} : x \otimes e = x \text{ and } e \otimes x = x\]
+
+\begin{itemize}
+\tightlist
+\item
+  Inverse element:
+\end{itemize}
+
+\[\forall x \in \mathcal{G}\ \exists y \in \mathcal{G} : x \otimes y = e \text{ and } y \otimes x = e,\]
+
+where \(e\) is the neutral element. We often write \(x^{-1}\) to denote
+the inverse element of \(x\).
+
+\subsubsection{Vector Space}\label{vector-space}
+
+A real-valued vector space \(V = (\mathcal{V}, +, \cdot)\) is a set
+\(\mathcal{V}\) with two operations
+
+\[+: \mathcal{V} \times \mathcal{V} \to \mathcal{V}\]
+\[\cdot : \mathbb{R} \times \mathcal{V} \to \mathcal{V}\]
+
+where
+
+\begin{itemize}
+\item
+  \((\mathcal{V}, +)\) is an Abelian group.
+\item
+  Distributivity:
+
+  \begin{itemize}
+  \item
+    \(\forall \lambda \in \mathbb{R}, x,y \in \mathcal{V} : \lambda \cdot (x+y) =
+    \lambda \cdot x + \lambda \cdot y\)
+  \item
+    \(\forall \lambda,\psi \in \mathbb{R}, x \in \mathcal{V} : (\lambda+\psi)
+    \cdot x = \lambda \cdot x + \psi \cdot x\)
+  \end{itemize}
+\item
+  Associativity (outer operation):
+  \(\forall \lambda,\psi \in \mathbb{R}, x \in
+  \mathcal{V} : \lambda \cdot (\psi \cdot x) = (\lambda\psi) \cdot x\)
+\item
+  Neutral element with respect to the outer operation: \(\forall x \in
+  \mathcal{V} : 1 \cdot x = x\)
+\end{itemize}
+
+The elements \(x \in V\) are called vectors. The neutral element of
+\((\mathcal{V},
++)\) is the zero vector \(0 = [0,\ldots,0]^\top\), and the inner
+operation \(+\) is called vector addition. The elements
+\(\lambda \in \mathbb{R}\) are called scalars and the outer operation
+\(\cdot\) is a multiplication by scalars.
 
 \subsubsection{Eigenvalues and
 Eigenvectors}\label{eigenvalues-and-eigenvectors}

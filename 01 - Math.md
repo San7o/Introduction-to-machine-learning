@@ -284,15 +284,69 @@ This is the classical _stars and bars_ result.
 
 ## Linear Algebra
 
-Some important notions about linear algebra.
+Linear algebra is the study of vectors and certain rules to manipulate vectors.
+
+### Groups
+
+Consider a set $\mathcal{G}$ and an operation $\otimes : \mathcal{G} \times
+\mathcal{G} \to \mathcal{G}$ defined on $\mathcal{G}$. Then $G := (\mathcal{G},
+\otimes)$ is called a group if the following hold:
+
+- Closure of $\mathcal{G}$ under $\otimes$:
+
+$$\forall x,y \in \mathcal{G} : x \otimes y \in \mathcal{G}$$
+
+- Associativity:
+
+$$\forall x,y,z \in \mathcal{G} : (x \otimes y) \otimes z = x \otimes (y \otimes z)$$
+
+- Neutral element:
+
+$$\exists e \in \mathcal{G}\ \forall x \in \mathcal{G} : x \otimes e = x \text{ and } e \otimes x = x$$
+
+- Inverse element:
+
+$$\forall x \in \mathcal{G}\ \exists y \in \mathcal{G} : x \otimes y = e \text{ and } y \otimes x = e,$$
+
+  where $e$ is the neutral element. We often write $x^{-1}$ to denote the inverse element of $x$.
+
+### Vector Space
+
+A real-valued vector space $V = (\mathcal{V}, +, \cdot)$ is a set $\mathcal{V}$ with two operations
+
+$$+: \mathcal{V} \times \mathcal{V} \to \mathcal{V}$$
+$$\cdot : \mathbb{R} \times \mathcal{V} \to \mathcal{V}$$
+
+where
+
+- $(\mathcal{V}, +)$ is an Abelian group.
+
+- Distributivity:
+
+  - $\forall \lambda \in \mathbb{R}, x,y \in \mathcal{V} : \lambda \cdot (x+y) =
+    \lambda \cdot x + \lambda \cdot y$
+
+  - $\forall \lambda,\psi \in \mathbb{R}, x \in \mathcal{V} : (\lambda+\psi)
+    \cdot x = \lambda \cdot x + \psi \cdot x$
+
+- Associativity (outer operation): $\forall \lambda,\psi \in \mathbb{R}, x \in
+  \mathcal{V} : \lambda \cdot (\psi \cdot x) = (\lambda\psi) \cdot x$
+
+- Neutral element with respect to the outer operation: $\forall x \in
+  \mathcal{V} : 1 \cdot x = x$
+
+The elements $x \in V$ are called vectors. The neutral element of $(\mathcal{V},
++)$ is the zero vector $0 = [0,\ldots,0]^\top$, and the inner operation $+$ is
+called vector addition. The elements $\lambda \in \mathbb{R}$ are called scalars
+and the outer operation $\cdot$ is a multiplication by scalars.
 
 ### Eigenvalues and Eigenvectors
 
-Let's look at Eigenvalues and Eigenvectors in linear algebra for now. I will use
-the great book "Algebra Lineare" by Marco Abate as my reference. Eigenvectors
-are an important theoretical and practical topic as they are used for some
-tricks in unsupervised learning, and are often used as the preferred axis for
-rotations or other transformations.
+Let's look at Eigenvalues and Eigenvectors now. I will use the great book
+"Algebra Lineare" by Marco Abate as my reference. Eigenvectors are an important
+theoretical and practical topic as they are used for some tricks in unsupervised
+learning, and are often used as the preferred axis for rotations or other
+transformations.
 
 Let $T: V\rightarrow V$ be an endomorphism (a function that maps a space onto
 itself) of a vector space $V$. A vector $v_0 \ne 0$ of $V$ is an eigenvector of
