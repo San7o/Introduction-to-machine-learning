@@ -7,7 +7,7 @@ Fortunately, I have prepared some notes for you to study or revise the most
 fundamental concepts that you should know about. Feel free to skip this chapter
 if you already grasp these topics (nerd!).
 
-## The Fundamentals
+## Foundations of mathematics
 
 Just to warm up a bit.
 
@@ -182,7 +182,11 @@ $$\forall \epsilon > 0, \exists \delta > 0\ such\ that\ d_x(x, x_o) < \delta
 Gradient-based optimisation requires the loss function to be countinuous,
 ideally differentiable, in the parameters $w$.
 
-## Eigenvalues and Eigenvectors
+## Linear Algebra
+
+Some important notions about linear algebra.
+
+### Eigenvalues and Eigenvectors
 
 Let's look at Eigenvalues and Eigenvectors in linear algebra for now. I will use
 the great book "Algebra Lineare" by Marco Abate as my reference. Eigenvectors
@@ -217,7 +221,7 @@ a specific eigenvalue $\lambda$ from solving this last equation, you can
 substitute it back into the definition and solve $(T - \lambda I)v = 0$ to find
 the corresponding eigenspace and its eigenvectors.
 
-## Optimization and The Lagrangian dual Function
+## Optimization
 
 In this section we will delve into the realm of optimization and in particular
 we will look at the _Lagrange dual function_. I will be using the book "Convex
@@ -367,7 +371,102 @@ them to 0. In equality constrained problems you can use more sophisticated
 versions of the Newton step or using barriers.  In general, you can use the
 interior-point method.
 
-## Polynomial Curve Fitting
+### Multi variable optimization
+
+The _derivative_ of $f: \mathbb{R} \rightarrow \mathbb{R}$ at $w$ (when the
+limit exists) is the slope of the tangent to the graph of $f$ at $w$"
+
+$$f'(w) = \frac{df}{dw}(w) = \lim_{h\rightarrow 0} \frac{f(w+h) - f(w)}{h}$$
+
+Where if $f'(w) > 0$ then $f$ increases mobing right and if $f'(w) < 0$ then $f$
+decreases: the sign of $f'$ tells us which way is _downhill_. At a minimum (or
+maximum) $w^*$ in the interior of the domain, $f'(w^*) = 0$ implies that $w^*$
+is a _stationary point_. The second derivative test tells us if $w^*$ is a local
+minimum $f'(w^*) = 0 \land f''(w^*) > 0$ or maximum $f'(w^*) = 0 \land f''(w^*)
+< 0$. If we follow the tangent line of the curve, which we can find via its
+derivative (or a _gradient_ in a multi-variable function), we arrive at a local
+minimum from the starting point.
+
+The _partial derivative_ of $f$ with respect to $w_i$ is the derivative obtained
+by varying $w_i$ only, keeping all the other variables fixed ($e_i$ is the
+$i$-th unit vector):
+
+$$\frac{\partial f}{\partial w_i} (w) = \lim_{h\rightarrow 0} \frac{f(w_1, ...,
+w_i + h, ..., w_D) - f(w)}{h} = \lim_{h \rightarrow 0} \frac{f(w+he_i) -
+f(w)}{h}$$
+
+For exmple, let $f(w_1, w_2) = w_1^2 + w_1w_2 + w_2^2 - 3w_1$, then treating
+the other variables as a constant:
+
+$$\frac{\partial f}{\partial w_1} = 2w_1 + w_2 - 3$$
+
+$$\frac{\partial f}{\partial w_2} = w_1 + 2 w_2$$
+
+The _gradient_ of $f$ at $w$ is the vector of its partial derivatives"
+
+$$\nabla f(w) = (\frac{\partial f}{\partial w_1} (w), ..., \frac{\partial f}{\partial w_D} (w_D))^T$$
+
+The rate of change of $f$ along a unit direction $u$ (also called the _symplex_
+direction) is the _directional derivative$ $\nabla f(w)^T u = ||\nabla
+f(w)||\cos \theta$. The gradient points in the direction of steepest descent.
+$\nabla f(w)$ is orthogonal to the contour line (level set) of $f$ through $w$.
+
+For $f(w_1, w_2) = w_1^2 + w_1w_2 + w_2^2 - 3w_1$, setting the gradient to zero
+gives a system of equations:
+
+$$
+\begin{cases}
+2 w_1 + w_2 = 3 \\
+w_1 + 2 w_2 = 0
+\end{cases}
+$$
+
+In general, for a quadratic $f$ the stationary point solves a _linear_ system.
+For most loss functions, $\nabla f=0$ has no closed form (we don't know it
+exactly), so we need an iterative technique.
+
+The _Hessian_ of $f$ is the $D \times D$ matrix of its second partial
+derivatives, $H_{ij} = \frac{\partial^2 f}{\partial w_i \partial w_j}$
+(symmetric for smooth $f$), where $D$ is the number of dimensions i.e. the
+number of variables accepted by $f$.
+
+At a stationary point $w^*$, generalising the test on $f''$:
+
+- all eigenvalues of $H$ positive ($H$ positive definite) implies a local
+  _minimum_
+
+- all eigenvalues negative implies a local _maximum_
+
+- eigenvalues of both signs implies a _saddle point_ (a minimum along some
+  directions, a maximum along others)
+
+Given data $\{(x_n, t_n)\}_{n=1}^N$, fit the line $y(x) = w_0 + w_1 x$ by
+minimising:
+
+$$E(w_0, w_1) = \frac{1}{2} \sum_{n=1}^N (w_0 + w_1 x_n - t_n)^2$$
+
+We can find the partial derivatives of this and create a system of equations:
+
+$$\frac{\partial E}{\partial w_0} = \sum_{n=1}^N (w_0 + w_1 x_n - t_n)$$
+
+$$\frac{\partial E}{\partial w_1} = \sum_{n=1}^N (w_0 + w_1 x_n - t_n)x_n$$
+
+To walk downhill, we repeatedly take a small step in the direction of steepest
+descent, $- \nabla f$.
+
+$$w_{t+1} = w_t - \eta \nabla f(w_i)$$
+
+where $\eta > 0$ is the _learning rate_. The bigger the learning rate, the
+bigger the jumps. The iterative loop can stop when some criterios is met,
+$||\nabla f(w_t)|| < \epsilon$.
+
+If we don't have a closed form of the error function, we can estimate the
+derivative without using the limit:
+
+$$f'(w) \approx \frac{f(w+h) - f(w)}{h}$$
+
+
+### Polynomial Curve Fitting
 
 Given a function $f$, the derivative $f'(x)$ tells us the slope of $f$ at $x$,
 that is, the direction of steepest increase. For a multivariate function $f(w)$,
@@ -403,23 +502,72 @@ rather than repeated trials and is more general. In the coin example, it can be
 interpreted so that the coin is equally likely to land heads or tails on the
 next toss. This interpretation is usually referred to as the Bayesian view.
 
-We define the following terms:
+Generally, we say that _probability_ is the study of likelihood of events at
+priori, while _statistic_ is the study of their likelihood at posteriori.
+Probability gives us a principled language for uncertainty in both data and
+model parameters.
 
-- $\Omega$ as the sample space, it is composed of independent events
-- $A\subset 2^{\Omega}$ is a subset of the sample space of a problem
-- $a\in A$ is an event
+We define the _sample space_ $\Omega$ as the set of all possible outcomes of an
+experiment. A $\sigma$-algebra $\Sigma \subseteq 2^{\Omega}$ is a subset of the
+sample space such that:
 
-### Probability Function
+1. $\Sigma$ contains the sample space: $\Omega \in \Sigma$
+2. $\Sigma$ is closed under _complement_: if $A \in \Sigma$ then $(\Omega
+   \setminus A) \in \Sigma$. It follows that the empty set is in the sigma
+   algebra.
+3. $\Sigma$ is closed under _countable unions_: if $A_1, A_2, ... \in \Sigma$
+   then $\bigcup_i A_i \in \Sigma$
 
-A function $P$ is a probability function if:
+Suppose we want to toss a count. On $\Omega_C = \{H, T\}$ the $\sigma$-algebra
+$\Sigma_C$ contains: $\emptyset$ (neither head nor tail), $\{H\}, \{T\}, \{H,
+T\}$.
 
-- $P$ is non negative: $P(A)\ge 0\ \forall A\in \Omega$
-- $P$ is normalized: $P(\Omega)=1$
-- $P$ is $\sigma$ -additive: if $A_i \cap A_j \ne \emptyset,\ A\in \Omega$ then  $P(\cup_i A_i)=\sum_i P(A_i)$
+### Probability measure
 
-  From set theory, you can demonstrate that the following holds:
+Let $\Sigma \subseteq 2^{\Omega}$ be a $\sigma$-algebra. A _probability measure_
+is a function $P_r: \Sigma \rightarrow [0, 1]$ such that:
 
-$$P(A\cup B) = P(A) + P(B) - P(A\cap B)$$
+- $P$ is non negative: $P_r(A)\ge 0\ \forall A\in \Omega$
+- $P$ is normalized: $P_r(\Omega)=1$
+- $P$ is $\sigma$ -additive: if $A_i \cap A_j \ne \emptyset,\ A\in \Omega$ then
+  $P_r(\cup_i A_i)=\sum_i P_r(A_i)$
+
+A _probability space_ is a tripe $(\Omega, \Sigma, P_r)$ where:
+
+- $\Omega$ is a smaple space
+
+- $\Sigma$ is a $\sigma$-algebra
+
+- $P_r$ is a probability function on $\Sigma$
+
+Let $(\Omega, \Sigma, P_r)$ be a probability space. The following properties
+hold:
+
+- For any $A \in \sigma$, $P_r(\Omega \setminus A) = 1 - P_r(A)$
+
+- From set theory, you can demonstrate that the following holds: $A, B \in
+  \sigma$, $P_r(A \cup B) = P_r(A) + P_r(B) - P_r(A \cap B)$
+
+- In particular, $P_r(\emptyset ) = 0 \land A \subseteq B \Rightarrow P_r(A) \le
+  P_r(B)$
+
+Let $A, B \in \Sigma$ with $P_r(B) > 0$. The conditional probability of $A$
+occurring, given that $B$ has occurred, is:
+
+$$P_r(A|B) = \frac{P_r(A \cap B)}{P_r(B)}$$
+
+It follows that:
+
+- if $A$ and $B$ are _mutually exclusive_ $(A \cap B = \emptyset)$, then
+  $P_r(A|B) = 0$
+
+- if $B$ is a _precondition_ for $A (A \subseteq B)$, then $P_r(A \cap B) -
+  P_r(A)$, so $P_r(A|B) = P_r(A) / P_r(B)$
+
+- Two events are _independent_ if knowing that one occurred tells us nothing
+  about hte probability of the other, i.e. $P_r(A|B) = P_r(A)$, or equivalently:
+
+  $$P_r(A \cap B) = P_r(A) \times P_r(B)$$
 
 ### The two rules of probability
 
@@ -429,32 +577,44 @@ There are two very important rules in probability:
 
 $$p(X) = \sum_Y p(X, Y)$$
 
-- product rule:
+- the product rule:
 
 $$p(X,Y) = p(Y|X)p(X)$$
 
-They are not hard to demonstrate, if you are curious an explaination is provided
-in chapter 1.2 of Bishop's Pattern-Recognition-and-Machine-Learning book (2006).
+They are not hard to demonstrate, if you are curious an explanation is provided
+in chapter 1.2 of Bishop's "Pattern Recognition and Machine Learning" book
+(2006).
 
 ### Bayes Theorem
 
-From our favourite gambler, Bayes theorem is a fundamental theorem that
-correlates the probability of variables given another variable. First, we define
-$P(A|H)$ as the probability of A given H, and we can calculate this as:
+Let $P(A|H)$ be the probability of A given H, then, from the product rule, it
+follows that:
 
   $$P(A|H)=\frac{P(A\cap H)}{P(H)},\ P(H)>0$$
 
-The Bayes theorem states:
+The _Bayes theorem_ states:
 
   $$P(A_i|B)=\frac{P(B|A_i)P(A_i)}{\sum_j P(B|A_j)P(A_j)}=\frac{P(B|A_i)P(A_i)}{P(B)}$$
 
-In the Bayesian interpretation of probability, we could state this theorem as: a posterior observation is directly proportional to the likelihood times the prior observation.
+In the Bayesian interpretation of probability, we could state this theorem as: a
+_posterior_ observation is directly proportional to the _likelihood_ times the
+_prior_ observation, where:
+
+- $p(A_i)$ is the _prior_: the belief of $A_i$, before seeing B
+
+- $p(B|A_i)$ is the _likelihood_: how probably the B is, given $A_i$
+
+- $p(A_i|B)$ is the _posterior_: updated belief after seeing B
+
+- $p(B)$ is a normalizing constant (evidence)
+
+The denominator is computed with the _law of total probability_.
 
 ### Stochastic Independence
 
 Events $A\in \Omega$ are said to be independent if:
 
-$$P(A_{i1} \cap A_{i2} \cap ... \cap A_{ik}) = \prod_{j=1}^k P(A_{ij}) = P(A_{i1})\cdot P(A_{i2})\cdot ...\cdot P(A_{ik})$$
+$$P_r(A_{i1} \cap A_{i2} \cap ... \cap A_{ik}) = \prod_{j=1}^k P_r(A_{ij}) = P_r(A_{i1})\cdot P_r(A_{i2})\cdot ...\cdot P_r(A_{ik})$$
 
 The same applies to bivaraite functions:
 
@@ -465,92 +625,151 @@ moreover:
 $$P_{X|Y}(x|y) = P_X(x)$$
 $$P_{Y|X}(y|x) = P_Y(y)$$
 
-### Density and Distribution Function
+### Random Variable
 
-A probability function $f(x)$ is called _density_ if:
+Random variables are a mathematical formalization used to model quantities which
+depend on random events, it lets us quantify random events so that we can make
+probability calculations.
 
-- $\int_{-\infty}^{\infty} p(x)dx = 1$.
-- $p(x) \ge 0$
+More formally, a random variable is a function that maps event in some sample
+space $\Omega$ to a set of outcomes in measurable space $E$, which is often
+$\mathbb{R}$.
 
-A function $F$ is a _probability distribution function_ if:
+$$X:\Omega \to E$$
+
+The probability that $X$ takes on a value in a measurable set $S\subseteq E$ is
+written as
+
+$$P_r(X\in S) = P_r(\{ \omega \in \Omega \ |\ X(\omega)\in S \})$$
+
+### Distribution Function
+
+Let $X$ be a random variable on the probability space $(\Omega, \Sigma, P_r)$.
+A function $F: \mathbb{R}\to [0, 1]$ is a _cumulative distribution function_
+(CDF) if:
 
 - $F$ never decreases
 - $F$ is right-continuous
 - $F$ always has a left-limit
-- $\lim_{x\to - \infty} f(x)=0$
-- $\lim_{x\to\infty}f(x)=1$
+- $\lim_{x\to - \infty} F(x)=0$
+- $\lim_{x\to\infty} F(x)=1$
 
-We have two formulations for the distribution function based on whether it is
-related to a discrete or continuous space:
+For a random variable $X$, its CDF is defined by:
 
-$$P((a, b])=^{(discrete)}F(b)-F(a^-) =^{(continuous)} \int_a^b f(x)dx$$
+$$F_x(x) = P_r(X \le x) = P_r(\{\omega | X(\omega) \le x \})$$
 
-Where $f(x)$ is a density function.
+The distribution function describes the probability that $X$ takes a value less
+than or equal to $x$. It is defined for every real-values random variable,
+whether discrete or continuous.
 
-### Random Variable
+For every $x \in \mathbb{R}$, we can consider the probability that $X$ takes
+exactly the value $x$:
 
-Random variables are a mathematical formalization used to model
-quantities which depend on random events, it lets us quantify
-random events so that we can make probability calculations.
+$$p_x(x) = P_r(X = x) = P_r(\{\omega | X(\omega ) = x\})$$
 
-More formally, a random variable is a function that maps event in
-some sample space $\Omega$ to a set of outcomes in measurable space $E$,
-which is often $\mathbb{R}$.
+This is the _point probability_ of $X = x$. Its interpretation depends on the
+type of random variable.
 
-$$X:\Omega \to E$$
+### Continuous and Discrete Random Variables
 
-The probability that $X$ takes on a value in a measurable set
-$S\subseteq E$ is written as
+Now we need to discriminate two different cases of random variables, since they
+behave differently in the continuous and in the discrete case. A random variable
+$X$ is _continuous_ if $p_x(x) = 0$ for all real $x$, in other words: it does
+not have point masses. A random variable is _discrete_ if it takes values in a
+finite or countable set $S \subseteq \mathbb{R}$.
 
-$$P(X\in S) = P(\{ \omega \in \Omega \ |\ X(\omega)\in S \})$$
+#### Discrete case
+
+Let $X$ be a discrete random variable, then the _probability mass function_
+(PMF) $p_X(x) = P_r(X=x), x\in \mathbb{R}$ satisfies the following two
+conditions:
+
+$$p_X(x) \ge 0$$
+
+$$\sum_x p_X(x) = 1$$
+
+The probability of an event involving a set $A \subseteq \mathbb{R}$ can be
+calculated by summing the masses of the values in that set:
+
+$$P_r(X\in A) = \sum_{x\in A} p_X(x)$$
+
+#### Continuous Case
+
+Let $X$ be a continuous random variable, the _probability density function_
+$f_X(x) = \frac{dF_X(x)}{dx}$ (PDF) satisfies:
+
+$$f_X(x) \ge 0$$
+
+$$\int_{-\infty}^{\infty} f(x) dx = 1$$
+
+$$P_r(a\le X \le b) = \int_a^b f(x) dx$$
+
+A continuous random variable can assume infinitely (uncountably) many
+values, so it is reasonable that the probability of it assuming any specific
+value chosen is zero:
+
+$$P_r(X = x) = 0, \qquad \forall x\in \mathbb{R}$$
+
+Consequently, including or excluding the endpoints of an interval does not
+change its probability. Note that the density $f_X(x)$ is not the probability
+$P_r(X=x)$: it describes how probability is distributed over the real line, and
+probabilities are obtained by integration.
+
+Random variables allow us use standard operations on functions to model the
+randomness of a system. In practice we work directly with the distribution (pmf
+or density) of a random variable.
 
 ### Notable Random Variables
 
-Some random variables appear more than others, so a few of them
-are worthy of their name. You will see those everywhere in nature,
-economics, populations, and more.
+Some random variables appear more than others, so a few of them are worthy of
+their name. You will see those everywhere in nature, economics, populations, and
+more.
 
-Bernoulli:
+- Bernoulli:
 
 $$X(\omega)=\{0, 1\}$$
 
-Rademacher:
+- Rademacher:
 
 $$Y(\omega)=\{ -1, 1 \}$$
 
-Binomial $X\sim Bin(n, p)$:
+- Binomial $X\sim Bin(n, p)$:
 
 $$P_x(J)=\{ \binom{n}{k}p^J(1-p)^{n-J},\ j=1...n\ |\ 0\ otherwise \}$$
 
-Poissont $X\sim Pois(\lambda)$:
+- Poissont $X\sim Pois(\lambda)$:
 
 $$P_x\{\frac{\lambda^xe^{-\lambda}}{x!}, n\in \mathbb{N}\cup \{ 0 \}\ |\ 0\ otherwise\}$$
 
-Geometric:
+- Geometric:
 
 $$P(y)=\{ p(1-p)^{y-1},\ y\in \mathbb{N}\ |\ 0\ otherwise \}$$
 
-Uniform $X\sim Unif[a, b]$:
+- Uniform $X\sim Unif[a, b]$:
 
 $$f_x(x)=\{ \frac{1}{b-a},\ x\in [a, b]\ |\ 0\ otherwise \}$$
 
-Normal (Gaussian) $X\sim N(\mu , \sigma^2)$:
+- Normal (Gaussian) $X\sim N(\mu , \sigma^2)$:
 
 $$f_x(x) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{1}{2}\frac{(x-\mu)^2}{\sigma^2}}$$
 
-Exponential $X\sim Exp(\lambda)$:
+- Exponential $X\sim Exp(\lambda)$:
 
 $$f_x(x)=\lambda e^{\lambda x}\mathbb{1}(x>0)$$
 
 ### Expected Value
 
-We define the expected value in a discrete space as:
+Let $X$ be a discrete random variable taking values in $S$, with probability
+mass function $p(\cdot)$. The _mean_ or _expected value_ is defined as:
 
-$$\mathbb{E}(x) = \sum_{x\in R_x} xp_x(x)$$
+$$\mu = \mathbb{E}[x] = \sum_{x\in S} x\cdot p_X(x)$$
 
-and in the continuous:
+If $X$ is a continuous random variable with density function $f_X(x) = \frac{dF(x)}{dx}$, the expected value of $X$ is:
 
-$$\mathbb{E}(x)=\int_{-\infty}^{\infty} xf_x(x)dx $$
+$$\mu = \mathbb{E}[x] = \int_{-\infty}^{\infty} x\cdot f_x(x) dx $$
+
+The expectation only gives us an idea of the average value assumed by a random
+variable, not of how much individual values may differ from this average.
 
 The expected value is a linear function:
 
@@ -568,28 +787,32 @@ Known formulas for notable random variables:
 
 ### Variance
 
-We define variance as:
+We define the _variance_ $\mathbb{V}ar(x)$ as:
 
-$$\mathbb{V}ar(x)=\mathbb{E}(x^2)-\mathbb{E}(x)^2 = \mathbb{E}[(x-\mathbb{E}[x])^2]$$
+$$\mathbb{V}ar[x]=\mathbb{E}[x^2]-\mathbb{E}[x]^2 = \mathbb{E}[(x-\mathbb{E}[x])^2]$$
 
-Moreover:
+This indicates the "spread" of values. Moreover:
 
-$$\mathbb{V}ar(x)=\mathbb{E}(\mathbb{V}ar(x|y)) + \mathbb{V}ar(\mathbb{E}(x|y))$$
+$$\mathbb{V}ar[x]=\mathbb{E}(\mathbb{V}ar[x|y]) + \mathbb{V}ar(\mathbb{E}[x|y])$$
+
+
+The _standard deviation_ is $\sigma = \sqrt{var(X)}$, and has the same units as
+$X$.
 
 ### Covariance
 
 We define the covariance as:
 
-$$\mathbb{C}ov(x, y)=\mathbb{E}((x-\mathbb{E}(x))(y-\mathbb{E}(y)))=\mathbb{E}(XY)-\mathbb{E}(x)\mathbb{E}(y)$$
+$$\mathbb{C}ov[x, y]=\mathbb{E}((x-\mathbb{E}[x])(y-\mathbb{E}[y]))=\mathbb{E}[XY]-\mathbb{E}[x]\mathbb{E}[y]$$
 
 ### Standardization
 
-$$z=g(x)=\frac{x-\mathbb{E}(x)}{\sqrt{\mathbb{V}ar(x)}}$$
+$$z=g(x)=\frac{x-\mathbb{E}[x]}{\sqrt{\mathbb{V}ar[x]}}$$
 
 After this transformation:
 
-- $\mathbb{E}(z)=0$
-- $\mathbb{V}ar(z)=1$
+- $\mathbb{E}[z]=0$
+- $\mathbb{V}ar[z]=1$
 
 The opposite can be achieved:
 
@@ -599,11 +822,126 @@ $$x=\sigma z + \mu$$
 
 Let $Y$ be a random variable non negative, then $\forall a>0$:
 
-$$P(Y\ge a)\le \frac{\mathbb{E}(y)}{a}$$
+$$P(Y\ge a)\le \frac{\mathbb{E}[y]}{a}$$
 
 ### Chebyshev Inequality
 
-Let $Y$ be a random variable, $\mu = \mathbb{E}(y)$,
-$\sigma^2=\mathbb{V}ar(y)$, then $\forall \epsilon > 0$:
+Let $Y$ be a random variable, $\mu = \mathbb{E}[y]$,
+$\sigma^2=\mathbb{V}ar[y]$, then $\forall \epsilon > 0$:
 
 $$P(|Y-\mu| \ge \epsilon)\le \frac{\sigma^2}{\epsilon^2}$$
+
+### Some distributions
+
+#### Bernoulli Distribution
+
+Let us consider a random variable $x$ assuming values in $\{0, 1\}$. The
+probability of $x=1$ is denoted by a parameter $\mu \in [0,1]$, so that
+$p(x=1|\mu ) = \mu$.
+
+The _Bernoulli distribution_ over $x$ can be written in the form:
+
+$$Bern(x | \mu ) = \mu^x (1 - \mu)^{1-x}$$
+
+$$\mathbb{E}[Bern(x|\mu )] = \mu$$
+
+$$var[Bern(x|\mu )] = \mu (1-\mu)$$
+
+Let $D=\{x_1, ..., x_N\}$ be a set of independent observed values of $x$ drawn
+from $p(x|\mu )$. The likelihood of $D$ is:
+
+$$p(D|\mu ) = \prod_{i=1}^N p(x_i | \mu) = \prod_{i=1}^N \mu^{x_i}(1-\mu)^{1-x_i}$$
+
+Let $D=\{x_1, ..., x_N\}$ be independent observations of variable $x$ we assume
+Bernoulli-distributed with unknown parameter $\mu$.
+
+How can we estimate the parameter $\mu$?
+
+We maximise the likelihood function $f(\mu) = p(D|\mu)$, or equivalently its
+logarithm:
+
+$$\ln p(D|\mu) = \sum_{i=1}^N \ln p(x_i|\mu )$$
+
+$$\ln p(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)$$
+
+We derive this and set it equal to 0. We obtain the maximum likelihood
+estimator:
+
+$$\mu_{ML}=\frac{1}{N}\sum_{n=1}^N x_n$$
+
+which is also known as the _sample mean_. If we denote the number of
+observations of $x=1$ with $m$, then we can write this in the form:
+
+$$\mu = \frac{m}{N}$$
+
+Note that this only works for a high value of $N$.
+
+#### Binomial distribution
+
+We can also work out the distribution of the number $m$ of observations of
+$x=1$, given that the data set has size $N$. This is called the _Binomial
+distribution_:
+
+$$Bin(m|N, \mu) = \binom{N}{m} \mu^m(1-\mu)^{N-m}$$
+
+$$\binom{N}{m} \equiv \frac{N!}{(N-m)!m!}$$
+
+We also have the following:
+
+$$\mathbb{E}[m] = N \mu$$
+
+$$\mathbb{V}ar[m] = N \mu (1-\mu )$$
+
+#### Beta distributions
+
+Let the _gamma function_ $\Gamma$ be:
+
+$$\Gamma (x) = \int_0^{\infty} u^{x-1}e^{-u}du$$
+
+With the following properties:
+
+- $\Gamma (1) = 1$
+
+- $\Gamma (x+1) = x \Gamma (x)$
+
+Note that this behaves like a factorial, so it can be thought as the continuous
+version of the factorial.
+
+Beta distribution:
+
+$$Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}$$
+
+$$\int_0^1 Beta(\mu | a, b) d\mu = 1$$
+
+In some sense, this distribution generalizes the binomial distribution.
+
+$$\mathbb{E}[\mu] = \frac{a}{a+b}$$
+
+$$var[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}$$
+
+The parameters $a$ and $b$ are often called _hyperparameters_ because they
+control the distribution of the parameter $\mu$.
+
+The develop a Bayesian treatment of parameter esitmation for a Bernoulli
+distribution, we introduce a prior distribution $p(\mu)$ over $\mu$. We assume
+$\mu$ to be Beta-distributed, with given hyperparameters $a$ and $b$: $p(\mu) =
+Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of positive and negative
+results, respectively $(N = m + l)$. Then:
+
+$$p(\mu | m, l) \propto p(m, l | \mu ) p(\mu) \propto \mu^{m + a - 1} (1-\mu)^{l+b-1}$$
+
+The posterior has the same form as the prior: it is again a Beta distribution:
+
+$$p(\mu | m, l, a, b) = \frac{\Gamma (m+a+l+b)}{\Gamma (m+a) \Gamma (l+b)}\mu^{m+a-1} (1-\mu)^{l+b-1}$$
+
+Our goal is to predict the outcome of the next trial, given the observed data
+set $D$:
+
+$$p(x=1 | D) = \int_0^1 p(x=1 | \mu) p(\mu | D) d\mu = \int_0^1 \mu p(\mu | D)
+d\mu = \mathbb{E}[\mu | D]$$
+
+$$p(x=1 | D) = \frac{m + a}{m + a + l + b}$$
+
+When $m, l \rightarrow \infty,\ p(x=1 | D)$ reduces to the maximum likelihood
+estimate $m/N$ (the sample mean)!
+
