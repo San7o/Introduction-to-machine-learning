@@ -985,9 +985,9 @@ $\sigma^2=\mathbb{V}ar[y]$, then $\forall \epsilon > 0$:
 
 $$P(|Y-\mu| \ge \epsilon)\le \frac{\sigma^2}{\epsilon^2}$$
 
-### Some distributions
+## Probability distributions
 
-#### Bernoulli Distribution
+### Bernoulli Distribution
 
 Let us consider a random variable $x$ assuming values in $\{0, 1\}$. The
 probability of $x=1$ is denoted by a parameter $\mu \in [0,1]$, so that
@@ -1030,7 +1030,7 @@ $$\mu = \frac{m}{N}$$
 
 Note that this only works for a high value of $N$.
 
-#### Binomial distribution
+### Binomial distribution
 
 We can also work out the distribution of the number $m$ of observations of
 $x=1$, given that the data set has size $N$. This is called the _Binomial
@@ -1046,7 +1046,7 @@ $$\mathbb{E}[m] = N \mu$$
 
 $$\mathbb{V}ar[m] = N \mu (1-\mu )$$
 
-#### Beta distributions
+### Beta distributions
 
 Let the _gamma function_ $\Gamma$ be:
 
@@ -1058,8 +1058,9 @@ With the following properties:
 
 - $\Gamma (x+1) = x \Gamma (x)$
 
-Note that this behaves like a factorial, so it can be thought as the continuous
-version of the factorial.
+The gamma function behaves like a factorial in the natural numbers, but it is
+defined on all real numbers, so it can be thought as the continuous version of
+the factorial in the complex numbers.
 
 Beta distribution:
 
@@ -1074,17 +1075,19 @@ $$\mathbb{E}[\mu] = \frac{a}{a+b}$$
 $$var[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}$$
 
 The parameters $a$ and $b$ are often called _hyperparameters_ because they
-control the distribution of the parameter $\mu$.
+control the distribution of the parameter $\mu$. In some sense, they represent
+our assumptions or our prior knowledge.
 
-The develop a Bayesian treatment of parameter esitmation for a Bernoulli
-distribution, we introduce a prior distribution $p(\mu)$ over $\mu$. We assume
-$\mu$ to be Beta-distributed, with given hyperparameters $a$ and $b$: $p(\mu) =
-Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of positive and negative
-results, respectively $(N = m + l)$. Then:
+The develop a Bayesian treatment of parameter estimation for a Bernoulli
+distribution, meaning that we introduce a prior distribution $p(\mu)$ over
+$\mu$. We assume $\mu$ to be Beta-distributed, with given hyperparameters $a$
+and $b$: $p(\mu) = Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of positive
+and negative results, respectively $(N = m + l)$. Then:
 
 $$p(\mu | m, l) \propto p(m, l | \mu ) p(\mu) \propto \mu^{m + a - 1} (1-\mu)^{l+b-1}$$
 
-The posterior has the same form as the prior: it is again a Beta distribution:
+The posterior has the same form as the prior: it is again a Beta distribution
+(key fact about the beta distribution):
 
 $$p(\mu | m, l, a, b) = \frac{\Gamma (m+a+l+b)}{\Gamma (m+a) \Gamma (l+b)}\mu^{m+a-1} (1-\mu)^{l+b-1}$$
 
@@ -1099,3 +1102,125 @@ $$p(x=1 | D) = \frac{m + a}{m + a + l + b}$$
 When $m, l \rightarrow \infty,\ p(x=1 | D)$ reduces to the maximum likelihood
 estimate $m/N$ (the sample mean)!
 
+### Multinomial Variables
+
+Multinomial variables are binary variables describe quantities that can take one
+of two possible values. Often, however, we encounter discrete variables that can
+take one of $K$ possible mutually exlusive states. A particularly convenient
+representation is the $1-of-K$ scheme: the variable is represented by a
+$K$-dimensional vector $x$ in which exactly one element $x_k$ equals 1 and all
+the others equal $0$. So, for instance, if we have a variable that can take
+$K=6$ states and a particular observation of the variable happens to correspond
+to the state where $x_3 = 1$, then $x$ will be represented by:
+
+$$x=(0, 0, 1, 0, 0, 0)^T$$
+
+Such vectors satisfy $\sum_{k=1}^K x_k = 1$. If we denote the probability that
+$x_k = 1$ by the parameter $\mu_k$, then the distribution of $x$ is:
+
+$$p(x|\mu) = \prod_{k=1}^K u_k^{x_k}$$
+
+where $\mu = (\mu_1, ..., \mu_k)^T$, and the parameters $u_k$ are constrained to
+satisfy $u_k \ge 0$ and $\sum_k \mu_k = 1$.
+
+This is the generalization of the Brunoulli distribution to more than two
+outcomes. It is normalized, and its mean is $\mu$:
+
+$$\sum_x p(x|\ \mu) = \sum_{k=1}^K \mu_k = 1$$
+
+$$\mathbb{E}[x|\ \mu] = \sum_x p(x|\ \mu) x = (\mu_1, ..., \mu_k)^T = \mu$$
+
+Exercise: prove the two statements above.
+
+Let $D$ be a data set of $N$ independent observations $x_1, ..., x_n$. The
+corresponding likelihood function takes the form:
+
+$$p(D|\ \mu) = \prod_{i=1}^N \prod_{k=1}^K \mu_k^{x_{nk}} = \prod_{k=1}^K
+(\sum_n x_{nk}) = \prod_{k=1}^K u_k^{m_k}$$
+
+we see that the likelihood function depends on the $N$ data point only through
+the $K$ quantities:
+
+$$m_k = \sum_n x_{nk}$$
+
+which represent the number of observations of $x_k = 1$. These are called the
+_sufficient statistics_ for this distribution.
+
+To find the maximum likelihood solution for $\mu$, we maximize $\ln p(D|\mu)$
+with respect to the components $\mu_k$ of $\mu$, subject to the constraint
+$\sum_{k=1}^K \mu_k = 1$.
+
+This can be achieved using a Lagrange multiplier $\lambda$, maximizing:
+
+$$\sum_{k=1}^K m_k \ln \mu_k + \lambda (\sum_{k=1}^K) \mu_k - 1)$$
+
+Setting the derivative with respect to $\mu_k$ to zero, we obtain:
+
+$$\mu_k = -m_k / \lambda$$
+
+We can solve for the Lagrange multiplier $\lambda$ by substituting this into the
+constraint $\sum_k \mu_k = 1$ to give $\lambda = - N$. Thus we obtain the
+maximum likelihood solution in the form:
+
+$$\mu_k^{ML} = \frac{m_k}{N}$$
+
+which is the fraction of the $N$ observations for which $x_k = 1$.
+
+We can consider the joint distribution of the quantities $m_1, ..., m_K$,
+conditioned on the parameters $\mu$ and on the total number $N$ of observations.
+So:
+
+$$Mult(m_1, m_2, ..., m_K | \mu, N) = \binom{N}{m_1 m_2 ... m_k} \prod_{k=1}^K
+\mu_k^{m_k}$$
+
+which is known as the _multinomial_ distribution. The normalization coefficient
+is the number of ways of partitioning $N$ objects into $K$ groups of size $m_1,
+..., m_K$ and is given by:
+
+
+$$\binom{N}{m_1 m_2 ... m_K} = \frac{N!}{m_1 m_2! ... m_K!}$$
+
+Note that the variables $m_k$ are subject to the constraint:
+
+$$\sum_{k=1}^K m_k = N$$
+
+An example events that can be modeled in this way is the face of a dice.
+
+### Dirichlet Distribution
+
+We now introduce a family of prior distributions of the parameters $\{ \mu_k \}$
+of the multinomial distribution. By inspection of the likelihood, the _conjugate
+prior_ has the form:
+
+$$p(\mu| \alpha) \propto \prod_{k=1}^K \mu_k^{\alpha_k - 1}$$
+
+where $0 \le \mu_k \le 1$ and $\sum_k \mu_k = 1$. Here $\alpha_1, ..., \alpha_K$
+are the parameters of the distribution, and $\alpha$ denotes $(\alpha_1, ...,
+\alpha_K)^T$.
+
+Because of the constraints, the distribution over the space of the $\{\mu_k\}$
+is confined toa simplex of dimensionality $K-1$. The normalized form of the
+distribution is:
+
+$$Dir(\mu| \alpha) = \frac{\Gamma (\alpha_0)}{\Gamma (\alpha_1) \cdot \cdot
+\cdot \Gamma (\alpha_K)} \prod_{k=1}^K \mu_k^{a_k - 1}$$
+
+which is called the _Dirichlet_ distribution. Where $\alpha_0 = \sum_{k=1}^K
+\alpha_k$
+
+Multiplying the prior by the likelihood function, we obtain the posterior
+distribution for the parameters $\{\mu_k \}$ in the form:
+
+$$p(\mu| D, \alpha) \propto p(D|\mu) p(\mu | \alpha) \propto \prod_{k=1}^K
+\mu_k^{a_k + m_k - 1}$$
+
+The posterior preserved the form of a Dirichlet: the Diricklet is a conjugate
+for of the multinomial. This allows us to determine the normalization
+coefficient so that:
+
+$$p (\mu | D, \alpha) = Dir(\mu | \alpha + m) = \frac{\Gamma (\alpha_0 +
+N)}{\Gamma (\alpha_1 + m_1) \cdot \cdot \cdot \Gamma(\alpha_K + m_K)} \prod_{k=1}^K \mu_k^{a_k + m_k - 1}$$
+
+where we have denoted $m = (m_1, ..., m_K)^T$. As for the case of the binomial
+distribution with its beta prior, we can interpret the parameters $\alpha_k$ of
+the Dirichlet prior as an effective number of observations of $x_k = 1$.

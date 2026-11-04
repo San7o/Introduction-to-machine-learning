@@ -543,11 +543,11 @@ operation \(+\) is called vector addition. The elements
 \subsubsection{Eigenvalues and
 Eigenvectors}\label{eigenvalues-and-eigenvectors}
 
-Let's look at Eigenvalues and Eigenvectors in linear algebra for now. I
-will use the great book ``Algebra Lineare'' by Marco Abate as my
-reference. Eigenvectors are an important theoretical and practical topic
-as they are used for some tricks in unsupervised learning, and are often
-used as the preferred axis for rotations or other transformations.
+Let's look at Eigenvalues and Eigenvectors now. I will use the great
+book ``Algebra Lineare'' by Marco Abate as my reference. Eigenvectors
+are an important theoretical and practical topic as they are used for
+some tricks in unsupervised learning, and are often used as the
+preferred axis for rotations or other transformations.
 
 Let \(T: V\rightarrow V\) be an endomorphism (a function that maps a
 space onto itself) of a vector space \(V\). A vector \(v_0 \ne 0\) of
@@ -1318,9 +1318,9 @@ Let \(Y\) be a random variable, \(\mu = \mathbb{E}[y]\),
 
 \[P(|Y-\mu| \ge \epsilon)\le \frac{\sigma^2}{\epsilon^2}\]
 
-\subsubsection{Some distributions}\label{some-distributions}
+\subsection{Probability distributions}\label{probability-distributions}
 
-\paragraph{Bernoulli Distribution}\label{bernoulli-distribution}
+\subsubsection{Bernoulli Distribution}\label{bernoulli-distribution}
 
 Let us consider a random variable \(x\) assuming values in \(\{0, 1\}\).
 The probability of \(x=1\) is denoted by a parameter \(\mu \in [0,1]\),
@@ -1364,7 +1364,7 @@ form:
 
 Note that this only works for a high value of \(N\).
 
-\paragraph{Binomial distribution}\label{binomial-distribution}
+\subsubsection{Binomial distribution}\label{binomial-distribution}
 
 We can also work out the distribution of the number \(m\) of
 observations of \(x=1\), given that the data set has size \(N\). This is
@@ -1380,7 +1380,7 @@ We also have the following:
 
 \[\mathbb{V}ar[m] = N \mu (1-\mu )\]
 
-\paragraph{Beta distributions}\label{beta-distributions}
+\subsubsection{Beta distributions}\label{beta-distributions}
 
 Let the \emph{gamma function} \(\Gamma\) be:
 
@@ -1395,8 +1395,9 @@ With the following properties:
   \(\Gamma (x+1) = x \Gamma (x)\)
 \end{itemize}
 
-Note that this behaves like a factorial, so it can be thought as the
-continuous version of the factorial.
+The gamma function behaves like a factorial in the natural numbers, but
+it is defined on all real numbers, so it can be thought as the
+continuous version of the factorial in the complex numbers.
 
 Beta distribution:
 
@@ -1411,19 +1412,20 @@ In some sense, this distribution generalizes the binomial distribution.
 \[var[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}\]
 
 The parameters \(a\) and \(b\) are often called \emph{hyperparameters}
-because they control the distribution of the parameter \(\mu\).
+because they control the distribution of the parameter \(\mu\). In some
+sense, they represent our assumptions or our prior knowledge.
 
-The develop a Bayesian treatment of parameter esitmation for a Bernoulli
-distribution, we introduce a prior distribution \(p(\mu)\) over \(\mu\).
-We assume \(\mu\) to be Beta-distributed, with given hyperparameters
-\(a\) and \(b\): \(p(\mu) =
-Beta(\mu | a, b)\). Let \(m\) and \(l\) be the numbers of positive and
-negative results, respectively \((N = m + l)\). Then:
+The develop a Bayesian treatment of parameter estimation for a Bernoulli
+distribution, meaning that we introduce a prior distribution \(p(\mu)\)
+over \(\mu\). We assume \(\mu\) to be Beta-distributed, with given
+hyperparameters \(a\) and \(b\): \(p(\mu) = Beta(\mu | a, b)\). Let
+\(m\) and \(l\) be the numbers of positive and negative results,
+respectively \((N = m + l)\). Then:
 
 \[p(\mu | m, l) \propto p(m, l | \mu ) p(\mu) \propto \mu^{m + a - 1} (1-\mu)^{l+b-1}\]
 
 The posterior has the same form as the prior: it is again a Beta
-distribution:
+distribution (key fact about the beta distribution):
 
 \[p(\mu | m, l, a, b) = \frac{\Gamma (m+a+l+b)}{\Gamma (m+a) \Gamma (l+b)}\mu^{m+a-1} (1-\mu)^{l+b-1}\]
 
@@ -1437,6 +1439,135 @@ d\mu = \mathbb{E}[\mu | D]\]
 
 When \(m, l \rightarrow \infty,\ p(x=1 | D)\) reduces to the maximum
 likelihood estimate \(m/N\) (the sample mean)!
+
+\subsubsection{Multinomial Variables}\label{multinomial-variables}
+
+Multinomial variables are binary variables describe quantities that can
+take one of two possible values. Often, however, we encounter discrete
+variables that can take one of \(K\) possible mutually exlusive states.
+A particularly convenient representation is the \(1-of-K\) scheme: the
+variable is represented by a \(K\)-dimensional vector \(x\) in which
+exactly one element \(x_k\) equals 1 and all the others equal \(0\). So,
+for instance, if we have a variable that can take \(K=6\) states and a
+particular observation of the variable happens to correspond to the
+state where \(x_3 = 1\), then \(x\) will be represented by:
+
+\[x=(0, 0, 1, 0, 0, 0)^T\]
+
+Such vectors satisfy \(\sum_{k=1}^K x_k = 1\). If we denote the
+probability that \(x_k = 1\) by the parameter \(\mu_k\), then the
+distribution of \(x\) is:
+
+\[p(x|\mu) = \prod_{k=1}^K u_k^{x_k}\]
+
+where \(\mu = (\mu_1, ..., \mu_k)^T\), and the parameters \(u_k\) are
+constrained to satisfy \(u_k \ge 0\) and \(\sum_k \mu_k = 1\).
+
+This is the generalization of the Brunoulli distribution to more than
+two outcomes. It is normalized, and its mean is \(\mu\):
+
+\[\sum_x p(x|\ \mu) = \sum_{k=1}^K \mu_k = 1\]
+
+\[\mathbb{E}[x|\ \mu] = \sum_x p(x|\ \mu) x = (\mu_1, ..., \mu_k)^T = \mu\]
+
+Exercise: prove the two statements above.
+
+Let \(D\) be a data set of \(N\) independent observations
+\(x_1, ..., x_n\). The corresponding likelihood function takes the form:
+
+\[p(D|\ \mu) = \prod_{i=1}^N \prod_{k=1}^K \mu_k^{x_{nk}} = \prod_{k=1}^K
+(\sum_n x_{nk}) = \prod_{k=1}^K u_k^{m_k}\]
+
+we see that the likelihood function depends on the \(N\) data point only
+through the \(K\) quantities:
+
+\[m_k = \sum_n x_{nk}\]
+
+which represent the number of observations of \(x_k = 1\). These are
+called the \emph{sufficient statistics} for this distribution.
+
+To find the maximum likelihood solution for \(\mu\), we maximize
+\(\ln p(D|\mu)\) with respect to the components \(\mu_k\) of \(\mu\),
+subject to the constraint \(\sum_{k=1}^K \mu_k = 1\).
+
+This can be achieved using a Lagrange multiplier \(\lambda\),
+maximizing:
+
+\[\sum_{k=1}^K m_k \ln \mu_k + \lambda (\sum_{k=1}^K) \mu_k - 1)\]
+
+Setting the derivative with respect to \(\mu_k\) to zero, we obtain:
+
+\[\mu_k = -m_k / \lambda\]
+
+We can solve for the Lagrange multiplier \(\lambda\) by substituting
+this into the constraint \(\sum_k \mu_k = 1\) to give \(\lambda = - N\).
+Thus we obtain the maximum likelihood solution in the form:
+
+\[\mu_k^{ML} = \frac{m_k}{N}\]
+
+which is the fraction of the \(N\) observations for which \(x_k = 1\).
+
+We can consider the joint distribution of the quantities
+\(m_1, ..., m_K\), conditioned on the parameters \(\mu\) and on the
+total number \(N\) of observations. So:
+
+\[Mult(m_1, m_2, ..., m_K | \mu, N) = \binom{N}{m_1 m_2 ... m_k} \prod_{k=1}^K
+\mu_k^{m_k}\]
+
+which is known as the \emph{multinomial} distribution. The normalization
+coefficient is the number of ways of partitioning \(N\) objects into
+\(K\) groups of size \(m_1,
+..., m_K\) and is given by:
+
+\[\binom{N}{m_1 m_2 ... m_K} = \frac{N!}{m_1 m_2! ... m_K!}\]
+
+Note that the variables \(m_k\) are subject to the constraint:
+
+\[\sum_{k=1}^K m_k = N\]
+
+An example events that can be modeled in this way is the face of a dice.
+
+\subsubsection{Dirichlet Distribution}\label{dirichlet-distribution}
+
+We now introduce a family of prior distributions of the parameters
+\(\{ \mu_k \}\) of the multinomial distribution. By inspection of the
+likelihood, the \emph{conjugate prior} has the form:
+
+\[p(\mu| \alpha) \propto \prod_{k=1}^K \mu_k^{\alpha_k - 1}\]
+
+where \(0 \le \mu_k \le 1\) and \(\sum_k \mu_k = 1\). Here
+\(\alpha_1, ..., \alpha_K\) are the parameters of the distribution, and
+\(\alpha\) denotes \((\alpha_1, ...,
+\alpha_K)^T\).
+
+Because of the constraints, the distribution over the space of the
+\(\{\mu_k\}\) is confined toa simplex of dimensionality \(K-1\). The
+normalized form of the distribution is:
+
+\[Dir(\mu| \alpha) = \frac{\Gamma (\alpha_0)}{\Gamma (\alpha_1) \cdot \cdot
+\cdot \Gamma (\alpha_K)} \prod_{k=1}^K \mu_k^{a_k - 1}\]
+
+which is called the \emph{Dirichlet} distribution. Where
+\(\alpha_0 = \sum_{k=1}^K
+\alpha_k\)
+
+Multiplying the prior by the likelihood function, we obtain the
+posterior distribution for the parameters \(\{\mu_k \}\) in the form:
+
+\[p(\mu| D, \alpha) \propto p(D|\mu) p(\mu | \alpha) \propto \prod_{k=1}^K
+\mu_k^{a_k + m_k - 1}\]
+
+The posterior preserved the form of a Dirichlet: the Diricklet is a
+conjugate for of the multinomial. This allows us to determine the
+normalization coefficient so that:
+
+\[p (\mu | D, \alpha) = Dir(\mu | \alpha + m) = \frac{\Gamma (\alpha_0 +
+N)}{\Gamma (\alpha_1 + m_1) \cdot \cdot \cdot \Gamma(\alpha_K + m_K)} \prod_{k=1}^K \mu_k^{a_k + m_k - 1}\]
+
+where we have denoted \(m = (m_1, ..., m_K)^T\). As for the case of the
+binomial distribution with its beta prior, we can interpret the
+parameters \(\alpha_k\) of the Dirichlet prior as an effective number of
+observations of \(x_k = 1\).
 
 \section{Machine Learning
 Introduction}\label{machine-learning-introduction}
@@ -4552,30 +4683,164 @@ Notes that need to be included in the rest of the book.
 
 \subsection{Probability theory}\label{probability-theory-1}
 
-\subsubsection{Multinomial Variables}\label{multinomial-variables}
+\subsubsection{Gaussian Distribution}\label{gaussian-distribution}
 
-Multinomial variables are binary variables describe quantities that can
-take one of two possible values. Often, however, we encounter discrete
-variables that can take one of \(K\) possible mutually exlusive states.
-A particularly convenient representation is the \(1-of-K\) scheme: the
-variable is represented by a \(K\)-dimensional vector \(x\) in which
-exactly one element \(x_k\) equals 1 and all the others equal \(0\). So,
-for instance, if we have a variable that can take \(K=6\) states and a
-particular observation of the variable happens to correspond to the
-state where \(x_3 = 1\), then \(x\) will be represented by:
+\[N(x| \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} exp(-\frac{(x-\mu)^2}{2\sigma^2})\]
 
-\[x=(0, 0, 1, 0, 0, 0)^T\]
+Fully described by mean \(\mu\) and variance \(\sigma^2\)
 
-Such vectors satisfy \(\sum_{k=1}^K x_k = 1\). If we denote the
-probability that \(x_k = 1\) by the parameter \(\mu_k\), then the
-distribution of \(x\) is:
+The \emph{central limit theorem} states that sums of many independent
+effects tend to a Gaussian. For example, we assume Gaussian-distributed
+noise in linear regression:
+\(t = y(x, w) + \epsilon,\ \epsilon \sim N(0, \sigma^2)\). Graphically,
+this looks like a bell curve, which is symmetric about \(\mu\) and its
+peak is \(\frac{1}{\sqrt{2\pi}}\) at \(x=0\).
 
-\[p(x|\mu) = \prod_{k=1}^K u_k^{x_k}\]
+We have a lot of interesting properties. Let \(X\sim N(\mu, \sigma^2)\).
 
-where \(\mu = (\mu_1, ..., \mu_k)^T\), and the parameters \(u_k\) are
-constrained to satisfy \(u_k \ge 0\) and \(\sum_k \mu_k = 1\).
+\begin{itemize}
+\tightlist
+\item
+  Normalisation: from the Gaussian integral
+  \(\int_{-\infty}^\infty e^{-y^2/2}dy
+  = \sqrt{2\pi}\)
+\end{itemize}
 
-Let \(D\) be a data set of \(N\) \ldots{}
+\[\int TODO\]
 
-28 no lesson.
+\begin{itemize}
+\item
+  Mean: TODO
+\item
+  Variance: TODO
+\item
+  Mean = median = mode = \(\mu\) by symmetry
+\item
+  Linear transformations: if \(X\sim N(\mu, \sigma^2)\) and \(a\ne 0\),
+  then:
+\end{itemize}
+
+\[aX + b \sim N(a\mu + b, a^2 \sigma^2)\]
+
+\begin{itemize}
+\tightlist
+\item
+  Standardisation: as a special case:
+\end{itemize}
+
+\[Z = \frac{X - \mu}{\sigma} \sim N(0, 1)\]
+
+\begin{itemize}
+\tightlist
+\item
+  Sums: if \(X_1 \sim N(\mu_1, \sigma_1^2)\) and
+  \(X_2 \sim N(\mu_2, \sigma_2^2)\) are independent, then:
+\end{itemize}
+
+\[X_1 + X_2 \sim N(\mu_1 + \mu_2, \sigma^2_1 + \sigma_2^2)\]
+
+\begin{itemize}
+\tightlist
+\item
+  Averages: TODO
+\end{itemize}
+
+For a continuous variable, probabilities are areas under the density.
+With the distribution function \(F(x) = Pr(X\le x)\):
+
+\[Pr(a\le X \le b) = \int_a^b N(x|\mu \sigma^2) dx = F(b) - F(a)\]
+
+There is a problem: \(e^{-y}\) has no closed form, so we use table
+values.
+
+We only need the distribution function of \(Z\sim N(0, 1)\), computed
+once and for all:
+
+\[\Phi = Pr(Z\le z) = \int_{-\infty}^z \frac{1}{\sqrt{2\pi}} TODO\]
+
+TODO
+
+There are some useful identities of \(\Phi\):
+
+\begin{itemize}
+\item
+  \(\Phi (0) = 0.5\)
+\item
+  \(\Phi (-z) = 1 - \Phi(z)\)
+\item
+  \(P_r(X > x) = 1 - \Phi(z)\)
+\item
+  \(P_r(|X - \mu| \le k \sigma) = 2\Phi (x) - 1\)
+\end{itemize}
+
+The inverse \(\Phi^{-1}\) gives quantiles: the value \(x\) such that
+\(P_r(X\le x) =
+q\) is:
+
+\[x = \mu + \sigma \Phi^{-1} (q)\]
+
+The \(68-95-99.7\) rule:
+
+\begin{itemize}
+\item
+  \(P_r(|X - \mu| \le \sigma) \approx 0.683\)
+\item
+  TODO
+\item
+  TODO
+\end{itemize}
+
+For a D-dimensional vector \(x\), the multivariate Gaussian distribution
+takes the form:
+
+\[N(x|\mu, \Sigma) = \frac{1}{(2\pi)^{D/2}}
+\frac{1}{|\Sigma|^{1/2}}exp(-\frac{1}{2}(x - \mu)^T \Sigma^{-1} (x - \mu))\]
+
+where \(\mu\) is the D-dimensional mean vector, \(\Sigma\) is the
+\(D \times D\) convariance matrix and \(|\Sigma|\) is its determinant.
+
+\[\Delta^2 = (x - \mu)^T \Sigma^{-1} (x - \mu)\]
+
+The quality \(\Delta\) is called the \emph{Mahalanobis distance} form
+\(\mu\) to \(x\). It reduces to the Euclidean distance when \(\Sigma\)
+is the identity matrix.
+
+The covariance matrix \(\Sigma\) is \emph{symmetric}, since
+\(cov[x_i, x_j] = cov[x_j,
+x_i]\), and is assumed to be \emph{positive definite}. The eigenvectors
+of \(\Sigma\) are real and can be chosen to form an \emph{orthonormal}
+set:
+
+\[\Sigma u_i = \lambda_i u_i\]
+
+\[u_i^T u_j = I_{ij} = TODO\]
+
+Moreover:
+
+TODO
+
+We have that \[\Delta^2 = ...\]
+
+\subsubsection{Conditional Gaussian
+Distributions}\label{conditional-gaussian-distributions}
+
+Suppose \(x\) is a D-dimensional vector with Gaussian distibution
+\(N(x|\mu,
+\Sigma)\), and that we partition \(x\) into two disjoint subsets \(x_a\)
+and \(x_b\):
+
+TODO\ldots{}
+
+Our goal is to find the distribution of \(x_a\) given
+\(x_b,\ p(x_a | x_b)\). This can be obtained by fixing \(x_b\) in
+\(p(x)\) and renormalising. The result is again a Gaussian:
+
+\[p(x_a | x_b) = N(x_a | \mu_{a|b}, \Sigma_{a|b})\]
+
+where:
+
+\[\mu_{a|b} = \mu_a + \Sigma_{ab} \Sigma_{bb}^{-1} (x_b - \mu_b)\]
+
+\[\Sigma_{a|b} = \Lambda_{aa}^{-1} = \Sigma_{aa} - \Sigma_{ab} \Sigma_{bb}^{-1}
+\Sigma_{ba}\]
 \end{document}
