@@ -561,7 +561,7 @@ The _gradient_ of $f$ at $w$ is the vector of its partial derivatives"
 $$\nabla f(w) = (\frac{\partial f}{\partial w_1} (w), ..., \frac{\partial f}{\partial w_D} (w_D))^T$$
 
 The rate of change of $f$ along a unit direction $u$ (also called the _symplex_
-direction) is the _directional derivative$ $\nabla f(w)^T u = ||\nabla
+direction) is the _directional derivative_ $\nabla f(w)^T u = ||\nabla
 f(w)||\cos \theta$. The gradient points in the direction of steepest descent.
 $\nabla f(w)$ is orthogonal to the contour line (level set) of $f$ through $w$.
 
@@ -637,7 +637,7 @@ $$E(w) = \frac{1}{2}\sum_{n=1}^N (y(x_n, w) - t_n)^2$$
 
 To minimize this error function we can use the gradient descent approach, where:
 
-$$w_{t+1} = w_t - \delta \nabla f(w_t)$
+$$w_{t+1} = w_t - \delta \nabla f(w_t)$$
 
 $\delta$ is the learning rate. Iterating this finds $w$ that minimise $E(w)$.
 
@@ -661,9 +661,15 @@ priori, while _statistic_ is the study of their likelihood at posteriori.
 Probability gives us a principled language for uncertainty in both data and
 model parameters.
 
+#### Sample space
+
 We define the _sample space_ $\Omega$ as the set of all possible outcomes of an
-experiment. A $\sigma$-algebra $\Sigma \subseteq 2^{\Omega}$ is a subset of the
-sample space such that:
+experiment.
+
+#### Sigma algebra
+
+A $\sigma$-algebra $\Sigma \subseteq 2^{\Omega}$ is a subset of the sample space
+such that:
 
 1. $\Sigma$ contains the sample space: $\Omega \in \Sigma$
 2. $\Sigma$ is closed under _complement_: if $A \in \Sigma$ then $(\Omega
@@ -672,19 +678,21 @@ sample space such that:
 3. $\Sigma$ is closed under _countable unions_: if $A_1, A_2, ... \in \Sigma$
    then $\bigcup_i A_i \in \Sigma$
 
-Suppose we want to toss a count. On $\Omega_C = \{H, T\}$ the $\sigma$-algebra
+Suppose we want to toss a coin. On $\Omega_C = \{H, T\}$ the $\sigma$-algebra
 $\Sigma_C$ contains: $\emptyset$ (neither head nor tail), $\{H\}, \{T\}, \{H,
 T\}$.
 
-### Probability measure
+#### Probability measure
 
 Let $\Sigma \subseteq 2^{\Omega}$ be a $\sigma$-algebra. A _probability measure_
 is a function $P_r: \Sigma \rightarrow [0, 1]$ such that:
 
 - $P$ is non negative: $P_r(A)\ge 0\ \forall A\in \Omega$
 - $P$ is normalized: $P_r(\Omega)=1$
-- $P$ is $\sigma$ -additive: if $A_i \cap A_j \ne \emptyset,\ A\in \Omega$ then
+- $P$ is $\sigma$ -additive: if $A_i \cap A_j = \emptyset,\ A\in \Omega$ then
   $P_r(\cup_i A_i)=\sum_i P_r(A_i)$
+
+#### Probability space
 
 A _probability space_ is a tripe $(\Omega, \Sigma, P_r)$ where:
 
@@ -697,10 +705,10 @@ A _probability space_ is a tripe $(\Omega, \Sigma, P_r)$ where:
 Let $(\Omega, \Sigma, P_r)$ be a probability space. The following properties
 hold:
 
-- For any $A \in \sigma$, $P_r(\Omega \setminus A) = 1 - P_r(A)$
+- For any $A \in \Sigma$, $P_r(\Omega \setminus A) = 1 - P_r(A)$
 
 - From set theory, you can demonstrate that the following holds: $A, B \in
-  \sigma$, $P_r(A \cup B) = P_r(A) + P_r(B) - P_r(A \cap B)$
+  \Sigma$, $P_r(A \cup B) = P_r(A) + P_r(B) - P_r(A \cap B)$
 
 - In particular, $P_r(\emptyset ) = 0 \land A \subseteq B \Rightarrow P_r(A) \le
   P_r(B)$
@@ -715,8 +723,8 @@ It follows that:
 - if $A$ and $B$ are _mutually exclusive_ $(A \cap B = \emptyset)$, then
   $P_r(A|B) = 0$
 
-- if $B$ is a _precondition_ for $A (A \subseteq B)$, then $P_r(A \cap B) -
-  P_r(A)$, so $P_r(A|B) = P_r(A) / P_r(B)$
+- if $B$ is a _precondition_ for $A$, meaning $(A \subseteq B)$, then $P_r(A
+  \cap B) = P_r(A)$, so $P_r(A|B) = P_r(A) / P_r(B)$
 
 - Two events are _independent_ if knowing that one occurred tells us nothing
   about hte probability of the other, i.e. $P_r(A|B) = P_r(A)$, or equivalently:
@@ -727,17 +735,19 @@ It follows that:
 
 There are two very important rules in probability:
 
-- the sum rule:
+#### The sum rule
 
 $$p(X) = \sum_Y p(X, Y)$$
 
-- the product rule:
+#### The product rule
 
 $$p(X,Y) = p(Y|X)p(X)$$
 
-They are not hard to demonstrate, if you are curious an explanation is provided
-in chapter 1.2 of Bishop's "Pattern Recognition and Machine Learning" book
-(2006).
+Where $p(X, Y)$ is a joint probability, meaning that it is the probability of
+$X$ _and_ $Y$. $p(X|Y)$, instead, is a conditional probability, meaning the
+probability of $X$ given $Y$.They are not hard to demonstrate, if you are
+curious an explanation is provided in chapter 1.2 of Bishop's "Pattern
+Recognition and Machine Learning" book (2006).
 
 ### Bayes Theorem
 
@@ -762,11 +772,12 @@ _prior_ observation, where:
 
 - $p(B)$ is a normalizing constant (evidence)
 
-The denominator is computed with the _law of total probability_.
+The denominator is computed with the _law of total probability_: $P(B) = \sum_i
+P(B|A_i) P(A_i)$.
 
 ### Stochastic Independence
 
-Events $A\in \Omega$ are said to be independent if:
+Events $A\in \Omega$ are said to be _independent_ if:
 
 $$P_r(A_{i1} \cap A_{i2} \cap ... \cap A_{ik}) = \prod_{j=1}^k P_r(A_{ij}) = P_r(A_{i1})\cdot P_r(A_{i2})\cdot ...\cdot P_r(A_{ik})$$
 
@@ -785,11 +796,13 @@ Random variables are a mathematical formalization used to model quantities which
 depend on random events, it lets us quantify random events so that we can make
 probability calculations.
 
-More formally, a random variable is a function that maps event in some sample
+More formally, a random variable is a function that maps an event in a sample
 space $\Omega$ to a set of outcomes in measurable space $E$, which is often
 $\mathbb{R}$.
 
 $$X:\Omega \to E$$
+
+#### Probability of a random variable
 
 The probability that $X$ takes on a value in a measurable set $S\subseteq E$ is
 written as
@@ -797,6 +810,8 @@ written as
 $$P_r(X\in S) = P_r(\{ \omega \in \Omega \ |\ X(\omega)\in S \})$$
 
 ### Distribution Function
+
+#### CDF
 
 Let $X$ be a random variable on the probability space $(\Omega, \Sigma, P_r)$.
 A function $F: \mathbb{R}\to [0, 1]$ is a _cumulative distribution function_
@@ -832,7 +847,7 @@ $X$ is _continuous_ if $p_x(x) = 0$ for all real $x$, in other words: it does
 not have point masses. A random variable is _discrete_ if it takes values in a
 finite or countable set $S \subseteq \mathbb{R}$.
 
-#### Discrete case
+#### Discrete case (PMF)
 
 Let $X$ be a discrete random variable, then the _probability mass function_
 (PMF) $p_X(x) = P_r(X=x), x\in \mathbb{R}$ satisfies the following two
@@ -847,7 +862,7 @@ calculated by summing the masses of the values in that set:
 
 $$P_r(X\in A) = \sum_{x\in A} p_X(x)$$
 
-#### Continuous Case
+#### Continuous Case (PDF)
 
 Let $X$ be a continuous random variable, the _probability density function_
 $f_X(x) = \frac{dF_X(x)}{dx}$ (PDF) satisfies:
@@ -879,7 +894,7 @@ Some random variables appear more than others, so a few of them are worthy of
 their name. You will see those everywhere in nature, economics, populations, and
 more.
 
-- Bernoulli:
+- Bernoulli $X \sim Ber(p)$:
 
 $$X(\omega)=\{0, 1\}$$
 
@@ -913,10 +928,14 @@ $$f_x(x)=\lambda e^{\lambda x}\mathbb{1}(x>0)$$
 
 ### Expected Value
 
+#### Discrete case
+
 Let $X$ be a discrete random variable taking values in $S$, with probability
 mass function $p(\cdot)$. The _mean_ or _expected value_ is defined as:
 
 $$\mu = \mathbb{E}[x] = \sum_{x\in S} x\cdot p_X(x)$$
+
+#### Continuous case
 
 If $X$ is a continuous random variable with density function $f_X(x) = \frac{dF(x)}{dx}$, the expected value of $X$ is:
 
@@ -925,12 +944,14 @@ $$\mu = \mathbb{E}[x] = \int_{-\infty}^{\infty} x\cdot f_x(x) dx $$
 The expectation only gives us an idea of the average value assumed by a random
 variable, not of how much individual values may differ from this average.
 
+#### Properties
+
 The expected value is a linear function:
 
 $$E(aX+b) = a\mathbb{E}(x)+b$$
 $$E(g(x))=\sum_{x\in R_x} g(x)p_x(x)$$
 
-Known formulas for notable random variables:
+#### Notable formulas
 
 - Bernoulli: $\mathbb{E}(x)=p$
 - Binomial: $\mathbb{E}(x)=np$
@@ -961,16 +982,18 @@ $$\mathbb{C}ov[x, y]=\mathbb{E}((x-\mathbb{E}[x])(y-\mathbb{E}[y]))=\mathbb{E}[X
 
 ### Standardization
 
-$$z=g(x)=\frac{x-\mathbb{E}[x]}{\sqrt{\mathbb{V}ar[x]}}$$
+Given a random variable $X$, we can standardize it with this formula:
+
+$$Z=g(Z)=\frac{X-\mathbb{E}[X]}{\sqrt{\mathbb{V}ar[X]}}$$
 
 After this transformation:
 
-- $\mathbb{E}[z]=0$
-- $\mathbb{V}ar[z]=1$
+- $\mathbb{E}[Z]=0$
+- $\mathbb{V}ar[Z]=1$
 
-The opposite can be achieved:
+The inverse operation can be computed too:
 
-$$x=\sigma z + \mu$$
+$$X=\sigma Z + \mu$$
 
 ### Markov Inequality
 
@@ -999,7 +1022,9 @@ $$Bern(x | \mu ) = \mu^x (1 - \mu)^{1-x}$$
 
 $$\mathbb{E}[Bern(x|\mu )] = \mu$$
 
-$$\mathbb{v}ar[Bern(x|\mu )] = \mu (1-\mu)$$
+$$\mathbb{V}ar[Bern(x|\mu )] = \mu (1-\mu)$$
+
+#### Likelihood
 
 Let $D=\{x_1, ..., x_N\}$ be a set of independent observed values of $x$ drawn
 from $p(x|\mu )$. The likelihood of $D$ is:
@@ -1007,24 +1032,24 @@ from $p(x|\mu )$. The likelihood of $D$ is:
 $$p(D|\mu ) = \prod_{i=1}^N p(x_i | \mu) = \prod_{i=1}^N \mu^{x_i}(1-\mu)^{1-x_i}$$
 
 Let $D=\{x_1, ..., x_N\}$ be independent observations of variable $x$ we assume
-Bernoulli-distributed with unknown parameter $\mu$.
+Bernoulli-distributed with unknown parameter $\mu$. How can we estimate the
+parameter $\mu$?
 
-How can we estimate the parameter $\mu$?
-
-We maximise the likelihood function $f(\mu) = p(D|\mu)$, or equivalently its
-logarithm:
+To do this, we maximise the likelihood function $f(\mu) = p(D|\mu)$, or,
+equivalently (!!), its logarithm:
 
 $$\ln p(D|\mu) = \sum_{i=1}^N \ln p(x_i|\mu )$$
 
 $$\ln p(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)$$
 
-We derive this and set it equal to 0. We obtain the maximum likelihood
-estimator:
+We derive this and set it equal to 0. We obtain the _maximum likelihood
+estimator_:
 
 $$\mu_{ML}=\frac{1}{N}\sum_{n=1}^N x_n$$
 
 which is also known as the _sample mean_. If we denote the number of
-observations of $x=1$ with $m$, then we can write this in the form:
+observations of $x=1$ with $m$, since $x \in \{0, 1\}$, we can write this in the
+form:
 
 $$\mu = \frac{m}{N}$$
 
@@ -1040,7 +1065,7 @@ $$Bin(m|N, \mu) = \binom{N}{m} \mu^m(1-\mu)^{N-m}$$
 
 $$\binom{N}{m} \equiv \frac{N!}{(N-m)!m!}$$
 
-We also have the following:
+And:
 
 $$\mathbb{E}[m] = N \mu$$
 
@@ -1062,7 +1087,7 @@ The gamma function behaves like a factorial in the natural numbers, but it is
 defined on all real numbers, so it can be thought as the continuous version of
 the factorial in the complex numbers.
 
-Beta distribution:
+The Beta distribution is:
 
 $$Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}$$
 
@@ -1072,7 +1097,7 @@ In some sense, this distribution generalizes the binomial distribution.
 
 $$\mathbb{E}[\mu] = \frac{a}{a+b}$$
 
-$$var[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}$$
+$$\mathbb{V}ar[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}$$
 
 The parameters $a$ and $b$ are often called _hyperparameters_ because they
 control the distribution of the parameter $\mu$. In some sense, they represent
@@ -1104,14 +1129,14 @@ estimate $m/N$ (the sample mean)!
 
 ### Multinomial distribution
 
-Multinomial variables are binary variables describe quantities that can take one
-of two possible values. Often, however, we encounter discrete variables that can
-take one of $K$ possible mutually exlusive states. A particularly convenient
-representation is the $1-of-K$ scheme: the variable is represented by a
-$K$-dimensional vector $x$ in which exactly one element $x_k$ equals 1 and all
-the others equal $0$. So, for instance, if we have a variable that can take
-$K=6$ states and a particular observation of the variable happens to correspond
-to the state where $x_3 = 1$, then $x$ will be represented by:
+Binary variables describe quantities that can take one of two possible values.
+Often, however, we encounter discrete variables that can take one of $K$
+possible mutually exlusive states. A particularly convenient representation is
+the _1-of-K_ scheme: the variable is represented by a $K$-dimensional vector $x$
+in which exactly one element $x_k$ equals 1 and all the others equal $0$. So,
+for instance, if we have a variable that can take $K=6$ states and a particular
+observation of the variable happens to correspond to the state where $x_3 = 1$,
+then $x$ will be represented by:
 
 $$x=(0, 0, 1, 0, 0, 0)^T$$
 
@@ -1152,7 +1177,7 @@ $\sum_{k=1}^K \mu_k = 1$.
 
 This can be achieved using a Lagrange multiplier $\lambda$, maximizing:
 
-$$\sum_{k=1}^K m_k \ln \mu_k + \lambda (\sum_{k=1}^K) \mu_k - 1)$$
+$$\sum_{k=1}^K m_k \ln \mu_k + \lambda (\sum_{k=1}^K \mu_k - 1)$$
 
 Setting the derivative with respect to $\mu_k$ to zero, we obtain:
 
@@ -1178,13 +1203,13 @@ is the number of ways of partitioning $N$ objects into $K$ groups of size $m_1,
 ..., m_K$ and is given by:
 
 
-$$\binom{N}{m_1 m_2 ... m_K} = \frac{N!}{m_1 m_2! ... m_K!}$$
+$$\binom{N}{m_1 m_2 ... m_K} = \frac{N!}{m_1! m_2! ... m_K!}$$
 
 Note that the variables $m_k$ are subject to the constraint:
 
 $$\sum_{k=1}^K m_k = N$$
 
-An example events that can be modeled in this way is the face of a dice.
+An example event that can be modeled in this way is the face of a dice.
 
 ### Dirichlet Distribution
 
@@ -1215,7 +1240,7 @@ $$p(\mu| D, \alpha) \propto p(D|\mu) p(\mu | \alpha) \propto \prod_{k=1}^K
 \mu_k^{a_k + m_k - 1}$$
 
 The posterior preserved the form of a Dirichlet: the Diricklet is a conjugate
-for of the multinomial. This allows us to determine the normalization
+prior of the multinomial. This allows us to determine the normalization
 coefficient so that:
 
 $$p (\mu | D, \alpha) = Dir(\mu | \alpha + m) = \frac{\Gamma (\alpha_0 +
@@ -1237,7 +1262,7 @@ regression: $t = y(x, w) + \epsilon,\ \epsilon \sim N(0, \sigma^2)$.
 Graphically, this looks like a bell curve, which is symmetric about $\mu$ and
 its peak is $\frac{1}{\sqrt{2\pi}}$ at $x=0$.
 
-#### Properties of the Gaussian
+#### Properties
 
 We have a lot of interesting properties. Let $X\sim N(\mu, \sigma^2)$.
 
@@ -1331,8 +1356,8 @@ Let $\Delta$ be:
 
 $$\Delta^2 = (x - \mu)^T \Sigma^{-1} (x - \mu)$$
 
-The quality $\Delta$ is called the _Mahalanobis distance_ form $\mu$ to $x$. It reduces
-to the Euclidean distance when $\Sigma$ is the identity matrix.
+The quantity $\Delta$ is called the _Mahalanobis distance_ form $\mu$ to $x$. It
+reduces to the Euclidean distance when $\Sigma$ is the identity matrix.
 
 #### The covariance Matrix
 
@@ -1346,9 +1371,8 @@ $$u_i^T u_j = I_{ij} = 1\ if\ i=j,\ 0\ otherwise$$
 
 Moreover:
 
-$$\Sigma = \sum_{i=1}^D \lambda_i u_i u_i^T$$
-
-$$\Sigma^{-1} = \sum_{i=1}^D \frac{1}{\lambda_i} u_i u_i^T$$
+$$\Sigma = \sum_{i=1}^D \lambda_i u_i u_i^T \qquad \Sigma^{-1} = \sum_{i=1}^D
+\frac{1}{\lambda_i} u_i u_i^T$$
 
 We have that:
 
@@ -1629,7 +1653,7 @@ d\tau = $$
 
 $$= \frac{\Gamma(\nu / 2 + 1/2)}{\Gamma (\nu / 2)} (\frac{\lambda}{\pi \nu})^{1/2} [ 1 + \frac{\lambda (x - \mu)^2}{\nu} ]^{-\nu / 2 - 1 / 2} = St(x | \mu, \lambda, \nu)$$
 
-where $\nu = 2a$ (the _degrees of freedom) and $\lambda = a / b$ (the precision
+where $\nu = 2a$ (the _degrees of freedom_) and $\lambda = a / b$ (the precision
 of the t-distribution). This is essentially an infinite mixture of Gaussians
 with the same mean and different precisions. For $\nu = 1$ it is the _Cauchy_
 distribution; for $\nu \rightarrow \infty$ it becomes $N(x | \mu, \lambda^{-1})$
@@ -1681,8 +1705,8 @@ Properties:
   a full distribution over $w$ given the data.
 
 Given the training data $D$ composed of $w$ and $t$, along with a new test point
-$x$, our goal is to predict the value of $t$, which is $p(t | x, w, t), suppose
-that $\alpha$ and $\beta$ are known in advance. $Assume Gaussian noise and a
+$x$, our goal is to predict the value of $t$, which is $p(t | x, w, t)$, suppose
+that $\alpha$ and $\beta$ are known in advance. Assume Gaussian noise and a
 Gaussian prior over weights:
 
 $$p(t | x, w, \beta) = N(t | y(x, w), \beta^{-1}),\qquad p(w|\alpha ) = N(w | 0,
@@ -1746,8 +1770,8 @@ $$\bar{r} \cos \bar{\theta} = \frac{1}{N} \sum_{i=1}^N \cos \theta_i \qquad
 
 Since $\tan \theta = \frac{\sin \theta}{\cos \theta}$, we obtain:
 
-$$\bar{\theta} = tan^{-1} { \frac{\sum_{i=1}^N \sin \theta_i}{\sum_{i=1}^N} \cos
-\theta_i}$$
+$$\bar{\theta} = tan^{-1} \{ \frac{\sum_{i=1}^N \sin \theta_i}{\sum_{i=1}^N \cos
+\theta_i} \}$$
 
 which does not depend on the choice of origin.
 

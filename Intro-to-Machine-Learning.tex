@@ -791,7 +791,7 @@ derivatives''
 \[\nabla f(w) = (\frac{\partial f}{\partial w_1} (w), ..., \frac{\partial f}{\partial w_D} (w_D))^T\]
 
 The rate of change of \(f\) along a unit direction \(u\) (also called
-the \emph{symplex} direction) is the \_directional derivative\$
+the \emph{symplex} direction) is the \emph{directional derivative}
 \(\nabla f(w)^T u = ||\nabla
 f(w)||\cos \theta\). The gradient points in the direction of steepest
 descent. \(\nabla f(w)\) is orthogonal to the contour line (level set)
@@ -876,7 +876,7 @@ Error function (sum of squares):
 To minimize this error function we can use the gradient descent
 approach, where:
 
-\$\(w_{t+1} = w_t - \delta \nabla f(w_t)\)
+\[w_{t+1} = w_t - \delta \nabla f(w_t)\]
 
 \(\delta\) is the learning rate. Iterating this finds \(w\) that
 minimise \(E(w)\).
@@ -903,10 +903,15 @@ events at priori, while \emph{statistic} is the study of their
 likelihood at posteriori. Probability gives us a principled language for
 uncertainty in both data and model parameters.
 
+\paragraph{Sample space}\label{sample-space}
+
 We define the \emph{sample space} \(\Omega\) as the set of all possible
-outcomes of an experiment. A \(\sigma\)-algebra
-\(\Sigma \subseteq 2^{\Omega}\) is a subset of the sample space such
-that:
+outcomes of an experiment.
+
+\paragraph{Sigma algebra}\label{sigma-algebra}
+
+A \(\sigma\)-algebra \(\Sigma \subseteq 2^{\Omega}\) is a subset of the
+sample space such that:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -923,12 +928,12 @@ that:
   \(A_1, A_2, ... \in \Sigma\) then \(\bigcup_i A_i \in \Sigma\)
 \end{enumerate}
 
-Suppose we want to toss a count. On \(\Omega_C = \{H, T\}\) the
+Suppose we want to toss a coin. On \(\Omega_C = \{H, T\}\) the
 \(\sigma\)-algebra \(\Sigma_C\) contains: \(\emptyset\) (neither head
 nor tail), \(\{H\}, \{T\}, \{H,
 T\}\).
 
-\subsubsection{Probability measure}\label{probability-measure}
+\paragraph{Probability measure}\label{probability-measure}
 
 Let \(\Sigma \subseteq 2^{\Omega}\) be a \(\sigma\)-algebra. A
 \emph{probability measure} is a function
@@ -942,9 +947,11 @@ Let \(\Sigma \subseteq 2^{\Omega}\) be a \(\sigma\)-algebra. A
   \(P\) is normalized: \(P_r(\Omega)=1\)
 \item
   \(P\) is \(\sigma\) -additive: if
-  \(A_i \cap A_j \ne \emptyset,\ A\in \Omega\) then
+  \(A_i \cap A_j = \emptyset,\ A\in \Omega\) then
   \(P_r(\cup_i A_i)=\sum_i P_r(A_i)\)
 \end{itemize}
+
+\paragraph{Probability space}\label{probability-space}
 
 A \emph{probability space} is a tripe \((\Omega, \Sigma, P_r)\) where:
 
@@ -962,11 +969,11 @@ properties hold:
 
 \begin{itemize}
 \item
-  For any \(A \in \sigma\), \(P_r(\Omega \setminus A) = 1 - P_r(A)\)
+  For any \(A \in \Sigma\), \(P_r(\Omega \setminus A) = 1 - P_r(A)\)
 \item
   From set theory, you can demonstrate that the following holds:
   \(A, B \in
-  \sigma\), \(P_r(A \cup B) = P_r(A) + P_r(B) - P_r(A \cap B)\)
+  \Sigma\), \(P_r(A \cup B) = P_r(A) + P_r(B) - P_r(A \cap B)\)
 \item
   In particular,
   \(P_r(\emptyset ) = 0 \land A \subseteq B \Rightarrow P_r(A) \le
@@ -985,9 +992,9 @@ It follows that:
   if \(A\) and \(B\) are \emph{mutually exclusive}
   \((A \cap B = \emptyset)\), then \(P_r(A|B) = 0\)
 \item
-  if \(B\) is a \emph{precondition} for \(A (A \subseteq B)\), then
-  \(P_r(A \cap B) -
-  P_r(A)\), so \(P_r(A|B) = P_r(A) / P_r(B)\)
+  if \(B\) is a \emph{precondition} for \(A\), meaning
+  \((A \subseteq B)\), then \(P_r(A
+  \cap B) = P_r(A)\), so \(P_r(A|B) = P_r(A) / P_r(B)\)
 \item
   Two events are \emph{independent} if knowing that one occurred tells
   us nothing about hte probability of the other,
@@ -1001,25 +1008,20 @@ probability}\label{the-two-rules-of-probability}
 
 There are two very important rules in probability:
 
-\begin{itemize}
-\tightlist
-\item
-  the sum rule:
-\end{itemize}
+\paragraph{The sum rule}\label{the-sum-rule}
 
 \[p(X) = \sum_Y p(X, Y)\]
 
-\begin{itemize}
-\tightlist
-\item
-  the product rule:
-\end{itemize}
+\paragraph{The product rule}\label{the-product-rule}
 
 \[p(X,Y) = p(Y|X)p(X)\]
 
-They are not hard to demonstrate, if you are curious an explanation is
-provided in chapter 1.2 of Bishop's ``Pattern Recognition and Machine
-Learning'' book (2006).
+Where \(p(X, Y)\) is a joint probability, meaning that it is the
+probability of \(X\) \emph{and} \(Y\). \(p(X|Y)\), instead, is a
+conditional probability, meaning the probability of \(X\) given
+\(Y\).They are not hard to demonstrate, if you are curious an
+explanation is provided in chapter 1.2 of Bishop's ``Pattern Recognition
+and Machine Learning'' book (2006).
 
 \subsubsection{Bayes Theorem}\label{bayes-theorem}
 
@@ -1048,11 +1050,13 @@ the \emph{likelihood} times the \emph{prior} observation, where:
   \(p(B)\) is a normalizing constant (evidence)
 \end{itemize}
 
-The denominator is computed with the \emph{law of total probability}.
+The denominator is computed with the \emph{law of total probability}:
+\(P(B) = \sum_i
+P(B|A_i) P(A_i)\).
 
 \subsubsection{Stochastic Independence}\label{stochastic-independence}
 
-Events \(A\in \Omega\) are said to be independent if:
+Events \(A\in \Omega\) are said to be \emph{independent} if:
 
 \[P_r(A_{i1} \cap A_{i2} \cap ... \cap A_{ik}) = \prod_{j=1}^k P_r(A_{ij}) = P_r(A_{i1})\cdot P_r(A_{i2})\cdot ...\cdot P_r(A_{ik})\]
 
@@ -1070,11 +1074,14 @@ Random variables are a mathematical formalization used to model
 quantities which depend on random events, it lets us quantify random
 events so that we can make probability calculations.
 
-More formally, a random variable is a function that maps event in some
+More formally, a random variable is a function that maps an event in a
 sample space \(\Omega\) to a set of outcomes in measurable space \(E\),
 which is often \(\mathbb{R}\).
 
 \[X:\Omega \to E\]
+
+\paragraph{Probability of a random
+variable}\label{probability-of-a-random-variable}
 
 The probability that \(X\) takes on a value in a measurable set
 \(S\subseteq E\) is written as
@@ -1082,6 +1089,8 @@ The probability that \(X\) takes on a value in a measurable set
 \[P_r(X\in S) = P_r(\{ \omega \in \Omega \ |\ X(\omega)\in S \})\]
 
 \subsubsection{Distribution Function}\label{distribution-function}
+
+\paragraph{CDF}\label{cdf}
 
 Let \(X\) be a random variable on the probability space
 \((\Omega, \Sigma, P_r)\). A function \(F: \mathbb{R}\to [0, 1]\) is a
@@ -1127,7 +1136,7 @@ all real \(x\), in other words: it does not have point masses. A random
 variable is \emph{discrete} if it takes values in a finite or countable
 set \(S \subseteq \mathbb{R}\).
 
-\paragraph{Discrete case}\label{discrete-case}
+\paragraph{Discrete case (PMF)}\label{discrete-case-pmf}
 
 Let \(X\) be a discrete random variable, then the \emph{probability mass
 function} (PMF) \(p_X(x) = P_r(X=x), x\in \mathbb{R}\) satisfies the
@@ -1142,7 +1151,7 @@ can be calculated by summing the masses of the values in that set:
 
 \[P_r(X\in A) = \sum_{x\in A} p_X(x)\]
 
-\paragraph{Continuous Case}\label{continuous-case}
+\paragraph{Continuous Case (PDF)}\label{continuous-case-pdf}
 
 Let \(X\) be a continuous random variable, the \emph{probability density
 function} \(f_X(x) = \frac{dF_X(x)}{dx}\) (PDF) satisfies:
@@ -1177,7 +1186,7 @@ economics, populations, and more.
 \begin{itemize}
 \tightlist
 \item
-  Bernoulli:
+  Bernoulli \(X \sim Ber(p)\):
 \end{itemize}
 
 \[X(\omega)=\{0, 1\}\]
@@ -1240,11 +1249,15 @@ economics, populations, and more.
 
 \subsubsection{Expected Value}\label{expected-value}
 
+\paragraph{Discrete case}\label{discrete-case}
+
 Let \(X\) be a discrete random variable taking values in \(S\), with
 probability mass function \(p(\cdot)\). The \emph{mean} or
 \emph{expected value} is defined as:
 
 \[\mu = \mathbb{E}[x] = \sum_{x\in S} x\cdot p_X(x)\]
+
+\paragraph{Continuous case}\label{continuous-case}
 
 If \(X\) is a continuous random variable with density function
 \(f_X(x) = \frac{dF(x)}{dx}\), the expected value of \(X\) is:
@@ -1255,11 +1268,13 @@ The expectation only gives us an idea of the average value assumed by a
 random variable, not of how much individual values may differ from this
 average.
 
+\paragraph{Properties}\label{properties}
+
 The expected value is a linear function:
 
 \[E(aX+b) = a\mathbb{E}(x)+b\] \[E(g(x))=\sum_{x\in R_x} g(x)p_x(x)\]
 
-Known formulas for notable random variables:
+\paragraph{Notable formulas}\label{notable-formulas}
 
 \begin{itemize}
 \tightlist
@@ -1298,21 +1313,23 @@ We define the covariance as:
 
 \subsubsection{Standardization}\label{standardization}
 
-\[z=g(x)=\frac{x-\mathbb{E}[x]}{\sqrt{\mathbb{V}ar[x]}}\]
+Given a random variable \(X\), we can standardize it with this formula:
+
+\[Z=g(Z)=\frac{X-\mathbb{E}[X]}{\sqrt{\mathbb{V}ar[X]}}\]
 
 After this transformation:
 
 \begin{itemize}
 \tightlist
 \item
-  \(\mathbb{E}[z]=0\)
+  \(\mathbb{E}[Z]=0\)
 \item
-  \(\mathbb{V}ar[z]=1\)
+  \(\mathbb{V}ar[Z]=1\)
 \end{itemize}
 
-The opposite can be achieved:
+The inverse operation can be computed too:
 
-\[x=\sigma z + \mu\]
+\[X=\sigma Z + \mu\]
 
 \subsubsection{Markov Inequality}\label{markov-inequality}
 
@@ -1341,7 +1358,9 @@ The \emph{Bernoulli distribution} over \(x\) can be written in the form:
 
 \[\mathbb{E}[Bern(x|\mu )] = \mu\]
 
-\[\mathbb{v}ar[Bern(x|\mu )] = \mu (1-\mu)\]
+\[\mathbb{V}ar[Bern(x|\mu )] = \mu (1-\mu)\]
+
+\paragraph{Likelihood}\label{likelihood}
 
 Let \(D=\{x_1, ..., x_N\}\) be a set of independent observed values of
 \(x\) drawn from \(p(x|\mu )\). The likelihood of \(D\) is:
@@ -1350,24 +1369,23 @@ Let \(D=\{x_1, ..., x_N\}\) be a set of independent observed values of
 
 Let \(D=\{x_1, ..., x_N\}\) be independent observations of variable
 \(x\) we assume Bernoulli-distributed with unknown parameter \(\mu\).
-
 How can we estimate the parameter \(\mu\)?
 
-We maximise the likelihood function \(f(\mu) = p(D|\mu)\), or
-equivalently its logarithm:
+To do this, we maximise the likelihood function \(f(\mu) = p(D|\mu)\),
+or, equivalently (!!), its logarithm:
 
 \[\ln p(D|\mu) = \sum_{i=1}^N \ln p(x_i|\mu )\]
 
 \[\ln p(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)\]
 
-We derive this and set it equal to 0. We obtain the maximum likelihood
-estimator:
+We derive this and set it equal to 0. We obtain the \emph{maximum
+likelihood estimator}:
 
 \[\mu_{ML}=\frac{1}{N}\sum_{n=1}^N x_n\]
 
 which is also known as the \emph{sample mean}. If we denote the number
-of observations of \(x=1\) with \(m\), then we can write this in the
-form:
+of observations of \(x=1\) with \(m\), since \(x \in \{0, 1\}\), we can
+write this in the form:
 
 \[\mu = \frac{m}{N}\]
 
@@ -1383,7 +1401,7 @@ called the \emph{Binomial distribution}:
 
 \[\binom{N}{m} \equiv \frac{N!}{(N-m)!m!}\]
 
-We also have the following:
+And:
 
 \[\mathbb{E}[m] = N \mu\]
 
@@ -1408,7 +1426,7 @@ The gamma function behaves like a factorial in the natural numbers, but
 it is defined on all real numbers, so it can be thought as the
 continuous version of the factorial in the complex numbers.
 
-Beta distribution:
+The Beta distribution is:
 
 \[Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}\]
 
@@ -1418,7 +1436,7 @@ In some sense, this distribution generalizes the binomial distribution.
 
 \[\mathbb{E}[\mu] = \frac{a}{a+b}\]
 
-\[var[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}\]
+\[\mathbb{V}ar[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}\]
 
 The parameters \(a\) and \(b\) are often called \emph{hyperparameters}
 because they control the distribution of the parameter \(\mu\). In some
@@ -1451,13 +1469,13 @@ likelihood estimate \(m/N\) (the sample mean)!
 
 \subsubsection{Multinomial distribution}\label{multinomial-distribution}
 
-Multinomial variables are binary variables describe quantities that can
-take one of two possible values. Often, however, we encounter discrete
-variables that can take one of \(K\) possible mutually exlusive states.
-A particularly convenient representation is the \(1-of-K\) scheme: the
-variable is represented by a \(K\)-dimensional vector \(x\) in which
-exactly one element \(x_k\) equals 1 and all the others equal \(0\). So,
-for instance, if we have a variable that can take \(K=6\) states and a
+Binary variables describe quantities that can take one of two possible
+values. Often, however, we encounter discrete variables that can take
+one of \(K\) possible mutually exlusive states. A particularly
+convenient representation is the \emph{1-of-K} scheme: the variable is
+represented by a \(K\)-dimensional vector \(x\) in which exactly one
+element \(x_k\) equals 1 and all the others equal \(0\). So, for
+instance, if we have a variable that can take \(K=6\) states and a
 particular observation of the variable happens to correspond to the
 state where \(x_3 = 1\), then \(x\) will be represented by:
 
@@ -1502,7 +1520,7 @@ subject to the constraint \(\sum_{k=1}^K \mu_k = 1\).
 This can be achieved using a Lagrange multiplier \(\lambda\),
 maximizing:
 
-\[\sum_{k=1}^K m_k \ln \mu_k + \lambda (\sum_{k=1}^K) \mu_k - 1)\]
+\[\sum_{k=1}^K m_k \ln \mu_k + \lambda (\sum_{k=1}^K \mu_k - 1)\]
 
 Setting the derivative with respect to \(\mu_k\) to zero, we obtain:
 
@@ -1528,13 +1546,13 @@ coefficient is the number of ways of partitioning \(N\) objects into
 \(K\) groups of size \(m_1,
 ..., m_K\) and is given by:
 
-\[\binom{N}{m_1 m_2 ... m_K} = \frac{N!}{m_1 m_2! ... m_K!}\]
+\[\binom{N}{m_1 m_2 ... m_K} = \frac{N!}{m_1! m_2! ... m_K!}\]
 
 Note that the variables \(m_k\) are subject to the constraint:
 
 \[\sum_{k=1}^K m_k = N\]
 
-An example events that can be modeled in this way is the face of a dice.
+An example event that can be modeled in this way is the face of a dice.
 
 \subsubsection{Dirichlet Distribution}\label{dirichlet-distribution}
 
@@ -1567,7 +1585,7 @@ posterior distribution for the parameters \(\{\mu_k \}\) in the form:
 \mu_k^{a_k + m_k - 1}\]
 
 The posterior preserved the form of a Dirichlet: the Diricklet is a
-conjugate for of the multinomial. This allows us to determine the
+conjugate prior of the multinomial. This allows us to determine the
 normalization coefficient so that:
 
 \[p (\mu | D, \alpha) = Dir(\mu | \alpha + m) = \frac{\Gamma (\alpha_0 +
@@ -1591,7 +1609,7 @@ noise in linear regression:
 this looks like a bell curve, which is symmetric about \(\mu\) and its
 peak is \(\frac{1}{\sqrt{2\pi}}\) at \(x=0\).
 
-\paragraph{Properties of the Gaussian}\label{properties-of-the-gaussian}
+\paragraph{Properties}\label{properties-1}
 
 We have a lot of interesting properties. Let \(X\sim N(\mu, \sigma^2)\).
 
@@ -1720,7 +1738,7 @@ Let \(\Delta\) be:
 
 \[\Delta^2 = (x - \mu)^T \Sigma^{-1} (x - \mu)\]
 
-The quality \(\Delta\) is called the \emph{Mahalanobis distance} form
+The quantity \(\Delta\) is called the \emph{Mahalanobis distance} form
 \(\mu\) to \(x\). It reduces to the Euclidean distance when \(\Sigma\)
 is the identity matrix.
 
@@ -1738,9 +1756,8 @@ set:
 
 Moreover:
 
-\[\Sigma = \sum_{i=1}^D \lambda_i u_i u_i^T\]
-
-\[\Sigma^{-1} = \sum_{i=1}^D \frac{1}{\lambda_i} u_i u_i^T\]
+\[\Sigma = \sum_{i=1}^D \lambda_i u_i u_i^T \qquad \Sigma^{-1} = \sum_{i=1}^D
+\frac{1}{\lambda_i} u_i u_i^T\]
 
 We have that:
 
@@ -2062,11 +2079,12 @@ d\tau = \]
 
 \[= \frac{\Gamma(\nu / 2 + 1/2)}{\Gamma (\nu / 2)} (\frac{\lambda}{\pi \nu})^{1/2} [ 1 + \frac{\lambda (x - \mu)^2}{\nu} ]^{-\nu / 2 - 1 / 2} = St(x | \mu, \lambda, \nu)\]
 
-where \(\nu = 2a\) (the \_degrees of freedom) and \(\lambda = a / b\)
-(the precision of the t-distribution). This is essentially an infinite
-mixture of Gaussians with the same mean and different precisions. For
-\(\nu = 1\) it is the \emph{Cauchy} distribution; for
-\(\nu \rightarrow \infty\) it becomes \(N(x | \mu, \lambda^{-1})\)
+where \(\nu = 2a\) (the \emph{degrees of freedom}) and
+\(\lambda = a / b\) (the precision of the t-distribution). This is
+essentially an infinite mixture of Gaussians with the same mean and
+different precisions. For \(\nu = 1\) it is the \emph{Cauchy}
+distribution; for \(\nu \rightarrow \infty\) it becomes
+\(N(x | \mu, \lambda^{-1})\)
 
 Informally, with the t-Distribution we handle better the outliers: they
 do not affect dramatically the variance.
@@ -2128,9 +2146,8 @@ Properties:
 
 Given the training data \(D\) composed of \(w\) and \(t\), along with a
 new test point \(x\), our goal is to predict the value of \(t\), which
-is \$p(t \textbar{} x, w, t), suppose that \(\alpha\) and \(\beta\) are
-known in advance. \$Assume Gaussian noise and a Gaussian prior over
-weights:
+is \(p(t | x, w, t)\), suppose that \(\alpha\) and \(\beta\) are known
+in advance. Assume Gaussian noise and a Gaussian prior over weights:
 
 \[p(t | x, w, \beta) = N(t | y(x, w), \beta^{-1}),\qquad p(w|\alpha ) = N(w | 0,
 \alpha^{-1} I)\]
@@ -2201,8 +2218,8 @@ have:
 
 Since \(\tan \theta = \frac{\sin \theta}{\cos \theta}\), we obtain:
 
-\[\bar{\theta} = tan^{-1} { \frac{\sum_{i=1}^N \sin \theta_i}{\sum_{i=1}^N} \cos
-\theta_i}\]
+\[\bar{\theta} = tan^{-1} \{ \frac{\sum_{i=1}^N \sin \theta_i}{\sum_{i=1}^N \cos
+\theta_i} \}\]
 
 which does not depend on the choice of origin.
 
