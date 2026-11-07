@@ -1102,7 +1102,7 @@ $$p(x=1 | D) = \frac{m + a}{m + a + l + b}$$
 When $m, l \rightarrow \infty,\ p(x=1 | D)$ reduces to the maximum likelihood
 estimate $m/N$ (the sample mean)!
 
-### Multinomial Variables
+### Multinomial distribution
 
 Multinomial variables are binary variables describe quantities that can take one
 of two possible values. Often, however, we encounter discrete variables that can
@@ -1224,3 +1224,610 @@ N)}{\Gamma (\alpha_1 + m_1) \cdot \cdot \cdot \Gamma(\alpha_K + m_K)} \prod_{k=1
 where we have denoted $m = (m_1, ..., m_K)^T$. As for the case of the binomial
 distribution with its beta prior, we can interpret the parameters $\alpha_k$ of
 the Dirichlet prior as an effective number of observations of $x_k = 1$.
+
+### Gaussian Distribution
+
+$$N(x| \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} exp(-\frac{(x-\mu)^2}{2\sigma^2})$$
+
+Fully described by mean $\mu$ and variance $\sigma^2$
+
+The _central limit theorem_ states that sums of many independent effects tend to
+a Gaussian. For example, we assume Gaussian-distributed noise in linear
+regression: $t = y(x, w) + \epsilon,\ \epsilon \sim N(0, \sigma^2)$.
+Graphically, this looks like a bell curve, which is symmetric about $\mu$ and
+its peak is $\frac{1}{\sqrt{2\pi}}$ at $x=0$.
+
+#### Properties of the Gaussian
+
+We have a lot of interesting properties. Let $X\sim N(\mu, \sigma^2)$.
+
+- Normalisation: from the Gaussian integral $\int_{-\infty}^\infty e^{-y^2/2}dy
+  = \sqrt{2\pi}$
+
+$$\int_{-\infty}^{\infty } N(x | \mu, \sigma^2 ) dx = 1$$
+
+- Mean: with $y=x - \mu$, the term $y N(y | 0, \sigma^2 )$ is an odd function,
+  so its integral is 0:
+
+  $$\mathbb{E}[X] = \int_{-\infty}^{\infty} (y + \mu ) N(y|0, \sigma^2 ) dy = 0
+  + \mu = \mu$$
+
+- Variance: $\mathbb{V}ar[X] = \mathbb{E}[(X - \mu)^2] = \sigma^2$, and the
+  _precision_ is $\beta = 1 / \sigma^2$
+
+- Mean = median = mode = $\mu$ by symmetry
+
+- Linear transformations: if $X\sim N(\mu, \sigma^2)$ and $a\ne 0$, then:
+
+$$aX + b \sim N(a\mu + b, a^2 \sigma^2)$$
+
+- Standardisation: as a special case, the _standard normal_ distribution is:
+
+$$Z = \frac{X - \mu}{\sigma} \sim N(0, 1)$$
+
+- Sums: if $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$
+  are independent, then:
+
+$$X_1 + X_2 \sim N(\mu_1 + \mu_2, \sigma^2_1 + \sigma_2^2)$$
+
+- Averages: the mean of $N$ independent copies of $X$ satisfied $\bar{X} \sim
+  N(\mu , \sigma^2 / N)$: averaging reduces the spread by a factor of $\sqrt{N}$
+
+For a continuous variable, probabilities are _areas under the density_. With the
+distribution function $F(x) = Pr(X\le x)$:
+
+$$Pr(a\le X \le b) = \int_a^b N(x|\mu, \sigma^2) dx = F(b) - F(a)$$
+
+There is a problem: $e^{-y^2}$ has no closed form (we cannot calculate it
+analytically), so we use table values.
+
+#### The standard normal distribution function
+
+We only need the distribution function of $Z\sim N(0, 1)$, computed once and for
+all:
+
+$$\Phi = Pr(Z\le z) = \int_{-\infty}^z \frac{1}{\sqrt{2\pi}} e^{-t^2 / 2} dt$$
+
+Since $X \le x$ if and only if $Z = \frac{X - \mu }{\sigma } \le \frac{x - \mu}{\sigma}$, for any $X \sim N(\mu, \sigma^2)$:
+
+$$F(x) = \Phi (\frac{x- \mu}{\sigma}) \Rightarrow Pr(a \le X \le b) =
+\Phi(\frac{b - \mu}{\sigma}) - \Phi (\frac{a - \mu}{\sigma})$$
+
+There are some useful identities of $\Phi$:
+
+- $\Phi (0) = 0.5$
+
+- $\Phi (-z) = 1 - \Phi(z)$
+
+- $P_r(X > x) = 1 - \Phi(z)$
+
+- $P_r(|X - \mu| \le k \sigma) = 2\Phi (x) - 1$
+
+The inverse $\Phi^{-1}$ gives _quantiles_: the value $x$ such that $P_r(X\le x) =
+q$ is:
+
+$$x = \mu + \sigma \Phi^{-1} (q)$$
+
+The $68-95-99.7$ rule:
+
+- $P_r(|X - \mu| \le \sigma) \approx 0.683$
+
+- $Pr(|X-\mu | \le 2 \sigma ) \approx 0.954$
+
+- $Pr(|X-\mu | \le 3 \sigma ) \approx 0.997$
+
+#### The Multivariate Gaussian Distribution
+
+For a D-dimensional vector $x$, the multivariate Gaussian distribution takes the
+form:
+
+$$N(x|\mu, \Sigma) = \frac{1}{(2\pi)^{D/2}}
+\frac{1}{|\Sigma|^{1/2}}exp(-\frac{1}{2}(x - \mu)^T \Sigma^{-1} (x - \mu))$$
+
+where $\mu$ is the D-dimensional mean vector, $\Sigma$ is the $D \times D$
+convariance matrix and $|\Sigma|$ is its determinant.
+
+Let $\Delta$ be:
+
+$$\Delta^2 = (x - \mu)^T \Sigma^{-1} (x - \mu)$$
+
+The quality $\Delta$ is called the _Mahalanobis distance_ form $\mu$ to $x$. It reduces
+to the Euclidean distance when $\Sigma$ is the identity matrix.
+
+#### The covariance Matrix
+
+The covariance matrix $\Sigma$ is _symmetric_, since $cov[x_i, x_j] = cov[x_j,
+x_i]$, and is assumed to be _positive definite_. The eigenvectors of $\Sigma$
+are real and can be chosen to form an _orthonormal_ set:
+
+$$\Sigma u_i = \lambda_i u_i$$
+
+$$u_i^T u_j = I_{ij} = 1\ if\ i=j,\ 0\ otherwise$$
+
+Moreover:
+
+$$\Sigma = \sum_{i=1}^D \lambda_i u_i u_i^T$$
+
+$$\Sigma^{-1} = \sum_{i=1}^D \frac{1}{\lambda_i} u_i u_i^T$$
+
+We have that:
+
+$$\Delta^2 = \sum_{i=1}^D \frac{y_i^2}{\lambda_i}$$
+
+where $y_u = u_i^T (x - \mu )$. We can interpret $y = (y_1, ..., y_d)^T$ as a
+new coordinate system:
+
+$$y = U (x - \mu)$$
+
+where $U$ is the orthogonal matrix whose rows are the $u_i^T$, so that $UU^T =
+U^T U = I$.
+
+#### Conditional Gaussian Distributions
+
+Suppose $x$ is a D-dimensional vector with Gaussian distribution $N(x|\mu,
+\Sigma)$, and that we partition $x$ into two disjoint subsets $x_a$ and $x_b$:
+
+$$
+\bm{x} = \begin{pmatrix} \bm{x}_a \\ \bm{x}_b \end{pmatrix} 
+\qquad\qquad 
+\bm{\mu} = \begin{pmatrix} \bm{\mu}_a \\ \bm{\mu}_b \end{pmatrix} 
+\qquad\qquad 
+\bm{\Sigma} = \begin{pmatrix} \bm{\Sigma}_{aa} & \bm{\Sigma}_{ab} \\ \bm{\Sigma}_{ba} & \bm{\Sigma}_{bb} \end{pmatrix}
+$$
+
+It is convenient to work with the _precision matrix_ $\Lambda = \Sigma^{-1}$:
+
+$$
+\bm{\Lambda} = \begin{pmatrix} \bm{\Lambda}_{aa} & \bm{\Lambda}_{ab} \\ \bm{\Lambda}_{ba} & \bm{\Lambda}_{bb} \end{pmatrix}
+$$
+
+Our goal is to find the distribution of $x_a$ given $x_b,\ p(x_a | x_b)$. This
+can be obtained by fixing $x_b$ in $p(x)$ and renormalising. The result is again
+a Gaussian:
+
+$$p(x_a | x_b) = N(x_a | \mu_{a|b}, \Sigma_{a|b})$$
+
+where:
+
+$$\mu_{a|b} = \mu_a + \Sigma_{ab} \Sigma_{bb}^{-1} (x_b - \mu_b)$$
+
+$$\Sigma_{a|b} = \Lambda_{aa}^{-1} = \Sigma_{aa} - \Sigma_{ab} \Sigma_{bb}^{-1}
+\Sigma_{ba}$$
+
+The _marginal_ distribution is Gaussian too:
+
+$$p(x_a) = \int p(x_a, x_b) dx_b = N(x_a | \mu_a, \Sigma_{aa})$$
+
+#### Bayes theorem for Gaussian Variables
+
+Given a Gaussian distribution for $x$ and a conditional Gaussian distribution
+for $y$ given $x$, of the form
+
+$$p(x) = N(x|\mu, \Lambda^{-1}) \qquad \qquad p(y|x) = N(y | Ax + b, L^{-1})$$
+
+where $\mu, A$ and $b$ are parameters governing the means, and $\Lambda$ and $L$
+are precision matrices. The marginal distribution of $y$ and the conditional
+distribution of $x$ given $y$ are:
+
+$$p(x) = N(y | A\mu + b, L^{-1} + A \Lambda^{-1} A^T)$$
+
+$$p(x | y) = N(x | \Sigma\{A^T L(y = b) + \Lambda \mu \}, \Sigma )$$
+
+where $\Sigma = (\Lambda + A^T L A)^{-1}$
+
+### Learning the Parameters of a Gaussian
+
+Given i.i.d observations $X = (x_1, ..., x_N)^T$, the log likelihood function
+is:
+
+$$\ln p(X| \mu, \Sigma) = - \frac{ND}{2} \ln (2\pi) - \frac{N}{2} \ln |\Sigma| -
+\frac{1}{2} \sum_{i=1}^N (x_i - \mu)^T \Sigma^{-1} (x_i - \mu)$$
+
+Sufficient statistics:
+
+$$\sum_i x_i \qquad \sum_i x_i x_i^T$$
+
+Solutions:
+
+$$\mu_{ML} = \frac{1}{N} \sum_i x_i$$
+
+$$\Sigma_{ML} = \frac{1}{N} \sum_i (x_i - \mu_{ML})(x_i - \mu_{ML})^T$$
+
+$\Sigma_{ML}$ is biased: $\mathbb{E}[\Sigma_{ML}] = \frac{N-1}{N}\Sigma$.
+Dividing by $N-1$ instead of $N$ removes the bias.
+
+#### Sequential Estimation
+
+We can update the mean as new experiments are gathered (sequential estimation):
+
+$$\mu_{ML}^{(N)} = \frac{1}{N} \sum_{i=1}^N x_i = \frac{1}{N} x_N + \frac{1}{N} \sum_{i=1}^{N-1} x_i = \frac{1}{N} x_N + \frac{N-1}{N} \mu_{ML}^{N-1}$$
+
+$$  = \mu_{ML}^{(N-1)} + \frac{1}{N} (x_N - \mu_{ML}^{(N-1)}) $$
+
+This approach can be generalized to any distribution (Robbins-Monro algorithm).
+Consider a pair of random variables $\theta$ and $z$ governed by a joint
+distribution $p(z, \theta)$. The conditional expectation of $z$ given $\theta$
+defines a deterministic function $f(\theta)$, called the _regression function_:
+
+$$f(\theta) = \mathbb{E}[z|\theta ] = \int zp(z|\theta ) dz$$
+
+Our goal is to find a root $\theta^*$ such that $f(\theta^*) = 0$.
+
+We assume that the conditional variance of $z$ is finite:
+
+$$\mathbb{E} [(z - f)^2 | \theta ] < \infty $$
+
+and, without loss of generality, that $f(\theta) < 0$ if $\theta < \theta^*$ and
+$f(\theta) > 0$ if $\theta > \theta^*$. The Robbins-Monro algorithms defines a
+sequence of successive estimates of $\theta^*$:
+
+$$\theta^{(N)} = \theta^{(N-1)} - a_{N-1} z(\theta^{(N01)})$$
+
+where $z(\theta^{(N)})$ is an observed value of $z$ when $\theta$ takes the
+value $\theta^{(N)}$, and the coefficients $\{a_N\}$ satisfy:
+
+- $\lim_{N \rightarrow \infty} a_N = 0$
+
+- $\sum_{N=1}^{\infty} a_N = \infty$
+
+- $\sum_{N=1}^{\infty} a_N^2 < \infty$
+
+Under these conditions the sequence converges to the root $\theta^*$ with
+probability one.
+
+How can a general maximum likelihood problem be solved sequentially using the
+Robbins-Monro algorithm? By definitions, the maximum likelihood solution
+$\theta_{ML}$ is a stationary point of the log likelihood function:
+
+$$\frac{\partial }{\partial \theta}\{ \frac{1}{N} \sum_{i=1}^N \ln p(x_i |
+\theta) \} = 0$$
+
+Exchanging derivative and summation, and taking the limit $N \rightarrow \infty$:
+
+$$\lim_{N \rightarrow \infty} \frac{1}{N} \sum_{i=1}^N \frac{\partial}{\partial
+\theta} \ln p(x_i | \theta ) = \mathbb{E}_x[\frac{\partial}{\partial \theta} \ln
+p(x|\theta )]$$
+
+Finding the maximum likelihood solution is finding the root of a regression
+function! The Robbins-Monro algorithm takes the form:
+
+$$\theta^{(N)} = \theta^{(N-1)} + a_{N-1} \frac{\partial}{\partial \theta^{(n-1)}} \ln p(x_N | \theta^{(N-1)})$$
+
+For the mean of a Gaussian distribution, $\theta^{(N)}$ is $\mu_{ML}^{(N)}$.
+
+The random variable $z$ is given by:
+
+$$z = - \frac{\partial}{\partial \mu_{ML}} \ln p(x | \mu_{ML}, \sigma^2) =
+-\frac{1}{\sigma^2} (x - \mu_{ML})$$
+
+Choosing the coefficients $a_N = \sigma^2 / N$ we obtain
+
+$$\mu_{ML}^{(N)} = \mu_{ML}^{(N-1)} + \frac{1}{N} (x_N - \mu_{ML}^{(N-1)})$$
+
+which is exactly the sequential formula derived before.
+
+#### Example
+
+A general recipe for maximum likelihood with a model $p(x|\theta )$:
+
+1. Write the _negative log-likelihood_ $NLL(\theta) = -\sum_{i=1}^N \ln p(x_i|
+   \theta )$
+
+2. If $\nabla NLL(\theta ) = 0$ can be solved, use the _closed form_:
+
+   - Bernoulli: $\mu_{ML} = m/N$
+   - Multinomial: $\mu_{k, ML} = m_K/N$
+   - Gaussian: $\mu_{ML} = \bar{x},\ \sigma_{ML}^2 = \frac{1}{N} \sum_i (x_i -
+     \bar{x})^2$
+
+3. Otherwise, minimise $NLL$ _numerically_, with various methods (gradient
+   descent, Newton, BGFS). For instance, the shape parameter of the Gamma
+   distribution has no closed form.
+
+#### Example: unknown mean
+
+Assume $\sigma^2$ is known, we consider the task of inferring the mean $\mu$
+given a set of $N$ i.i.d. observations $x = \{ x_1, ..., x_N \}$. The likelihood
+function for $\mu$ is:
+
+$$p(x|\mu ) = \prod_{i=1}^N p(x_1 | \mu ) = \frac{1}{(2\pi \sigma^2)^{N/2}}
+exp(-\frac{1}{2\sigma^2} \sum_{i=1}^N (x_i - \mu )^2)$$
+
+This is a Gaussian shape as a function of $\mu$ (but not a distribution over
+$\mu$). The conjugate prior is therefore a Gaussian over $\mu$:
+
+$$p(\mu ) = N(\mu | \mu_0, \sigma_0^2)$$
+
+which gives the posterior $p(\mu | x ) \propto x(x | \mu ) p(x)$.
+
+By completing the square in the exponent we obtain:
+
+$$p(\mu | x) = N(\mu | \mu_N, \sigma^2_N)$$
+
+where:
+
+$$\mu_N = \frac{\sigma^2}{N \sigma^2_0 + \sigma^2} \mu_0 + \frac{N \sigma_0^2}{N\sigma^2 + \sigma^2} \mu_{ML} \qquad \mu_{ML} = \frac{1}{N}\sum_{i=1}^{N}x_i \qquad \frac{1}{\sigma_N^2} = frac{1}{\sigma_N^2} + \frac{N}{\sigma^2}$$
+
+So the posterior mean is a compromise between the prior mean $\mu_0$ and the
+maximum likelihood solution $\mu_{ML}$. We also see that each observation
+increases the precision of the posterior by $1/\sigma^2$.
+
+The posterior after $N-1$ observations become the prior when we observe the
+$N$-th value:
+
+$$p(\mu | x) \propto p(\mu)p(x | \mu ) = [p(\mu)\prod_{i=1}^{N-1}p(x_i | \mu)]
+p(x_N | \mu)$$
+
+$$\propto N(\mu | \mu_{N-1}, \sigma_{N-1}^2)p(x_N|\mu )$$
+
+#### Example: Unknown precision
+
+Let us now assume that $\mu$ is known, and infer the _precision_ $\lambda =
+\frac{1}{\sigma^2}$. The likelihood function for $\lambda$ is:
+
+$$p(x | \lambda ) = \prod_{i=1}^N N(x_i | \mu, \lambda^{-1}) \propto^{N/2} exp(-\frac{\lambda }{ 2} \sum_{i=1}^N (x_i - \mu)^2)$$
+
+As a function of $\lambda$ this has the shape of a _gamma distribution_:
+
+$$Gam(\lambda | a, b) = \frac{1}{\Gamma (a)} b^a \lambda^{a-1} e^{-b\lambda}
+\qquad \mathbb{E}[ \lambda ] = \frac{a}{b} \qquad \mathbb{V}ar[\lambda] =
+\frac{a}{b^2}$$
+
+Combining a gamma prior $Gam(\lambda | a_0, b_0)$ with the likelihood function
+for $\lambda$ we obtain:
+
+$$p(\gamma | x) \propto \lambda^{a_0 - 1} \lambda^{N/2} exp (-b_0 \lambda -
+\frac{\lambda}{2} \sum_{i=1}^N (x_i - \mu)^2)$$
+
+This is again a gamma distribution, $Gam(\lambda | a_N, b_N)$ with:
+
+$$a_N = a_0 + N / 2 \qquad b_N = b_0 + \frac{1}{2} \sum_{i=1}^N (x_i - \mu)^2 =
+b_0 + \frac{N}{2} \sigma_{ML}^2$$
+
+#### Exercise: Unknown Mean and Precision
+
+If both $\mu$ and $\lambda$ are unknown, the joint likelihood function is:
+
+$$p(x | \mu, \lambda ) = \prod_{i=1}^N
+(\frac{\lambda}{2\pi})^{1/2}exp(-\frac{\lambda}{2}(x_i - \mu)^2)$$
+
+$$\propto [\lambda^{1/2}exp(-\frac{\lambda \mu^2}{2})]^N exp(\lambda \mu
+\sum_{i=1}^N x_i - \frac{\lambda}{2}\sum_{i=1}^N x_i^2)$$
+
+We need a prior with the same functional dependence on $\mu$ and $\lambda$. The
+_Gaussian-gamma_ (or normal-gamma) distribution:
+
+$$p(\mu, \lambda) = N(\mu | \mu_0, (\beta \lambda)^{-1})Gam(\lambda | a, b)$$
+
+#### Multivariate Conjugate Priors
+
+For a D-dimensional Gaussian $N(x | \mu, \Lambda^{-1})$:
+
+- $\mu$ unknown, $\Lambda$ is known: the conjugate prior $p(\mu)$ is a Gaussian
+
+- $\Lambda$ is unknown, $\mu$ is known: the conjugate prior $p(\Lambda)$ is a
+  Wishart distribution
+
+  $$W(\Lambda | W, \nu) = B | \Lambda |^{(\nu - D - 1) / 2} exp(-\frac{1}{2}Tr(W^{-1}\Lambda))$$
+
+  where $\nu$ is the number of degree of freedom, $W$ is a $D \times D$ scale
+  matrix and $B$ a normalisation constant.
+
+- $\mu$ and $\Lambda$ both unknown: the conjugate prior is the Gaussian-Wishart
+  distribution:
+
+  $$p(\mu, \Lambda | \mu_0, \beta, W, \nu) = N(\mu | \mu_0, (\beta \Lambda)^{-1}) W(\Lambda | W, \nu)$$
+
+### Student's t-Distribution
+
+If we have a univariate Gaussian $N(x | \mu, \tau^{-1})$ together with a gamma
+prior $Gam(\tau | a, b)$ over its precision, and we integrate out the precision,
+we obtain the marginal distribution of $x$:
+
+$$p(x | \mu, a, b) = \int_{0}^{\infty } N(x | \mu, \tau^{-1}) Gam(\tau | a, b)
+d\tau = $$
+
+$$= \frac{\Gamma(\nu / 2 + 1/2)}{\Gamma (\nu / 2)} (\frac{\lambda}{\pi \nu})^{1/2} [ 1 + \frac{\lambda (x - \mu)^2}{\nu} ]^{-\nu / 2 - 1 / 2} = St(x | \mu, \lambda, \nu)$$
+
+where $\nu = 2a$ (the _degrees of freedom) and $\lambda = a / b$ (the precision
+of the t-distribution). This is essentially an infinite mixture of Gaussians
+with the same mean and different precisions. For $\nu = 1$ it is the _Cauchy_
+distribution; for $\nu \rightarrow \infty$ it becomes $N(x | \mu, \lambda^{-1})$
+
+Informally, with the t-Distribution we handle better the outliers: they do not
+affect dramatically the variance.
+
+#### Estimating the paramiters of a t-Distribution
+
+We are now interested in estimating the parameters of a t-Distribution. There is
+_no closed form_. Setting the derivatives of the log-likelihood to zero gives:
+
+$$\mu = \frac{\sum_i w_i x_i}{\sum_i w_i}$$
+
+$$\lambda^{-1} = \frac{1}{N} \sum_i w_i (x_i - \mu )^2$$
+
+with: $w_i = \frac{\nu + 1}{\nu + \lambda (x_i - \mu )^2}$. But the weights
+$w_i$ depend on $\mu$ and $\lambda$ themselves.
+
+Iteratively reweithted estimation, for fixed $\nu$:
+
+1. Start from $\mu = median(x)$ and $\lambda^{-1} =$ sample variance
+
+2. Compute the weights $w_i$, then update $\mu$ (weighted mean) and
+   $\lambda^{-1}$; repeat until convergence
+
+The D-dimensional case is:
+
+$$St(x | \mu, \Lambda , \nu) = \frac{\Gamma(D/2 + \nu / 2)}{\Gamma(\nu / 2)}
+\frac{|\Lambda |^{1/2}}{(\pi \nu)^{D/2}} [1 + \frac{\Delta^2}{\nu}]^{-D/2 - \nu
+/2}$$
+
+where $\Delta^2 = (x - \mu)^T \Lambda (x-\mu)$ is the squared Mahalanobis
+distance.
+
+Properties:
+
+- $\mathbb{E}[x] = \mu$, if $\nu > 1$
+
+- $\mathbb{C}ov[c] = \frac{\nu}{\nu - 2} \Lambda^{-1}$, if $\nu > 2$
+
+- $mode[x] = \mu$
+
+### Bayesian curve fitting
+
+- Frequentist view: find a single best $w^*$ that minimises $E(w)$
+
+- Bayesian view: treat $w$ itself as a random variable with a prior, and compute
+  a full distribution over $w$ given the data.
+
+Given the training data $D$ composed of $w$ and $t$, along with a new test point
+$x$, our goal is to predict the value of $t$, which is $p(t | x, w, t), suppose
+that $\alpha$ and $\beta$ are known in advance. $Assume Gaussian noise and a
+Gaussian prior over weights:
+
+$$p(t | x, w, \beta) = N(t | y(x, w), \beta^{-1}),\qquad p(w|\alpha ) = N(w | 0,
+\alpha^{-1} I)$$
+
+Because both are Gaussian, the posterior $p(w | D)$ is also Gaussian, and can be
+computed in closed form using Bayes' theorem for Gaussian variables. We applythe
+sum and product rules of probability to find the predictive distribution:
+
+$$p(t | x, D) = \int p(t | x, w) p(w | D) dw = N(t | m(x), s^2(x))$$
+
+- $m(x)$: predictive mean $\beta \phi(x)^T S \sum_{n=1}^N \phi(x_n)t_n$
+
+- $s^2(x)$: predictive variance $\beta^{-1} + \phi(x)^T S \phi(x)$
+
+Where $\phi(x)$ is a vector with elements $\phi_i(x) = x^i$ for $i = 0, ..., M$,
+and the matrix $S$ is given by:
+
+$$S^{-1} = \alpha I + \beta \sum_{i=1}^N \phi(x_n)\phi(x)^T$$
+
+We are now interested in computing the posterior and the predictive
+distribution. With the polynomial features $\phi (x) = (1, x, ..., x^M)^T$ and
+the design matrix $\Phi$ whose rows are $\phi (x_n)^T$, Bayes' theorem for
+Gaussian variables gives:
+
+$$p(w | D) = N(w | m_N, S_N) \qquad S_N^{-1} = \alpha I + \beta \Phi^T \Phi
+\qquad m_N = \beta S_N \Phi^T t$$
+
+and the predictive distribution $N(t | m(x), s^2(x))$ has:
+
+$$m(x) = \phi(x)^T m_N \qquad s^2(x) = \frac{1}{\beta} + \phi (x)^T S_N \phi
+(x)$$
+
+where $m_N = (\frac{\alpha}{\beta} I + \Phi^T \Phi)^{-1} \Phi^T t$ is the _ridge
+regression_ solution with $\lambda = \alpha / \beta$, meaning that the prior
+acts as a regulariser.
+
+### Beyond the Gaussian
+
+#### Periodic variables
+
+Sometimes we need to model data with a periodic behaviour, such as when days and
+hours are variables in the problem. Such quantities are naturally represented by
+_angular_ (polar) coordinates $0 \le \theta < 2\pi$. Consider the problem of
+evaluating the mean of a set of observations $D = \{\theta_1, ..., \theta_N\}$
+(measured in radians). The simple average $\frac{1}{N}\sum_{i=1}^N \theta_i$ is
+strongly coordinate dependent so it does not work.
+
+Each $\theta_i$ can be represented as a point on the unit circle, i.e. a
+two-dimensional unit vector:
+
+$$x_i = (\cos \theta_i, \sin \theta_i )$$
+
+and we can compute the mean as $\bar{x} = \frac{1}{N} \sum_{i=1}^N x_i$.
+
+Writing $\bar{x} = (\bar{r} \cos \bar{\theta}, \bar{r} \sin \bar{\theta})$ we
+have:
+
+$$\bar{r} \cos \bar{\theta} = \frac{1}{N} \sum_{i=1}^N \cos \theta_i \qquad
+\bar{r} \sin \bar{\theta} = \frac{1}{N} \sum_{i=1}^N \sin \theta_i$$
+
+Since $\tan \theta = \frac{\sin \theta}{\cos \theta}$, we obtain:
+
+$$\bar{\theta} = tan^{-1} { \frac{\sum_{i=1}^N \sin \theta_i}{\sum_{i=1}^N} \cos
+\theta_i}$$
+
+which does not depend on the choice of origin.
+
+#### Von Mises Distribution
+
+The _von Mises distribution_ is the periodic generalisation of the Gaussian
+distribution. By convention, we consider distributions $p(\theta)$ with period
+$2\pi$:
+
+$$\forall \theta: p(\theta) \ge 0, \qquad \int_0^{2\pi} p(\theta) d\theta = 1
+\qquad \forall \theta: p(\theta) = p(\theta + 2\pi)$$
+
+Consider a Gaussian distribution over two variables $x = (x_1, x_2)$ with mean
+$\mu = (\mu_1, \mu_2)$ and covariance matrix $\Sigma = \sigma^2 I$:
+
+$$p(x_1, x_2) = \frac{1}{2\pi \sigma^2} exp(-\frac{(x_1 - \mu_1)^2 + (x_2 -
+\mu_2)^2}{2 \sigma^2})$$
+
+Transform from Cartesian coordinates $(x_1, x_2)$ to polar coordinates $(r,
+\theta )$, and similarly for the mean:
+
+$$x_1 = r \cos \theta,\qquad x_2 = r \sin \theta \qquad \mu_1 = t_0 \cos
+\theta_0 \qquad \mu_2 = r_0 \sin \theta_0$$
+
+Conditioning on the unit circle $(r=1)$, the exponent of the Gaussian becomes:
+
+$$-\frac{1}{2\sigma^2} \{ (\cos \theta - r_0 \cos \theta_0)^2 + (\sin \theta -
+r_0 \sin \theta_0)^2 \}$$
+$$ = -\frac{1}{2\sigma^2} \{1 + r_0^2 - 2r_0 \cos \theta
+\cos \theta_0 - 2 r_0 \sin \theta \sin \theta_0\}$$
+$$ = \frac{r_0}{\sigma_2} \cos(\theta - \theta_0) + const$$
+
+Defining $m = r_0 / \sigma^2$, the _von Mises distribution_, or _circular
+normal_, is:
+
+$$p(\theta | \theta_0, m) = \frac{1}{2 \pi I_0 (m)} exp(m \cos (\theta -
+\theta_0))$$
+
+where:
+
+- $\theta_0$ is the mean of the distribution
+
+- $m$ is the _concentration parameter_ (the analogue of the inverse variance of a
+  Gaussian)
+
+- $I_0(m)$ is the zeroth-order modified Bessel function of the first kind
+
+$$I_0(m) = \frac{1}{2\pi} \int_0^{2\pi} exp(m \cos \theta) d\theta$$
+
+The log likelihood function is:
+
+$$\ln p(D | \theta_0, m) = -N \ln (2\pi) - N \ln I_0(m) + m\sum_{i=1}^N \cos
+(\theta_i - \theta_0)$$
+
+Setting the derivative with respect to $\theta_0$ equal to zero gives:
+
+$$\sum_{i=1}^N \sin (\theta_i - \theta_0) = 0$$
+
+Using $sin(\alpha - \beta) = \sin \alpha \cos \beta \sin \beta$:
+
+$$\sum_{i=1}^N \sin(\theta_i - \theta_0) = 0$$
+
+$$\Rightarrow \sum_{i=1}^N (\cos \theta_0 \sin \theta_i - \cos \theta_i \sin
+\theta_0) = 0$$
+
+$$\Rightarrow \cos \theta_0 (\sum_{i=1}^N \sin \theta_i) = \sin \theta_0
+(\sum_{i=1}^N \cos \theta_i)$$
+
+$$\Rightarrow \theta_0^{ML} = \tan^{-1} \{ \frac{\sum_i \sin \theta_i}{\sum_i \cos
+\theta_i} \}$$
+
+Which is the same result as the mean of the observations viewed as unit vectors.
+
+Maximising with respect to $m$, and using $I_0'(m) = I_1(m)$, we obtain:
+
+$$A(m_{ML}) = \frac{1}{N} \sum_{i=1}^N \cos (\theta_i - \theta_0^{ML})$$
+
+where $A(m) = \frac{I_1 (m)}{I_0 (m)}$. The right-hand side can be written as:
+
+$$A(m_{ML}) = (\frac{1}{N}\sum_{i=1}^N \cos \theta_i) \cos \theta_0^{ML} +
+(\frac{1}{N} \sum_{i=1}^N \sin \theta_i) \sin \theta_0^{ML}$$
+
+The function $A(m)$ can be inverted numerically to obtain $m_{ML}$.

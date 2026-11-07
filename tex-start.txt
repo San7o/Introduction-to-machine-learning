@@ -1,7 +1,16 @@
 % Intended LaTeX compiler: pdflatex
-\documentclass[11pt]{article}
+\documentclass{article}
+\usepackage[
+  paperheight=29.7cm,
+  paperwidth=21cm,
+  outer=2.5cm,
+  inner=2.5cm,
+  top=2cm,
+  bottom=2cm
+]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{float}
+\usepackage{bm}
 \let\origfigure\figure
 \let\endorigfigure\endfigure
 \renewenvironment{figure}[1][H]{\origfigure[#1]}{\endorigfigure}
