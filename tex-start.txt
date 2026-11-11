@@ -24,6 +24,10 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
+\usepackage{array}
+\usepackage{calc}
+\usepackage{ragged2e}
+\usepackage{booktabs}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
