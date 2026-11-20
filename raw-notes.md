@@ -1,30 +1,20 @@
-# Notes
+# Raw notes
 
 Notes that need to be included in the rest of the book.
 
 ## Probability distributions
 
-#### Mixtures of Gaussians
-
-A single Gaussian cannot capture _moltimodal_ data. A linear superposition of
-$K$ Gaussians can:
-
-$$p(x) = \sum_{k=1}^K \pi_k N(x | \mu_k, \Sigma_k)$$
-
-where the _mixing coefficients_ satisfy $0 \le \pi_k \le 1$ and $\sum_k \pi_k =
-1$.
-
-We do not have a closed form, but we can use some iterative algorithms (_EM
-algorithm_).
-
-Slide 141
-
 ## The Data
+
+Some exercises on real datasets.
 
 ### Bayesian filter for spam
 
-Use of Bayes theorem for spam detection. We can use the dataset from the UC
-Irvine dataset (\path{https://archive.ics.uci.edu/dataset/228/}).
+In this first exercise, we use the Bayes theorem for spam detection. We can use
+the dataset from the UC Irvine dataset
+(\path{https://archive.ics.uci.edu/dataset/228/}).
+
+Consider the following probability:
 
 | Diagnostic test | Spam filter | Estimated from data as ... |
 | --------------- | ----------- | ---------------------------|
@@ -34,7 +24,10 @@ Irvine dataset (\path{https://archive.ics.uci.edu/dataset/228/}).
 | false positive rate $Pr(+ | \lnot D)$ | $Pr("free" | \lnot S)$ | fraction of ham
 containing "free" |
 
-1. Estimate the three probabilities on 70% of the messages (training set)
+The steps perform spam detection are, in order:
+
+1. Estimate the three probabilities (in the table) on 70% of the messages
+   (training set)
 
 2. Compute $Pr(S | "free")$ with Bayes' theorem, and check it on the other 30%
 
@@ -48,14 +41,15 @@ its prior probability will be rare too.
 
 ### Bernoulli and Beta: Bank marketing
 
-Dataset of marketing campaigns (phone calls) of a Portuguese bank institution.
-(\path{https://archive.ics.uci.edu/dataset/222/}), the classification goal is to
-predict if the client will subscribe. The output is a Bernulli distribution.
+Given a dataset of marketing campaigns (phone calls) of a Portuguese bank
+institution, (\path{https://archive.ics.uci.edu/dataset/222/}), the
+classification goal is to predict if the client will subscribe. Notice that the
+output is a Bernulli distribution (either subscribed or not subscribed).
 
 Let $x_n = 1$ if call $n$ end with a subscription: $x_n \sim Bern(x | \mu )$,
 $\mu$ is the _conversion rate_.
 
-1. Maximum likelihood: $\mu_{ML} = m / N$; check it is the maximum of:
+1. Maximum likelihood: $\mu_{ML} = m / N$; check that it is the maximum of:
 
 $$\ln p(D | \mu ) = m \ln \mu + (N - m) \ln (1 - \mu )$$
 

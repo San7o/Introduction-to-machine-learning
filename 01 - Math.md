@@ -850,8 +850,8 @@ finite or countable set $S \subseteq \mathbb{R}$.
 #### Discrete case (PMF)
 
 Let $X$ be a discrete random variable, then the _probability mass function_
-(PMF) $p_X(x) = P_r(X=x), x\in \mathbb{R}$ satisfies the following two
-conditions:
+(PMF) $p_X: \mathbb{R} \rightarrow [0, 1]$ such that $p_X(x) = P_r(X=x), x\in
+\mathbb{R}$ satisfies the following two conditions:
 
 $$p_X(x) \ge 0$$
 
@@ -865,7 +865,8 @@ $$P_r(X\in A) = \sum_{x\in A} p_X(x)$$
 #### Continuous Case (PDF)
 
 Let $X$ be a continuous random variable, the _probability density function_
-$f_X(x) = \frac{dF_X(x)}{dx}$ (PDF) satisfies:
+$f_X: \mathbb{R} \rightarrow [0, \infty]$ such that $f_X(x) =
+\frac{dF_X(x)}{dx}$ (PDF) which satisfies:
 
 $$f_X(x) \ge 0$$
 
@@ -937,9 +938,10 @@ $$\mu = \mathbb{E}[x] = \sum_{x\in S} x\cdot p_X(x)$$
 
 #### Continuous case
 
-If $X$ is a continuous random variable with density function $f_X(x) = \frac{dF(x)}{dx}$, the expected value of $X$ is:
+If $X$ is a continuous random variable with density function $f_X(x) =
+\frac{dF(x)}{dx}$, the expected value of $X$ is:
 
-$$\mu = \mathbb{E}[x] = \int_{-\infty}^{\infty} x\cdot f_x(x) dx $$
+$$\mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} x\cdot f_x(x) dx $$
 
 The expectation only gives us an idea of the average value assumed by a random
 variable, not of how much individual values may differ from this average.
@@ -948,27 +950,28 @@ variable, not of how much individual values may differ from this average.
 
 The expected value is a linear function:
 
-$$E(aX+b) = a\mathbb{E}(x)+b$$
-$$E(g(x))=\sum_{x\in R_x} g(x)p_x(x)$$
+$$E[aX+b] = a\mathbb{E}[x]+b$$
+$$E[g(x)]=\sum_{x\in R_x} g(x)p_x(x)$$
 
 #### Notable formulas
 
-- Bernoulli: $\mathbb{E}(x)=p$
-- Binomial: $\mathbb{E}(x)=np$
-- Geometric: $\mathbb{E}(x)= \frac{1}{p}-1$
-- Normal: $\mathbb{E}(x)=\mu$
-- Exponential: $\mathbb{E}(x)=\frac{1}{\lambda}$
-- Poisson: $\mathbb{E}(x)=\lambda$
+- Bernoulli: $\mathbb{E}[x]=p$
+- Binomial: $\mathbb{E}[x]=np$
+- Geometric: $\mathbb{E}[x]= \frac{1}{p}-1$
+- Normal: $\mathbb{E}[x]=\mu$
+- Exponential: $\mathbb{E}[x]=\frac{1}{\lambda}$
+- Poisson: $\mathbb{E}[x]=\lambda$
 
 ### Variance
 
-We define the _variance_ $\mathbb{V}ar(x)$ as:
+Let $X$ be a random variable on a probability space. We define the _variance_
+$\mathbb{V}ar[X]$ as:
 
-$$\mathbb{V}ar[x]=\mathbb{E}[x^2]-\mathbb{E}[x]^2 = \mathbb{E}[(x-\mathbb{E}[x])^2]$$
+$$\mathbb{V}ar[X]=\mathbb{E}[X^2]-\mathbb{E}[X]^2 = \mathbb{E}[(X-\mathbb{E}[X])^2]$$
 
 This indicates the "spread" of values. Moreover:
 
-$$\mathbb{V}ar[x]=\mathbb{E}(\mathbb{V}ar[x|y]) + \mathbb{V}ar(\mathbb{E}[x|y])$$
+$$\mathbb{V}ar[X]=\mathbb{E}(\mathbb{V}ar[X|Y]) + \mathbb{V}ar(\mathbb{E}[X|Y])$$
 
 
 The _standard deviation_ is $\sigma = \sqrt{\mathbb{V}ar[X]}$, and has the same
@@ -976,9 +979,10 @@ units as $X$.
 
 ### Covariance
 
-We define the covariance as:
+Let $X$ and $Y$ be two random variables on a probability space. We define the
+covariance as:
 
-$$\mathbb{C}ov[x, y]=\mathbb{E}((x-\mathbb{E}[x])(y-\mathbb{E}[y]))=\mathbb{E}[XY]-\mathbb{E}[x]\mathbb{E}[y]$$
+$$\mathbb{C}ov[X, Y]=\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]$$
 
 ### Standardization
 
@@ -1012,38 +1016,43 @@ $$P(|Y-\mu| \ge \epsilon)\le \frac{\sigma^2}{\epsilon^2}$$
 
 ### Bernoulli Distribution
 
-Let us consider a random variable $x$ assuming values in $\{0, 1\}$. The
-probability of $x=1$ is denoted by a parameter $\mu \in [0,1]$, so that
-$p(x=1|\mu ) = \mu$.
+Let us consider a random variable $X$ with image $im(X) = \{0, 1\}$ and $x \in
+im(X)$. The probability that $X=1$ is denoted by a parameter $\mu \in [0,1]$, so
+that $P_X(X=1|\mu ) = \mu$.
 
-The _Bernoulli distribution_ over $x$ can be written in the form:
+The PMF of the _Bernoulli distribution_ over $x$ can be written in the form:
 
 $$Bern(x | \mu ) = \mu^x (1 - \mu)^{1-x}$$
 
-$$\mathbb{E}[Bern(x|\mu )] = \mu$$
+If $X \sim Bern(\mu)$, then:
 
-$$\mathbb{V}ar[Bern(x|\mu )] = \mu (1-\mu)$$
+$$\mathbb{E}[X] = \mu$$
+
+$$\mathbb{V}ar[X] = \mu (1-\mu)$$
 
 #### Likelihood
 
-Let $D=\{x_1, ..., x_N\}$ be a set of independent observed values of $x$ drawn
-from $p(x|\mu )$. The likelihood of $D$ is:
+Let $X_1, ..., X_N \sim^{i.i.d.} Bern(\mu)$ with unknown parameter $\mu \in [0,
+1]$, and let $x_i \in \{0, 1\}$ denote the observed realization of $X_i$ for $i
+= 0, .., N$. For the dataset $D=\{x_1, ..., x_N\}$, the joint PMF (viewed as a
+likelihood function of $\mu$) is:
 
-$$p(D|\mu ) = \prod_{i=1}^N p(x_i | \mu) = \prod_{i=1}^N \mu^{x_i}(1-\mu)^{1-x_i}$$
+$$L(\mu) = p_X(x_1,...,x_N|\mu ) = \prod_{i=1}^N p(x_i | \mu) = \prod_{i=1}^N \mu^{x_i}(1-\mu)^{1-x_i} = \mu^{m} (1-\mu)^{N-m}$$
 
-Let $D=\{x_1, ..., x_N\}$ be independent observations of variable $x$ we assume
-Bernoulli-distributed with unknown parameter $\mu$. How can we estimate the
-parameter $\mu$?
+where $m = \sum_{i=1}^N \mathbb{I}(x_i = 1)$ is the number of observations $x_i$
+equal to 1.
 
-To do this, we maximise the likelihood function $f(\mu) = p(D|\mu)$, or,
-equivalently (!!), its logarithm:
+Given $D$, how can we estimate the parameter $\mu$?
 
-$$\ln p(D|\mu) = \sum_{i=1}^N \ln p(x_i|\mu )$$
+To do this, we maximise the likelihood function $L(\mu)$, or, equivalently (!!),
+its logarithm:
 
-$$\ln p(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)$$
+$$\ln p_X(D|\mu) = \sum_{i=1}^N \ln p_X(x_i|\mu )$$
 
-We derive this and set it equal to 0. We obtain the _maximum likelihood
-estimator_:
+$$\ln p_X(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)$$
+
+We derive this and set it equal to 0, note that $\frac{d \ln(f(x))}{dx} =
+\frac{\frac{d f(x)}{dx}}{f(x)}$. We obtain the _maximum likelihood estimator_:
 
 $$\mu_{ML}=\frac{1}{N}\sum_{n=1}^N x_n$$
 
@@ -1057,21 +1066,29 @@ Note that this only works for a high value of $N$.
 
 ### Binomial distribution
 
-We can also work out the distribution of the number $m$ of observations of
-$x=1$, given that the data set has size $N$. This is called the _Binomial
-distribution_:
+Suppose $X_1, ..., X_N \sim^{i.i.d.} Bern(\mu)$ with $\mu \in [0, 1]$, and
+define the random variable $M = \sum_{i=1}^N X_i$ (the number of observations
+equal to 1 in a sample of size $N$), with realization $m \in \{0, 1, ... N\}$.
+The PMF of $M$ follows the _binomial distribution_:
 
-$$Bin(m|N, \mu) = \binom{N}{m} \mu^m(1-\mu)^{N-m}$$
+$$Bin(m|N, \mu) = \binom{N}{m} \mu^m(1-\mu)^{N-m} \qquad \binom{N}{m} \equiv
+\frac{N!}{(N-m)!m!}$$
 
-$$\binom{N}{m} \equiv \frac{N!}{(N-m)!m!}$$
+Using the binomial theorem:
 
-And:
+$$(x+y)^n = \sum_{k=0}^n \binom{n}{k} x^{n-k} y^k = \sum_{k=0}^n \binom{n}{k}
+x^k y^{n-k}$$
 
-$$\mathbb{E}[m] = N \mu$$
+and by using $m! = m (m-1)!$ and $m^2 = m(m - 1) + m$, we obtain:
 
-$$\mathbb{V}ar[m] = N \mu (1-\mu )$$
+$$\mathbb{E}[M] = N \mu \qquad \mathbb{V}ar[M] = N \mu (1-\mu )$$
 
 ### Beta distributions
+
+Now we develop a Bayesian treatment of parameter estimation for a Bernoulli
+distribution (the same technique can be used for other distributions, such as
+binomial and geometric), meaning that we introduce a prior distribution $p(\mu)$
+over $\mu$.
 
 Let the _gamma function_ $\Gamma$ be:
 
@@ -1087,27 +1104,30 @@ The gamma function behaves like a factorial in the natural numbers, but it is
 defined on all real numbers, so it can be thought as the continuous version of
 the factorial in the complex numbers.
 
-The Beta distribution is:
+Let the PDF of the _beta distribution_ is:
 
 $$Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}$$
 
 $$\int_0^1 Beta(\mu | a, b) d\mu = 1$$
 
-In some sense, this distribution generalizes the binomial distribution.
+TODO: $\mu$ up above is not a random variable, which is confusing because it is
+used later as a random variable.
+
+If $\mu \sim Beta(a, b)$, then:
 
 $$\mathbb{E}[\mu] = \frac{a}{a+b}$$
 
 $$\mathbb{V}ar[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}$$
 
+In some sense, this distribution generalizes the binomial distribution.
+
 The parameters $a$ and $b$ are often called _hyperparameters_ because they
 control the distribution of the parameter $\mu$. In some sense, they represent
 our assumptions or our prior knowledge.
 
-The develop a Bayesian treatment of parameter estimation for a Bernoulli
-distribution, meaning that we introduce a prior distribution $p(\mu)$ over
-$\mu$. We assume $\mu$ to be Beta-distributed, with given hyperparameters $a$
-and $b$: $p(\mu) = Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of positive
-and negative results, respectively $(N = m + l)$. Then:
+We assume $\mu$ to be Beta-distributed, with given hyperparameters $a$ and $b$:
+$p(\mu) = Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of positive and
+negative results, respectively $(N = m + l)$. Then:
 
 $$p(\mu | m, l) \propto p(m, l | \mu ) p(\mu) \propto \mu^{m + a - 1} (1-\mu)^{l+b-1}$$
 
@@ -1224,7 +1244,7 @@ are the parameters of the distribution, and $\alpha$ denotes $(\alpha_1, ...,
 \alpha_K)^T$.
 
 Because of the constraints, the distribution over the space of the $\{\mu_k\}$
-is confined toa simplex of dimensionality $K-1$. The normalized form of the
+is confined to a simplex of dimensionality $K-1$. The normalized form of the
 distribution is:
 
 $$Dir(\mu| \alpha) = \frac{\Gamma (\alpha_0)}{\Gamma (\alpha_1) \cdot \cdot
@@ -1361,9 +1381,10 @@ reduces to the Euclidean distance when $\Sigma$ is the identity matrix.
 
 #### The covariance Matrix
 
-The covariance matrix $\Sigma$ is _symmetric_, since $cov[x_i, x_j] = cov[x_j,
-x_i]$, and is assumed to be _positive definite_. The eigenvectors of $\Sigma$
-are real and can be chosen to form an _orthonormal_ set:
+The covariance matrix $\Sigma$ is _symmetric_, since $\mathbb{C}ov[x_i, x_j] = \mathbb{C}ov[x_j,
+x_i]$, and is assumed to be _positive definite_ (all eigenvalues are positive,
+it is invertible and the determinant is greater than 0). The eigenvectors of
+$\Sigma$ are real and can be chosen to form an _orthonormal_ set:
 
 $$\Sigma u_i = \lambda_i u_i$$
 
@@ -1570,7 +1591,7 @@ $$p(\mu | x) = N(\mu | \mu_N, \sigma^2_N)$$
 
 where:
 
-$$\mu_N = \frac{\sigma^2}{N \sigma^2_0 + \sigma^2} \mu_0 + \frac{N \sigma_0^2}{N\sigma^2 + \sigma^2} \mu_{ML} \qquad \mu_{ML} = \frac{1}{N}\sum_{i=1}^{N}x_i \qquad \frac{1}{\sigma_N^2} = frac{1}{\sigma_N^2} + \frac{N}{\sigma^2}$$
+$$\mu_N = \frac{\sigma^2}{N \sigma^2_0 + \sigma^2} \mu_0 + \frac{N \sigma_0^2}{N\sigma^2 + \sigma^2} \mu_{ML} \qquad \mu_{ML} = \frac{1}{N}\sum_{i=1}^{N}x_i \qquad \frac{1}{\sigma_N^2} = \frac{1}{\sigma_N^2} + \frac{N}{\sigma^2}$$
 
 So the posterior mean is a compromise between the prior mean $\mu_0$ and the
 maximum likelihood solution $\mu_{ML}$. We also see that each observation
@@ -1713,8 +1734,8 @@ $$p(t | x, w, \beta) = N(t | y(x, w), \beta^{-1}),\qquad p(w|\alpha ) = N(w | 0,
 \alpha^{-1} I)$$
 
 Because both are Gaussian, the posterior $p(w | D)$ is also Gaussian, and can be
-computed in closed form using Bayes' theorem for Gaussian variables. We applythe
-sum and product rules of probability to find the predictive distribution:
+computed in closed form using Bayes' theorem for Gaussian variables. We apply
+the sum and product rules of probability to find the predictive distribution:
 
 $$p(t | x, D) = \int p(t | x, w) p(w | D) dw = N(t | m(x), s^2(x))$$
 
@@ -1855,3 +1876,52 @@ $$A(m_{ML}) = (\frac{1}{N}\sum_{i=1}^N \cos \theta_i) \cos \theta_0^{ML} +
 (\frac{1}{N} \sum_{i=1}^N \sin \theta_i) \sin \theta_0^{ML}$$
 
 The function $A(m)$ can be inverted numerically to obtain $m_{ML}$.
+
+#### Mixtures of Gaussians
+
+A single Gaussian cannot capture _moltimodal_ data. A linear superposition of
+$K$ Gaussians can:
+
+$$p(x) = \sum_{k=1}^K \pi_k N(x | \mu_k, \Sigma_k)$$
+
+where the _mixing coefficients_ satisfy $0 \le \pi_k \le 1$ and $\sum_k \pi_k =
+1$.
+
+We do not have a closed form, but we can use some iterative algorithms (_EM
+algorithm_). For example, if we have 1000 response times of a web service behind
+a cache, were most requests are hits (fast) and the others are misses (slow), we
+can model this with a mixture of gaussians.
+
+A problem that arises is to decide which gaussian component produced a certain
+event. To work this out, think of a hidden choice $k$ with prior $p(k) = \pi_k$.
+By bayes' theorem, the posterior of compenet $k$ given $x% is its
+responsibility:
+
+$$\gamma_k (x) = p(k | x) = \frac{\pi_k N(x | \mu_k, \sigma^2_k)}{\sum_{j=1}^K
+\pi_j N(x | \mu_j, sigma^2_j)}$$
+
+The log-likelihood is:
+
+$$\ln p(x | \pi, \mu, \sigma) = \sum_{n=1}^N \ln \sum_{k=1}^K \pi_K N(x_n |
+\mu_k, \sigma^2_k)$$
+
+but this has no closed form. But if we knew the responsibilities $\gamma_{nk} =
+\gamma_k (x_n)$, each component would be a weighted Gaussian NL problem. The
+Expectation-Maximization (EM) algorithm would look like this:
+
+1. E-step: compute $\gamma_{nk}$ with the current parameteres
+
+2. M-step: with $N_k = \sum_n \gamma_{nk}$ (the effective number of points of
+   component $k$)
+
+$$\pi_k = \frac{N_k}{N} \qquad \mu_k = \frac{1}{N_k} \sum_n \gamma_{nk} x_n
+\qquad \sigma^2_k = \frac{1}{N_k} \sum_n \gamma_{nk} (x_n - \mu_k)^2$$
+
+3. Repeat until the log-likelihood stops increasing (as for the t-distribution
+   weight)
+
+The maximum likelihood always grows with $K$ (a mixture with $K$ components can
+mimic one with $K-1$). For this reason, we need to penalise the number of
+parameters $P(3K - 1\ in\ 1D)$ such that the lowest value wins.
+
+$$BIC = -2\ln p(x | \theta_{ML}) + P \ln N$$

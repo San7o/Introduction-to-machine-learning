@@ -1143,8 +1143,9 @@ set \(S \subseteq \mathbb{R}\).
 \paragraph{Discrete case (PMF)}\label{discrete-case-pmf}
 
 Let \(X\) be a discrete random variable, then the \emph{probability mass
-function} (PMF) \(p_X(x) = P_r(X=x), x\in \mathbb{R}\) satisfies the
-following two conditions:
+function} (PMF) \(p_X: \mathbb{R} \rightarrow [0, 1]\) such that
+\(p_X(x) = P_r(X=x), x\in
+\mathbb{R}\) satisfies the following two conditions:
 
 \[p_X(x) \ge 0\]
 
@@ -1158,7 +1159,9 @@ can be calculated by summing the masses of the values in that set:
 \paragraph{Continuous Case (PDF)}\label{continuous-case-pdf}
 
 Let \(X\) be a continuous random variable, the \emph{probability density
-function} \(f_X(x) = \frac{dF_X(x)}{dx}\) (PDF) satisfies:
+function} \(f_X: \mathbb{R} \rightarrow [0, \infty]\) such that
+\(f_X(x) =
+\frac{dF_X(x)}{dx}\) (PDF) which satisfies:
 
 \[f_X(x) \ge 0\]
 
@@ -1264,9 +1267,10 @@ probability mass function \(p(\cdot)\). The \emph{mean} or
 \paragraph{Continuous case}\label{continuous-case}
 
 If \(X\) is a continuous random variable with density function
-\(f_X(x) = \frac{dF(x)}{dx}\), the expected value of \(X\) is:
+\(f_X(x) =
+\frac{dF(x)}{dx}\), the expected value of \(X\) is:
 
-\[\mu = \mathbb{E}[x] = \int_{-\infty}^{\infty} x\cdot f_x(x) dx \]
+\[\mu = \mathbb{E}[X] = \int_{-\infty}^{\infty} x\cdot f_x(x) dx \]
 
 The expectation only gives us an idea of the average value assumed by a
 random variable, not of how much individual values may differ from this
@@ -1276,44 +1280,46 @@ average.
 
 The expected value is a linear function:
 
-\[E(aX+b) = a\mathbb{E}(x)+b\] \[E(g(x))=\sum_{x\in R_x} g(x)p_x(x)\]
+\[E[aX+b] = a\mathbb{E}[x]+b\] \[E[g(x)]=\sum_{x\in R_x} g(x)p_x(x)\]
 
 \paragraph{Notable formulas}\label{notable-formulas}
 
 \begin{itemize}
 \tightlist
 \item
-  Bernoulli: \(\mathbb{E}(x)=p\)
+  Bernoulli: \(\mathbb{E}[x]=p\)
 \item
-  Binomial: \(\mathbb{E}(x)=np\)
+  Binomial: \(\mathbb{E}[x]=np\)
 \item
-  Geometric: \(\mathbb{E}(x)= \frac{1}{p}-1\)
+  Geometric: \(\mathbb{E}[x]= \frac{1}{p}-1\)
 \item
-  Normal: \(\mathbb{E}(x)=\mu\)
+  Normal: \(\mathbb{E}[x]=\mu\)
 \item
-  Exponential: \(\mathbb{E}(x)=\frac{1}{\lambda}\)
+  Exponential: \(\mathbb{E}[x]=\frac{1}{\lambda}\)
 \item
-  Poisson: \(\mathbb{E}(x)=\lambda\)
+  Poisson: \(\mathbb{E}[x]=\lambda\)
 \end{itemize}
 
 \subsubsection{Variance}\label{variance}
 
-We define the \emph{variance} \(\mathbb{V}ar(x)\) as:
+Let \(X\) be a random variable on a probability space. We define the
+\emph{variance} \(\mathbb{V}ar[X]\) as:
 
-\[\mathbb{V}ar[x]=\mathbb{E}[x^2]-\mathbb{E}[x]^2 = \mathbb{E}[(x-\mathbb{E}[x])^2]\]
+\[\mathbb{V}ar[X]=\mathbb{E}[X^2]-\mathbb{E}[X]^2 = \mathbb{E}[(X-\mathbb{E}[X])^2]\]
 
 This indicates the ``spread'' of values. Moreover:
 
-\[\mathbb{V}ar[x]=\mathbb{E}(\mathbb{V}ar[x|y]) + \mathbb{V}ar(\mathbb{E}[x|y])\]
+\[\mathbb{V}ar[X]=\mathbb{E}(\mathbb{V}ar[X|Y]) + \mathbb{V}ar(\mathbb{E}[X|Y])\]
 
 The \emph{standard deviation} is \(\sigma = \sqrt{\mathbb{V}ar[X]}\),
 and has the same units as \(X\).
 
 \subsubsection{Covariance}\label{covariance}
 
-We define the covariance as:
+Let \(X\) and \(Y\) be two random variables on a probability space. We
+define the covariance as:
 
-\[\mathbb{C}ov[x, y]=\mathbb{E}((x-\mathbb{E}[x])(y-\mathbb{E}[y]))=\mathbb{E}[XY]-\mathbb{E}[x]\mathbb{E}[y]\]
+\[\mathbb{C}ov[X, Y]=\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]\]
 
 \subsubsection{Standardization}\label{standardization}
 
@@ -1352,38 +1358,49 @@ Let \(Y\) be a random variable, \(\mu = \mathbb{E}[y]\),
 
 \subsubsection{Bernoulli Distribution}\label{bernoulli-distribution}
 
-Let us consider a random variable \(x\) assuming values in \(\{0, 1\}\).
-The probability of \(x=1\) is denoted by a parameter \(\mu \in [0,1]\),
-so that \(p(x=1|\mu ) = \mu\).
+Let us consider a random variable \(X\) with image \(im(X) = \{0, 1\}\)
+and \(x \in
+im(X)\). The probability that \(X=1\) is denoted by a parameter
+\(\mu \in [0,1]\), so that \(P_X(X=1|\mu ) = \mu\).
 
-The \emph{Bernoulli distribution} over \(x\) can be written in the form:
+The PMF of the \emph{Bernoulli distribution} over \(x\) can be written
+in the form:
 
 \[Bern(x | \mu ) = \mu^x (1 - \mu)^{1-x}\]
 
-\[\mathbb{E}[Bern(x|\mu )] = \mu\]
+If \(X \sim Bern(\mu)\), then:
 
-\[\mathbb{V}ar[Bern(x|\mu )] = \mu (1-\mu)\]
+\[\mathbb{E}[X] = \mu\]
+
+\[\mathbb{V}ar[X] = \mu (1-\mu)\]
 
 \paragraph{Likelihood}\label{likelihood}
 
-Let \(D=\{x_1, ..., x_N\}\) be a set of independent observed values of
-\(x\) drawn from \(p(x|\mu )\). The likelihood of \(D\) is:
+Let \(X_1, ..., X_N \sim^{i.i.d.} Bern(\mu)\) with unknown parameter
+\(\mu \in [0,
+1]\), and let \(x_i \in \{0, 1\}\) denote the observed realization of
+\(X_i\) for \(i
+= 0, .., N\). For the dataset \(D=\{x_1, ..., x_N\}\), the joint PMF
+(viewed as a likelihood function of \(\mu\)) is:
 
-\[p(D|\mu ) = \prod_{i=1}^N p(x_i | \mu) = \prod_{i=1}^N \mu^{x_i}(1-\mu)^{1-x_i}\]
+\[L(\mu) = p_X(x_1,...,x_N|\mu ) = \prod_{i=1}^N p(x_i | \mu) = \prod_{i=1}^N \mu^{x_i}(1-\mu)^{1-x_i} = \mu^{m} (1-\mu)^{N-m}\]
 
-Let \(D=\{x_1, ..., x_N\}\) be independent observations of variable
-\(x\) we assume Bernoulli-distributed with unknown parameter \(\mu\).
-How can we estimate the parameter \(\mu\)?
+where \(m = \sum_{i=1}^N \mathbb{I}(x_i = 1)\) is the number of
+observations \(x_i\) equal to 1.
 
-To do this, we maximise the likelihood function \(f(\mu) = p(D|\mu)\),
-or, equivalently (!!), its logarithm:
+Given \(D\), how can we estimate the parameter \(\mu\)?
 
-\[\ln p(D|\mu) = \sum_{i=1}^N \ln p(x_i|\mu )\]
+To do this, we maximise the likelihood function \(L(\mu)\), or,
+equivalently (!!), its logarithm:
 
-\[\ln p(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)\]
+\[\ln p_X(D|\mu) = \sum_{i=1}^N \ln p_X(x_i|\mu )\]
 
-We derive this and set it equal to 0. We obtain the \emph{maximum
-likelihood estimator}:
+\[\ln p_X(D|\mu) = (\ln \mu) \sum_{i=1}^N x_i + \ln (1-\mu )\sum_{i=1}^N (1-x_i)\]
+
+We derive this and set it equal to 0, note that
+\(\frac{d \ln(f(x))}{dx} =
+\frac{\frac{d f(x)}{dx}}{f(x)}\). We obtain the \emph{maximum likelihood
+estimator}:
 
 \[\mu_{ML}=\frac{1}{N}\sum_{n=1}^N x_n\]
 
@@ -1397,21 +1414,30 @@ Note that this only works for a high value of \(N\).
 
 \subsubsection{Binomial distribution}\label{binomial-distribution}
 
-We can also work out the distribution of the number \(m\) of
-observations of \(x=1\), given that the data set has size \(N\). This is
-called the \emph{Binomial distribution}:
+Suppose \(X_1, ..., X_N \sim^{i.i.d.} Bern(\mu)\) with
+\(\mu \in [0, 1]\), and define the random variable
+\(M = \sum_{i=1}^N X_i\) (the number of observations equal to 1 in a
+sample of size \(N\)), with realization \(m \in \{0, 1, ... N\}\). The
+PMF of \(M\) follows the \emph{binomial distribution}:
 
-\[Bin(m|N, \mu) = \binom{N}{m} \mu^m(1-\mu)^{N-m}\]
+\[Bin(m|N, \mu) = \binom{N}{m} \mu^m(1-\mu)^{N-m} \qquad \binom{N}{m} \equiv
+\frac{N!}{(N-m)!m!}\]
 
-\[\binom{N}{m} \equiv \frac{N!}{(N-m)!m!}\]
+Using the binomial theorem:
 
-And:
+\[(x+y)^n = \sum_{k=0}^n \binom{n}{k} x^{n-k} y^k = \sum_{k=0}^n \binom{n}{k}
+x^k y^{n-k}\]
 
-\[\mathbb{E}[m] = N \mu\]
+and by using \(m! = m (m-1)!\) and \(m^2 = m(m - 1) + m\), we obtain:
 
-\[\mathbb{V}ar[m] = N \mu (1-\mu )\]
+\[\mathbb{E}[M] = N \mu \qquad \mathbb{V}ar[M] = N \mu (1-\mu )\]
 
 \subsubsection{Beta distributions}\label{beta-distributions}
+
+Now we develop a Bayesian treatment of parameter estimation for a
+Bernoulli distribution (the same technique can be used for other
+distributions, such as binomial and geometric), meaning that we
+introduce a prior distribution \(p(\mu)\) over \(\mu\).
 
 Let the \emph{gamma function} \(\Gamma\) be:
 
@@ -1430,28 +1456,31 @@ The gamma function behaves like a factorial in the natural numbers, but
 it is defined on all real numbers, so it can be thought as the
 continuous version of the factorial in the complex numbers.
 
-The Beta distribution is:
+Let the PDF of the \emph{beta distribution} is:
 
 \[Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}\]
 
 \[\int_0^1 Beta(\mu | a, b) d\mu = 1\]
 
-In some sense, this distribution generalizes the binomial distribution.
+TODO: \(\mu\) up above is not a random variable, which is confusing
+because it is used later as a random variable.
+
+If \(\mu \sim Beta(a, b)\), then:
 
 \[\mathbb{E}[\mu] = \frac{a}{a+b}\]
 
 \[\mathbb{V}ar[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}\]
 
+In some sense, this distribution generalizes the binomial distribution.
+
 The parameters \(a\) and \(b\) are often called \emph{hyperparameters}
 because they control the distribution of the parameter \(\mu\). In some
 sense, they represent our assumptions or our prior knowledge.
 
-The develop a Bayesian treatment of parameter estimation for a Bernoulli
-distribution, meaning that we introduce a prior distribution \(p(\mu)\)
-over \(\mu\). We assume \(\mu\) to be Beta-distributed, with given
-hyperparameters \(a\) and \(b\): \(p(\mu) = Beta(\mu | a, b)\). Let
-\(m\) and \(l\) be the numbers of positive and negative results,
-respectively \((N = m + l)\). Then:
+We assume \(\mu\) to be Beta-distributed, with given hyperparameters
+\(a\) and \(b\): \(p(\mu) = Beta(\mu | a, b)\). Let \(m\) and \(l\) be
+the numbers of positive and negative results, respectively
+\((N = m + l)\). Then:
 
 \[p(\mu | m, l) \propto p(m, l | \mu ) p(\mu) \propto \mu^{m + a - 1} (1-\mu)^{l+b-1}\]
 
@@ -1572,7 +1601,7 @@ where \(0 \le \mu_k \le 1\) and \(\sum_k \mu_k = 1\). Here
 \alpha_K)^T\).
 
 Because of the constraints, the distribution over the space of the
-\(\{\mu_k\}\) is confined toa simplex of dimensionality \(K-1\). The
+\(\{\mu_k\}\) is confined to a simplex of dimensionality \(K-1\). The
 normalized form of the distribution is:
 
 \[Dir(\mu| \alpha) = \frac{\Gamma (\alpha_0)}{\Gamma (\alpha_1) \cdot \cdot
@@ -1749,10 +1778,11 @@ is the identity matrix.
 \paragraph{The covariance Matrix}\label{the-covariance-matrix}
 
 The covariance matrix \(\Sigma\) is \emph{symmetric}, since
-\(cov[x_i, x_j] = cov[x_j,
-x_i]\), and is assumed to be \emph{positive definite}. The eigenvectors
-of \(\Sigma\) are real and can be chosen to form an \emph{orthonormal}
-set:
+\(\mathbb{C}ov[x_i, x_j] = \mathbb{C}ov[x_j,
+x_i]\), and is assumed to be \emph{positive definite} (all eigenvalues
+are positive, it is invertible and the determinant is greater than 0).
+The eigenvectors of \(\Sigma\) are real and can be chosen to form an
+\emph{orthonormal} set:
 
 \[\Sigma u_i = \lambda_i u_i\]
 
@@ -1991,7 +2021,7 @@ By completing the square in the exponent we obtain:
 
 where:
 
-\[\mu_N = \frac{\sigma^2}{N \sigma^2_0 + \sigma^2} \mu_0 + \frac{N \sigma_0^2}{N\sigma^2 + \sigma^2} \mu_{ML} \qquad \mu_{ML} = \frac{1}{N}\sum_{i=1}^{N}x_i \qquad \frac{1}{\sigma_N^2} = frac{1}{\sigma_N^2} + \frac{N}{\sigma^2}\]
+\[\mu_N = \frac{\sigma^2}{N \sigma^2_0 + \sigma^2} \mu_0 + \frac{N \sigma_0^2}{N\sigma^2 + \sigma^2} \mu_{ML} \qquad \mu_{ML} = \frac{1}{N}\sum_{i=1}^{N}x_i \qquad \frac{1}{\sigma_N^2} = \frac{1}{\sigma_N^2} + \frac{N}{\sigma^2}\]
 
 So the posterior mean is a compromise between the prior mean \(\mu_0\)
 and the maximum likelihood solution \(\mu_{ML}\). We also see that each
@@ -2158,7 +2188,7 @@ in advance. Assume Gaussian noise and a Gaussian prior over weights:
 
 Because both are Gaussian, the posterior \(p(w | D)\) is also Gaussian,
 and can be computed in closed form using Bayes' theorem for Gaussian
-variables. We applythe sum and product rules of probability to find the
+variables. We apply the sum and product rules of probability to find the
 predictive distribution:
 
 \[p(t | x, D) = \int p(t | x, w) p(w | D) dw = N(t | m(x), s^2(x))\]
@@ -2317,6 +2347,69 @@ written as:
 (\frac{1}{N} \sum_{i=1}^N \sin \theta_i) \sin \theta_0^{ML}\]
 
 The function \(A(m)\) can be inverted numerically to obtain \(m_{ML}\).
+
+\paragraph{Mixtures of Gaussians}\label{mixtures-of-gaussians}
+
+A single Gaussian cannot capture \emph{moltimodal} data. A linear
+superposition of \(K\) Gaussians can:
+
+\[p(x) = \sum_{k=1}^K \pi_k N(x | \mu_k, \Sigma_k)\]
+
+where the \emph{mixing coefficients} satisfy \(0 \le \pi_k \le 1\) and
+\(\sum_k \pi_k =
+1\).
+
+We do not have a closed form, but we can use some iterative algorithms
+(\emph{EM algorithm}). For example, if we have 1000 response times of a
+web service behind a cache, were most requests are hits (fast) and the
+others are misses (slow), we can model this with a mixture of gaussians.
+
+A problem that arises is to decide which gaussian component produced a
+certain event. To work this out, think of a hidden choice \(k\) with
+prior \(p(k) = \pi_k\). By bayes' theorem, the posterior of compenet
+\(k\) given \$x\% is its responsibility:
+
+\[\gamma_k (x) = p(k | x) = \frac{\pi_k N(x | \mu_k, \sigma^2_k)}{\sum_{j=1}^K
+\pi_j N(x | \mu_j, sigma^2_j)}\]
+
+The log-likelihood is:
+
+\[\ln p(x | \pi, \mu, \sigma) = \sum_{n=1}^N \ln \sum_{k=1}^K \pi_K N(x_n |
+\mu_k, \sigma^2_k)\]
+
+but this has no closed form. But if we knew the responsibilities
+\(\gamma_{nk} =
+\gamma_k (x_n)\), each component would be a weighted Gaussian NL
+problem. The Expectation-Maximization (EM) algorithm would look like
+this:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  E-step: compute \(\gamma_{nk}\) with the current parameteres
+\item
+  M-step: with \(N_k = \sum_n \gamma_{nk}\) (the effective number of
+  points of component \(k\))
+\end{enumerate}
+
+\[\pi_k = \frac{N_k}{N} \qquad \mu_k = \frac{1}{N_k} \sum_n \gamma_{nk} x_n
+\qquad \sigma^2_k = \frac{1}{N_k} \sum_n \gamma_{nk} (x_n - \mu_k)^2\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Repeat until the log-likelihood stops increasing (as for the
+  t-distribution weight)
+\end{enumerate}
+
+The maximum likelihood always grows with \(K\) (a mixture with \(K\)
+components can mimic one with \(K-1\)). For this reason, we need to
+penalise the number of parameters \(P(3K - 1\ in\ 1D)\) such that the
+lowest value wins.
+
+\[BIC = -2\ln p(x | \theta_{ML}) + P \ln N\]
 
 \section{Machine Learning
 Introduction}\label{machine-learning-introduction}
@@ -5426,35 +5519,24 @@ Therefore the steps to perform in order to optimize are:
 
 Intuitively, we want to go up the gradient to increase the total reward.
 
-\section{Notes}\label{notes}
+\section{Raw notes}\label{raw-notes}
 
 Notes that need to be included in the rest of the book.
 
 \subsection{Probability
 distributions}\label{probability-distributions-1}
 
-\paragraph{Mixtures of Gaussians}\label{mixtures-of-gaussians}
-
-A single Gaussian cannot capture \emph{moltimodal} data. A linear
-superposition of \(K\) Gaussians can:
-
-\[p(x) = \sum_{k=1}^K \pi_k N(x | \mu_k, \Sigma_k)\]
-
-where the \emph{mixing coefficients} satisfy \(0 \le \pi_k \le 1\) and
-\(\sum_k \pi_k =
-1\).
-
-We do not have a closed form, but we can use some iterative algorithms
-(\emph{EM algorithm}).
-
-Slide 141
-
 \subsection{The Data}\label{the-data}
+
+Some exercises on real datasets.
 
 \subsubsection{Bayesian filter for spam}\label{bayesian-filter-for-spam}
 
-Use of Bayes theorem for spam detection. We can use the dataset from the
-UC Irvine dataset (\path{https://archive.ics.uci.edu/dataset/228/}).
+In this first exercise, we use the Bayes theorem for spam detection. We
+can use the dataset from the UC Irvine dataset
+(\path{https://archive.ics.uci.edu/dataset/228/}).
+
+Consider the following probability:
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2830}}
@@ -5481,11 +5563,13 @@ fraction of ham \\
 containing ``free'' & & \\
 \end{longtable}
 
+The steps perform spam detection are, in order:
+
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Estimate the three probabilities on 70\% of the messages (training
-  set)
+  Estimate the three probabilities (in the table) on 70\% of the
+  messages (training set)
 \item
   Compute \(Pr(S | "free")\) with Bayes' theorem, and check it on the
   other 30\%
@@ -5502,10 +5586,11 @@ recognized since its prior probability will be rare too.
 \subsubsection{Bernoulli and Beta: Bank
 marketing}\label{bernoulli-and-beta-bank-marketing}
 
-Dataset of marketing campaigns (phone calls) of a Portuguese bank
-institution. (\path{https://archive.ics.uci.edu/dataset/222/}), the
-classification goal is to predict if the client will subscribe. The
-output is a Bernulli distribution.
+Given a dataset of marketing campaigns (phone calls) of a Portuguese
+bank institution, (\path{https://archive.ics.uci.edu/dataset/222/}), the
+classification goal is to predict if the client will subscribe. Notice
+that the output is a Bernulli distribution (either subscribed or not
+subscribed).
 
 Let \(x_n = 1\) if call \(n\) end with a subscription:
 \(x_n \sim Bern(x | \mu )\), \(\mu\) is the \emph{conversion rate}.
@@ -5514,7 +5599,8 @@ Let \(x_n = 1\) if call \(n\) end with a subscription:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Maximum likelihood: \(\mu_{ML} = m / N\); check it is the maximum of:
+  Maximum likelihood: \(\mu_{ML} = m / N\); check that it is the maximum
+  of:
 \end{enumerate}
 
 \[\ln p(D | \mu ) = m \ln \mu + (N - m) \ln (1 - \mu )\]
@@ -5628,4 +5714,37 @@ Model \(x \sim N (x | \mu, \Sigma )\) with \(D=2\)
   \Sigma^{-1} (x - \mu)\) follows a \(X^2\) distrivution with \(D\)
   degrees of freedom; flag the points above its 99\% quantile.
 \end{enumerate}
+
+\subsubsection{Learning the parameters of a
+Gaussian}\label{learning-the-parameters-of-a-gaussian-1}
+
+Focusing on the 187 heights of the Kung women dataset, read as a stream,
+one woman at a time (in random order).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Bias of ML: thear the 187 women as a population and draw many samples
+  of size \(n\): on average \(\sigma^2_{ML} = \frac{n-1}{n} \sigma^2\),
+  where the \(\frac{1}{n-1}\) estimator is unbiased
+\item
+  Sequential ML:
+  \(\mu^{(N)} = \mu^{(N - 1)} + \frac{1}{N} (x_N - \mu^{(N - 1)})\)
+  gives exactly \(\bar{x}\)
+\item
+  Robbins-Monro: TODO
+\item
+  Bayesian known-precision: TODO
+\item
+  Bayesian unknown precision: TODO
+\end{enumerate}
+
+\subsubsection{Student's
+T-distribution}\label{students-t-distribution-1}
+
+We have a dataset containing the daily closing prices of major European
+stock indices (\path{https://rdrr.io/r/datasets/EuStockMarkets.html}).
+We can use both a Gaussian and a Student's T-distribution. We would
+notice that the Gaussian distribution underestimates extreme losses by
+orders of magnitudes.
 \end{document}
