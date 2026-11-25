@@ -1100,34 +1100,34 @@ With the following properties:
 
 - $\Gamma (x+1) = x \Gamma (x)$
 
-The gamma function behaves like a factorial in the natural numbers, but it is
-defined on all real numbers, so it can be thought as the continuous version of
-the factorial in the complex numbers.
+The gamma function generalizes the factorial function from the positive integers
+to $\mathbb{C} \backslash \{0, -1, -2, ...\}$, it can be thought as the
+continuous version of the factorial in the complex numbers.
 
-Let the PDF of the _beta distribution_ is:
 
-$$Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1}$$
+Let $U$ be a continuous random variable taking values $\mu \in (0, 1)$, and let
+$a, b >0$ be shape parameters. We say $U \sim Beta(a, b)$ if its PDF is given
+by:
+
+$$Beta(\mu | a, b) = \frac{\Gamma (a+b)}{\Gamma(a) \Gamma(b)}\mu^{a-1}(1-\mu)^{b-1} \qquad \mu \in (0, 1)$$
+
+and 0 otherwise, satisfying the normalization condition:
 
 $$\int_0^1 Beta(\mu | a, b) d\mu = 1$$
 
-TODO: $\mu$ up above is not a random variable, which is confusing because it is
-used later as a random variable.
+For $U \sim Beta(a, b)$, the expectation and variance are:
 
-If $\mu \sim Beta(a, b)$, then:
+$$\mathbb{E}[U] = \frac{a}{a+b}$$
 
-$$\mathbb{E}[\mu] = \frac{a}{a+b}$$
+$$\mathbb{V}ar[U] = \frac{ab}{(a+b)^2 (a+b+1)}$$
 
-$$\mathbb{V}ar[\mu] = \frac{ab}{(a+b)^2 (a+b+1)}$$
+The parameters $a > 0$ and $b > 0$ are often called _hyperparameters_ because
+they control the distribution of the parameter $\mu$. In some sense, they
+represent our assumptions or our prior knowledge.
 
-In some sense, this distribution generalizes the binomial distribution.
-
-The parameters $a$ and $b$ are often called _hyperparameters_ because they
-control the distribution of the parameter $\mu$. In some sense, they represent
-our assumptions or our prior knowledge.
-
-We assume $\mu$ to be Beta-distributed, with given hyperparameters $a$ and $b$:
-$p(\mu) = Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of positive and
-negative results, respectively $(N = m + l)$. Then:
+We assume $U$ to be Beta-distributed, with given hyperparameters $a$ and $b$ and
+$\mu \in im(U)$: $p(\mu) = Beta(\mu | a, b)$. Let $m$ and $l$ be the numbers of
+positive and negative results, respectively $(N = m + l)$. Then:
 
 $$p(\mu | m, l) \propto p(m, l | \mu ) p(\mu) \propto \mu^{m + a - 1} (1-\mu)^{l+b-1}$$
 
@@ -1139,12 +1139,12 @@ $$p(\mu | m, l, a, b) = \frac{\Gamma (m+a+l+b)}{\Gamma (m+a) \Gamma (l+b)}\mu^{m
 Our goal is to predict the outcome of the next trial, given the observed data
 set $D$:
 
-$$p(x=1 | D) = \int_0^1 p(x=1 | \mu) p(\mu | D) d\mu = \int_0^1 \mu p(\mu | D)
-d\mu = \mathbb{E}[\mu | D]$$
+$$P(X_{N+1}=1 | D) = \int_0^1 P(X_{N+1}=1 | \mu) p(\mu | D) d\mu = \int_0^1 \mu p(\mu | D)
+d\mu = \mathbb{E}[U | D]$$
 
-$$p(x=1 | D) = \frac{m + a}{m + a + l + b}$$
+$$P(X_{N+1}=1 | D) = \frac{m + a}{m + a + l + b}$$
 
-When $m, l \rightarrow \infty,\ p(x=1 | D)$ reduces to the maximum likelihood
+When $m, l \rightarrow \infty,\ P(X_{N+1}=1 | D)$ reduces to the maximum likelihood
 estimate $m/N$ (the sample mean)!
 
 ### Multinomial distribution
@@ -1152,36 +1152,34 @@ estimate $m/N$ (the sample mean)!
 Binary variables describe quantities that can take one of two possible values.
 Often, however, we encounter discrete variables that can take one of $K$
 possible mutually exlusive states. A particularly convenient representation is
-the _1-of-K_ scheme: the variable is represented by a $K$-dimensional vector $x$
-in which exactly one element $x_k$ equals 1 and all the others equal $0$. So,
-for instance, if we have a variable that can take $K=6$ states and a particular
-observation of the variable happens to correspond to the state where $x_3 = 1$,
-then $x$ will be represented by:
+the _1-of-K_ scheme: the random vector $X = (X_1, ..., X_K)^T$ takes values $x =
+(x_1, ..., x_K)^T \in \{0, 1\}^K$ in which exactly one component $x_k = 1$ and
+all others equal  $0$, satisfying $\sum_{k=1}^K x_k = 1$. So, for instance, if
+we have a variable that can take $K=6$ states and a particular observation of
+the variable happens to correspond to the state where $x_3 = 1$, then $x$ will
+be represented by:
 
 $$x=(0, 0, 1, 0, 0, 0)^T$$
 
-Such vectors satisfy $\sum_{k=1}^K x_k = 1$. If we denote the probability that
-$x_k = 1$ by the parameter $\mu_k$, then the distribution of $x$ is:
+If we denote the probability that $x_k = 1$ by the parameter $\mu_k$ for $k = 1,
+..., K$, then the PMF of $X$ is:
 
-$$p(x|\mu) = \prod_{k=1}^K u_k^{x_k}$$
+$$p_X(x|\mu) = \prod_{k=1}^K \mu_k^{x_k}$$
 
-where $\mu = (\mu_1, ..., \mu_k)^T$, and the parameters $u_k$ are constrained to
-satisfy $u_k \ge 0$ and $\sum_k \mu_k = 1$.
+where $\mu = (\mu_1, ..., \mu_k)^T$ satisfied $\mu_k \ge 0$ for all $K$, and
+$\sum_k \mu_{k=1}^K = 1$.
 
-This is the generalization of the Brunoulli distribution to more than two
-outcomes. It is normalized, and its mean is $\mu$:
+This is a generalization of the Bernoulli distribution to more than two
+outcomes. Let $X = (X_1, ..., X_K)^T$ be the random vector taking values $x =
+(x_1, ..., x_K)^T \in \{0, 1\}$ with $\sum_{k=1}^K x_k = 1$, then:
 
-$$\sum_x p(x|\ \mu) = \sum_{k=1}^K \mu_k = 1$$
-
-$$\mathbb{E}[x|\ \mu] = \sum_x p(x|\ \mu) x = (\mu_1, ..., \mu_k)^T = \mu$$
-
-Exercise: prove the two statements above.
+$$\mathbb{E}[X|\ \mu] = \sum_x p_X(x|\ \mu) x = (\mu_1, ..., \mu_k)^T = \mu$$
 
 Let $D$ be a data set of $N$ independent observations $x_1, ..., x_n$. The
 corresponding likelihood function takes the form:
 
-$$p(D|\ \mu) = \prod_{i=1}^N \prod_{k=1}^K \mu_k^{x_{nk}} = \prod_{k=1}^K
-(\sum_n x_{nk}) = \prod_{k=1}^K u_k^{m_k}$$
+$$p_X(D|\ \mu) = \prod_{i=1}^N \prod_{k=1}^K \mu_k^{x_{nk}} = \prod_{k=1}^K
+\mu_k^{\sum_{i=1}^N x_{ik}} = \prod_{k=1}^K \mu_k^{m_k}$$
 
 we see that the likelihood function depends on the $N$ data point only through
 the $K$ quantities:
@@ -1191,7 +1189,7 @@ $$m_k = \sum_n x_{nk}$$
 which represent the number of observations of $x_k = 1$. These are called the
 _sufficient statistics_ for this distribution.
 
-To find the maximum likelihood solution for $\mu$, we maximize $\ln p(D|\mu)$
+To find the maximum likelihood solution for $\mu$, we maximize $\ln p_X(D|\mu)$
 with respect to the components $\mu_k$ of $\mu$, subject to the constraint
 $\sum_{k=1}^K \mu_k = 1$.
 
@@ -1213,7 +1211,7 @@ which is the fraction of the $N$ observations for which $x_k = 1$.
 
 We can consider the joint distribution of the quantities $m_1, ..., m_K$,
 conditioned on the parameters $\mu$ and on the total number $N$ of observations.
-So:
+So we have this PMF:
 
 $$Mult(m_1, m_2, ..., m_K | \mu, N) = \binom{N}{m_1 m_2 ... m_k} \prod_{k=1}^K
 \mu_k^{m_k}$$

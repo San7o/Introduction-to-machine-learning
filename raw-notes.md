@@ -143,3 +143,77 @@ We have a dataset containing the daily closing prices of major European stock
 indices (\path{https://rdrr.io/r/datasets/EuStockMarkets.html}). We can use both
 a Gaussian and a Student's T-distribution. We would notice that the Gaussian
 distribution underestimates extreme losses by orders of magnitudes.
+
+TODO
+
+### The Keeling Curve
+
+We have a NOAA global monitoring laboratory monitoring annual mean $CO_2$ (http://gml.noaa.gov/ccgg/trends). It has 67 rows, one per year.
+
+1. Train on 1959-2000 only; forecast 2001-2025 and compare with what happened
+
+2. Model: polynomial of order $M$ in $x = (year - 1990)/30$ (scaling keeps
+   $\phi^T \phi$ well conditioned); $M=2$ to begin with.
+
+3. Hyper-parameters: prior precision $\alpha = 10^{-3}$ (weak); noise precision
+   $\beta = 1 / \hat{sigma}^2$ from the residuals of the least-squares fir
+
+4. Posterior and predictive distribution:
+
+$$S_N^{-1} = \alpha I + \beta \phi^T \phi, \qquad m_N = \beta S_N \phi^T t,
+\qquad s^2(x) = \frac{1}{\beta} + \phi (x)^T S_N \phi(x)$$
+
+5. Evaluate: fraction of the 25 feature years inside the 95% band $m(x) +- 1.96
+   s(s)$; repeat for $M = 1, 3$
+
+### Von Mises distribution: Wind at Ancona Airport
+
+Meteostat blut hourly data, station 16191 (Ancona Flaconara, Marche), from
+national weather services (http://bulk.meteostat.net/v2/hourly/16191.csv.gz). A
+direction is an angle.
+
+Model the direction at $14:00$ as $\theta \sim p(\theta | \theta_0, m) =
+\frac{1}{2\pi I_0 (m)} exp(m \cos (\theta - \theta_0))$
+
+1. The wrong way: the arithmetic mean of the degrees
+
+2. ML mean direction: average the unit vectors $(\cos \theta_i, \sin \theta_i)$
+
+$$\theta_0^{ML} = atan2 (\sum_i \sin \theta_i, \sum_i \cos \theta_i), \qquad
+\bar{r} = ||\frac{1}{N} \sum_i (\cos \theta_i, \sin \theta_i)||$$
+
+3. ML concentration: solve $A(m_{ML}) = \bar{r}$ with $A(m) = I_1(m) / I_0(m)$
+   (bisection / brentq); check with _scipy.stats.vonmises.fit_.
+
+4. Use the model: probability that the wind blows from the north-east quadrant
+   $(0'-90')$, compared with the data
+
+5. Compare with 03:00 (nights): does the direction change?
+
+### The Old faithful Geyser
+
+Dataset of 272 eruptions of Old Faithful: how long the time of the eruption, and
+how long it waited before the next. Used throughout Bishop PRML.
+
+1. 1D: waiting time $x$, micture $p(x) = \sum_{k=1}^K \pi_k N(x | \mu_k,
+   \sigma_k^2)$ with $K=2$, fittend with the $M algorithm
+
+   - E-step: responsibilities $\gamma_{nk} = \pi_k N(x_n | \mu_k, \sigma_k^2) /
+     \sum_j \pi_j N(TODO)$
+
+TODO
+
+---
+
+## Regression
+
+$$y(x, w) = \sum_{j=0}^{M-1} w_j \phi_j (x) = w^T \phi(x)$$
+
+$\phi(x)$ is a basis function and is used to morph the space, introducing
+non-linearity. Example functions are:
+
+- $\phi_j (x) = x_i$
+
+- $\phi_j (x) = exp(- \frac{(x - \mu_j)^2}{2 s^2})$
+
+- $\phi_j (x) = \sigma (\frac{x - \mu_j}{s})$
